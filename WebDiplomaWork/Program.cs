@@ -1,3 +1,6 @@
+
+using WebDiplomaWork.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,5 +23,6 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html"); ;
-
+var a = new UserRepository();
+a.Delete();
 app.Run();
