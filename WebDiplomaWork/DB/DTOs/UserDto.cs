@@ -1,4 +1,4 @@
-﻿namespace WebDiplomaWork.DTOs
+﻿namespace WebDiplomaWork.DB.DTOs
 {
     public class UserDto
     {

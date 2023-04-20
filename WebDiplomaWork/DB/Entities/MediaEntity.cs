@@ -1,4 +1,4 @@
-﻿namespace WebDiplomaWork.Domain.Entities
+﻿namespace WebDiplomaWork.DB.Entities
 {
     public class MediaEntity
     {
