@@ -1,4 +1,4 @@
-﻿namespace WebDiplomaWork.DB.Entities
+﻿namespace WebDiplomaWork.Domain.Entities
 {
     public class UserEntity
     {

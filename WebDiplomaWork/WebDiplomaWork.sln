@@ -5,7 +5,13 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebDiplomaWork", "WebDiplomaWork.csproj", "{96EB9CBE-2CC5-4BDD-937D-7DF249BC0C6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "..\CommonLibrary\CommonLibrary.csproj", "{FEB78816-5792-480F-B6F6-6854DC38FC06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibrary", "..\CommonLibrary\CommonLibrary.csproj", "{FEB78816-5792-480F-B6F6-6854DC38FC06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiplomaWork.Domain", "..\WebDiplomaWork.Domain\WebDiplomaWork.Domain.csproj", "{57366598-7C4A-42BA-ADE1-4472BFB40059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiplomaWork.Infrastructure", "..\WebDiplomaWork.Infrastructure\WebDiplomaWork.Infrastructure.csproj", "{6D30E1CE-24C9-4472-86F4-40FD23FB87FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiplomaWork.App", "..\WebDiplomaWork.App\WebDiplomaWork.App.csproj", "{C77296A6-CD98-4BD4-96FF-308567DE5F19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{FEB78816-5792-480F-B6F6-6854DC38FC06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEB78816-5792-480F-B6F6-6854DC38FC06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEB78816-5792-480F-B6F6-6854DC38FC06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57366598-7C4A-42BA-ADE1-4472BFB40059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57366598-7C4A-42BA-ADE1-4472BFB40059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57366598-7C4A-42BA-ADE1-4472BFB40059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57366598-7C4A-42BA-ADE1-4472BFB40059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D30E1CE-24C9-4472-86F4-40FD23FB87FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D30E1CE-24C9-4472-86F4-40FD23FB87FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D30E1CE-24C9-4472-86F4-40FD23FB87FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D30E1CE-24C9-4472-86F4-40FD23FB87FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77296A6-CD98-4BD4-96FF-308567DE5F19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77296A6-CD98-4BD4-96FF-308567DE5F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77296A6-CD98-4BD4-96FF-308567DE5F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77296A6-CD98-4BD4-96FF-308567DE5F19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
