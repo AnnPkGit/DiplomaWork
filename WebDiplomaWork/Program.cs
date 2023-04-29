@@ -1,8 +1,21 @@
+using WebDiplomaWork.App.DbAccess;
+using WebDiplomaWork.Infrastructure.Configuration;
+using WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager;
+using WebDiplomaWork.Infrastructure.DbAccess;
+using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
+using LocalConfigurationManager = WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
+builder.Services.AddScoped<ISshConnectionProvider, SshConnectionProvider>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+
+builder.Services.Configure<GeneralConfiguration>(
+    builder.Configuration.GetSection("GeneralConfiguration"));
 
 var app = builder.Build();
 
