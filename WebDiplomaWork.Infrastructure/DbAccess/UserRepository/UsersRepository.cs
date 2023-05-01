@@ -3,7 +3,7 @@ using WebDiplomaWork.App.DbAccess;
 using WebDiplomaWork.Domain.Entities;
 using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
 
-namespace WebDiplomaWork.Infrastructure.DbAccess
+namespace WebDiplomaWork.Infrastructure.DbAccess.UserRepository
 {
     public class UsersRepository : IUsersRepository
     {
