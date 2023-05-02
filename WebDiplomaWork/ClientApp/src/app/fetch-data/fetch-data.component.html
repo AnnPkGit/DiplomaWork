@@ -22,3 +22,19 @@
     </tr>
   </tbody>
 </table>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="forecasts">
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>Name</th>
+    <th>RegistrationDt</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{ user.id }}</td>
+    <td>{{ user.name }}</td>
+    <td>{{ user.registrationDt }}</td>
+  </tr>
+  </tbody>
+</table>
