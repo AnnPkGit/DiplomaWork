@@ -12,9 +12,9 @@ namespace WebDiplomaWork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _userContext;
+        private readonly DataContext _userContext;
 
-        public UserController(UserContext userContext)
+        public UserController(DataContext userContext)
         {
             _userContext = userContext;
         }

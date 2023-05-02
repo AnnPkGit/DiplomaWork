@@ -9,14 +9,14 @@ using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
 namespace WebDiplomaWork.Infrastructure.DbAccess;
 
 
-public class UserContext : DbContext
+public class DataContext : DbContext
 {
     private readonly ISshConnectionProvider _shhConnectionProvider;
     private SshClient _sshClient;
     
     public DbSet<UserEntity> Users { get; set; }
 
-    public UserContext(ISshConnectionProvider shhConnectionProvider)
+    public DataContext(ISshConnectionProvider shhConnectionProvider)
     {
         _shhConnectionProvider = shhConnectionProvider;
     }

@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
 builder.Services.AddScoped<ISshConnectionProvider, SshConnectionProvider>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddDbContext<UserContext>();
+builder.Services.AddDbContext<DataContext>();
 
 builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));
