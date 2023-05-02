@@ -1,6 +1,7 @@
 using WebDiplomaWork.App.DbAccess;
 using WebDiplomaWork.Infrastructure.Configuration;
 using WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager;
+using WebDiplomaWork.Infrastructure.DbAccess;
 using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
 using WebDiplomaWork.Infrastructure.DbAccess.UserRepository;
 using LocalConfigurationManager = WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
