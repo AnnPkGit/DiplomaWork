@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebDiplomaWork.Domain.Entities;
 using WebDiplomaWork.Infrastructure.DbAccess;
+using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
 
 namespace WebDiplomaWork.Controllers
 {
@@ -12,18 +14,18 @@ namespace WebDiplomaWork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly DataContext _userContext;
+        private readonly IRepository<UserEntity, string> _repository;
 
-        public UserController(DataContext userContext)
+        public UserController(ISshConnectionProvider sshConnectionProvider)
         {
-            _userContext = userContext;
+            _repository = new GenericDataContext<UserEntity, string>(sshConnectionProvider);
         }
 
         [HttpGet]
         public IEnumerable<object> Get()
         {
-            var users = _userContext.Users.ToList();
-            _userContext.Dispose();
+            var users = _repository.GetAll().ToList();
+            _repository.Dispose();
             return users;
         }
     }
