@@ -1,10 +1,4 @@
-﻿using System.Data;
-using System.Data.Common;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
-using Renci.SshNet;
-using WebDiplomaWork.Domain.Entities;
-using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace WebDiplomaWork.Infrastructure.DbAccess;
 

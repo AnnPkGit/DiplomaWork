@@ -1,4 +1,3 @@
-using WebDiplomaWork.Domain.Entities;
 using WebDiplomaWork.Infrastructure.Configuration;
 using WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager;
 using WebDiplomaWork.Infrastructure.DbAccess;
