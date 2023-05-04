@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
 builder.Services.AddScoped<ISshConnectionProvider, SshConnectionProvider>();
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
 
 builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));

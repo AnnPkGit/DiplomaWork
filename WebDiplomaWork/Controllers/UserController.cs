@@ -16,16 +16,15 @@ namespace WebDiplomaWork.Controllers
     {
         private readonly IRepository<UserEntity, string> _repository;
 
-        public UserController(ISshConnectionProvider sshConnectionProvider)
+        public UserController(IRepository<UserEntity, string> repository)
         {
-            _repository = new GenericDataContext<UserEntity, string>(sshConnectionProvider);
+            _repository = repository;
         }
 
         [HttpGet]
         public IEnumerable<object> Get()
         {
             var users = _repository.GetAll().ToList();
-            _repository.Dispose();
             return users;
         }
     }
