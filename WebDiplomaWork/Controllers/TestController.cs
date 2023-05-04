@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebDiplomaWork.Domain.Entities;
 using WebDiplomaWork.Infrastructure.DbAccess;
 
@@ -6,11 +6,11 @@ namespace WebDiplomaWork.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class TestController : ControllerBase
     {
-        private readonly IRepository<UserEntity, string> _repository;
+        private readonly IRepository<TestEntity, string> _repository;
 
-        public UserController(IRepository<UserEntity, string> repository)
+        public TestController(IRepository<TestEntity, string> repository)
         {
             _repository = repository;
         }
@@ -18,8 +18,8 @@ namespace WebDiplomaWork.Controllers
         [HttpGet]
         public IEnumerable<object> Get()
         {
-            var users = _repository.GetAll().ToList();
-            return users;
+            var tests = _repository.GetAll().ToList();
+            return tests;
         }
     }
 }

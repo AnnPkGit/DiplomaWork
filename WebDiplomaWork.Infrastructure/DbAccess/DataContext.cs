@@ -1,20 +1,16 @@
-﻿using System.Data;
-using System.Data.Common;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
+﻿using Microsoft.EntityFrameworkCore;
 using Renci.SshNet;
 using WebDiplomaWork.Domain.Entities;
 using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
 
 namespace WebDiplomaWork.Infrastructure.DbAccess;
 
-
 public class DataContext : DbContext
 {
     private readonly ISshConnectionProvider _shhConnectionProvider;
     private SshClient _sshClient;
-    
     public DbSet<UserEntity> Users { get; set; }
+    public DbSet<TestEntity> Tests { get; set; }
 
     public DataContext(ISshConnectionProvider shhConnectionProvider)
     {

@@ -1,5 +1,8 @@
-﻿namespace WebDiplomaWork.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebDiplomaWork.Domain.Entities
 {
+    [Table("Users")]
     public class UserEntity
     {
         public String Id { get; set;  }
