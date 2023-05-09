@@ -1,8 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Provide sufficient contrast against white background */
-
 @import './app/identification/identificationStyle.css';
+@import './app/home/navBar/navBarStyle.css';
+@import './app/home/post/postStyle.css';
+@import './app/home/toastCreator/toastCreatorStyle.css';
+@import './app/home/homeStyle.css';
 
 a {
   color: #0366d6;

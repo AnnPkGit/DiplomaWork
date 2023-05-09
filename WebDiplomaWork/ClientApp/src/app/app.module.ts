@@ -12,6 +12,10 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AuthComponent } from './identification/auth/auth.component';
 import { SignInComponent } from './identification/signIn/signIn.component';
 import { RegisterComponent } from './identification/register/register.component';
+import { PostComponent } from './home/post/post.component';
+import { NavBarComponent } from './home/navBar/navBar';
+import { ToastCreatorComponent } from './home/toastCreator/toastCreator.component';
+import { RecProfileComponent } from './home/profileRec/recProfile.component';
 
 @NgModule({
   declarations: [
@@ -22,18 +26,23 @@ import { RegisterComponent } from './identification/register/register.component'
     FetchDataComponent,
     AuthComponent,
     SignInComponent,
-    RegisterComponent
+    RegisterComponent,
+    PostComponent,
+    NavBarComponent,
+    ToastCreatorComponent,
+    RecProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: AuthComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'sign-in', component: SignInComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'auth', component: AuthComponent },
     ])
   ],
   providers: [],
