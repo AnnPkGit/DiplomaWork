@@ -26,9 +26,9 @@ public class GenericRepository<T, K> :
         return _table.Find(id);
     }
 
-    public T Create(T entity)
+    public async Task CreateAsync(T entity)
     {
-        return _table.Add(entity).Entity;
+        await _table.AddAsync(entity);
     }
 
     public T Update(T entity)
@@ -41,8 +41,8 @@ public class GenericRepository<T, K> :
         return _table.Remove(entity).Entity;
     }
 
-    public void Save()
+    public async Task SaveAsync()
     {
-        _dataContext.SaveChanges();
+        await _dataContext.SaveChangesAsync();
     }
 }

@@ -1,6 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WebDiplomaWork.App;
+using WebDiplomaWork.DB.DTOs;
 using WebDiplomaWork.Domain.Entities;
-using WebDiplomaWork.Infrastructure.DbAccess;
 
 namespace WebDiplomaWork.Controllers
 {
@@ -8,18 +10,31 @@ namespace WebDiplomaWork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IRepository<UserEntity, string> _repository;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(IRepository<UserEntity, string> repository)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _repository = repository;
+            _userService = userService;
+            _mapper = mapper;
         }
 
-        [HttpGet]
-        public IEnumerable<object> Get()
+        [HttpPost]
+        public async Task<IActionResult> AddUser([FromBody] UserDto user)
         {
-            var users = _repository.GetAll().ToList();
-            return users;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userEntity = _mapper.Map<UserEntity>(user);
+            var result = await _userService.AddUserAsync(userEntity);
+
+            if (!result.IsSuccessful)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+            return Ok();
         }
     }
 }
