@@ -50,12 +50,10 @@
 }
 
 .topHeaderFixed3 {
-  width: 500px;
-  position: fixed;
-  height: 50px;
   display: flex;
   align-items: center;
-  background-color: #ffffffb4;
+  margin-right: 23%;
+  width: 85%;
 }
 
 .topHeader div {
@@ -117,9 +115,9 @@
   border-radius: 15px 15px 15px 15px;
   width: 70%;
   min-width: 20px;
-  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.1);
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
   padding: 6%;
-  margin-bottom: 6%;
+  margin-bottom: 30px;
   display: flex;
 }
 
@@ -129,7 +127,7 @@
   width: 70%;
   height: 70px;
   background: #5B66CA;
-  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.1);
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.5);
   border-radius: 100px;
   font-weight: 650;
   font-size: 15px;
@@ -162,14 +160,14 @@
   padding-left: 10%;
   background: #F6F8F9;
   border: solid #F6F8F9;
-  box-shadow: 0px 0px 4px rgb(179, 185, 185, 0,40), 0px 0px 4px rgb(226, 231, 232, 0,40), 0px 0px 15px rgba(217, 226, 235, 0.1);
+  box-shadow: 0px 0px 4px rgb(179, 185, 185, 0,40), 0px 0px 4px rgb(226, 231, 232, 0,40), 0px 0px 15px rgba(217, 226, 235, 0.5);
   border-radius: 60px;
   margin-left: 8%;
 }
 
 .fixedSearch {
   position: absolute;
-  margin-left: 12%;
+  margin-left: 8%;
 }
 
 .recommendationsBar {
@@ -178,6 +176,7 @@
   border-radius: 15px 15px 15px 15px;
   padding: 6%;
   padding-right: 8%;
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
 }
 
 .recommendedTopic {
@@ -213,6 +212,7 @@
   background: #FFFFFF;
   border-radius: 15px 15px 15px 15px;
   padding: 3%;
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
 }
 
 .recommendedProfile {

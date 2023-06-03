@@ -3,6 +3,7 @@
 @import './app/home/post/postStyle.css';
 @import './app/home/toastCreator/toastCreatorStyle.css';
 @import './app/home/homeStyle.css';
+@import './app/home/mainPageStyles.css';
 
 a {
   color: #0366d6;
