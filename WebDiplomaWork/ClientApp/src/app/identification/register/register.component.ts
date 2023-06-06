@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 
 @Component({
   selector: 'app-register',
@@ -15,13 +15,12 @@ export class RegisterComponent {
 
   private step = 1;
 
-  constructor(private router: Router) {
+  constructor(private router: LocalRouter) {
     let date = new Date().getFullYear();
     for (var i = date; i > date - 106; i--) {
       this.years.push(i);
     }
     this.UpdateDaysByMounth(28);
-    console.log("!");
   }
 
   public GetMounths() : number[] {
@@ -41,7 +40,7 @@ export class RegisterComponent {
   }
 
   RedirectToAuthPage() {
-    this.router?.navigate(['']);
+    this.router.goToAuth();
   }
 
   onSelectedMounth(value: string) {

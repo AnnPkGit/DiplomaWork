@@ -1,3 +1,6 @@
 export const AppConfig = {
-    homeEndpoint: 'home',
+    homeEndpoint: '/home',
+    signInEndpoint: '/sign-in',
+    registerEndpoint: '/register',
+    authEndpoint: '',
 };

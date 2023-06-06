@@ -1,0 +1,5 @@
+<div class="imgOpenedBg" (click)="hide()">
+    <button *ngIf="showBackArrow()" (click)="back($event)"><</button>
+    <img [src]="currentImg">
+    <button *ngIf="showForwardArrow()" (click)="forward($event)">></button>
+</div>

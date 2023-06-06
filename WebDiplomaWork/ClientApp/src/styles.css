@@ -4,6 +4,7 @@
 @import './app/home/toastCreator/toastCreatorStyle.css';
 @import './app/home/homeStyle.css';
 @import './app/home/mainPageStyles.css';
+@import './app/home/imgOpened/imgOpened.css';
 
 a {
   color: #0366d6;

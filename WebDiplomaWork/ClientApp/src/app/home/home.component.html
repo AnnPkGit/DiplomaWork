@@ -3,7 +3,7 @@
 
 <div class="centerHeader">
   <div class="inCenterHeader45end">For you</div>
-  <div class="inCenterHeader20">HOME</div>
+  <div class="inCenterHeader20" (click)="Reload()">HOME</div>
   <div class="inCenterHeader45start">Following</div>
 </div>
 
@@ -40,14 +40,8 @@
   <div class="tostContainer">
     <app-toast-creator></app-toast-creator>
   </div>
-  <div class="tostContainer">
-    <app-post></app-post>
-  </div>
-  <div class="tostContainer">
-    <app-post></app-post>
-  </div>
-  <div class="tostContainer">
-    <app-post></app-post>
+  <div class="tostContainer"  *ngFor="let post of posts">
+    <app-post [postModel]="post"></app-post>
   </div>
 </div>
 
