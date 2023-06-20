@@ -18,6 +18,7 @@ import { ToastCreatorComponent } from './home/toastCreator/toastCreator.componen
 import { RecProfileComponent } from './home/profileRec/recProfile.component';
 import { AuthGuard } from './shared/Guards/auth.guard';
 import { ImgOpened } from './home/imgOpened/imageOpened.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ImgOpened } from './home/imgOpened/imageOpened.component';
     NavBarComponent,
     ToastCreatorComponent,
     RecProfileComponent,
-    ImgOpened
+    ImgOpened,
+    MessagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -47,6 +49,7 @@ import { ImgOpened } from './home/imgOpened/imageOpened.component';
       { path: 'sign-in', component: SignInComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
+      { path: 'messages', component: MessagesComponent },
     ])
   ],
   providers: [AuthGuard],

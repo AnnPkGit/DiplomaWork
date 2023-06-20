@@ -23,4 +23,8 @@ import { AppConfig } from '../config';
     goToAuth() {
         this.router?.navigate([AppConfig.authEndpoint]);
     }
+
+    goToMessages() {
+        this.router?.navigate([AppConfig.messagesEndpoint]);
+    }
 }

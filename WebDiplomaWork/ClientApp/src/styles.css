@@ -5,6 +5,8 @@
 @import './app/home/homeStyle.css';
 @import './app/home/mainPageStyles.css';
 @import './app/home/imgOpened/imgOpened.css';
+@import './app/messages/messagesStyle.css';
+
 
 a {
   color: #0366d6;

@@ -55,7 +55,19 @@
   color: #ABB9C9;
 }
 
+.postName-noHov {
+  font-weight: 400;
+  font-size: 14px;
+  color: #ABB9C9;
+}
+
 .postLogin {
+  font-weight: 600;
+  font-size: 14px;
+  color: #5C6778;
+}
+
+.postLogin-noHov {
   font-weight: 600;
   font-size: 14px;
   color: #5C6778;

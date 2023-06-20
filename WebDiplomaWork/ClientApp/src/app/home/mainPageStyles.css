@@ -24,7 +24,7 @@
           
 .div1 {
   left: 0;
-  width: 27%;
+  width: 27vw;
 }
 
 .div2 {
@@ -61,11 +61,8 @@
     min-width: 590px;
   }
 }
-
 .bgColor {
-  background-color: #F7F9FA;
-  min-height: 100vh;
-  position: absolute;
+  background: #F7F9FA;
 }
 
 .centerHeader {
