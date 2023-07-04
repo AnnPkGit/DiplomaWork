@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalRouter } from '../shared/localRouter/local-router.service';
 import { PostModel } from '../shared/models/postModel';
 
@@ -7,7 +7,7 @@ import { PostModel } from '../shared/models/postModel';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit{
-  constructor(private router: LocalRouter) { }
+  constructor(private router: LocalRouter) {}
   posts?: PostModel[];
 
   ngOnInit(): void {

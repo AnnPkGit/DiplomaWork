@@ -19,6 +19,9 @@ import { RecProfileComponent } from './home/profileRec/recProfile.component';
 import { AuthGuard } from './shared/Guards/auth.guard';
 import { ImgOpened } from './home/imgOpened/imageOpened.component';
 import { MessagesComponent } from './messages/messages.component';
+import { PostPAgeComponent } from './post-page/post-page.component';
+import { ProfileBarComponent } from './home/profileBar/profile-bar.component';
+import { ToastItComponent } from './toast-it-page/toast-it.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { MessagesComponent } from './messages/messages.component';
     ToastCreatorComponent,
     RecProfileComponent,
     ImgOpened,
-    MessagesComponent
+    MessagesComponent,
+    PostPAgeComponent,
+    ProfileBarComponent,
+    ToastItComponent 
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -50,6 +56,7 @@ import { MessagesComponent } from './messages/messages.component';
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
       { path: 'messages', component: MessagesComponent },
+      { path: 'toast', component: PostPAgeComponent },
     ])
   ],
   providers: [AuthGuard],

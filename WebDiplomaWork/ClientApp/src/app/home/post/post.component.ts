@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { AppConfig } from 'src/app/shared/config';
+import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { PostModel } from 'src/app/shared/models/postModel';
 
 @Component({
@@ -8,12 +10,20 @@ import { PostModel } from 'src/app/shared/models/postModel';
 export class PostComponent {
   closeImg: boolean = true;
   currentImg: string = '';
+  currentUrl: string;
+  isSeparatePage: boolean = false;
+
+  constructor(private localRouter: LocalRouter) {
+    this.currentUrl = window.location.href;
+    this.isSeparatePage = this.currentUrl.includes(AppConfig.toastEndpoint);
+  }
 
   @Input()
   postModel: PostModel | any;
 
   goToPostPage(event: Event) : void {
     event.stopPropagation();
+    this.localRouter.goToToastPage();
     console.log('go to post page');
   }
 

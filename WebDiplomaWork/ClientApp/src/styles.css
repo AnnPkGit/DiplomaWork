@@ -6,7 +6,7 @@
 @import './app/home/mainPageStyles.css';
 @import './app/home/imgOpened/imgOpened.css';
 @import './app/messages/messagesStyle.css';
-
+@import './app/toast-it-page/toast-it.css';
 
 a {
   color: #0366d6;
@@ -21,3 +21,8 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+body {
+  background: #F7F9FA;
+}
+

@@ -3,5 +3,6 @@ export const AppConfig = {
     signInEndpoint: '/sign-in',
     registerEndpoint: '/register',
     messagesEndpoint: '/messages',
+    toastEndpoint: '/toast',
     authEndpoint: '',
 };
