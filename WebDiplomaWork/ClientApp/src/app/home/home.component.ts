@@ -11,9 +11,9 @@ export class HomeComponent implements OnInit{
   posts?: PostModel[];
 
   ngOnInit(): void {
-    console.log('a');
     this.posts = [];
     this.posts?.push({
+      id: '1',
       avatar: '/Images/childeAvatar.png',
       authorName: 'Childe',
       authorLogin: '@TheEleventhOfFatui',
@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit{
       commentsNumber: 3
     });
     this.posts?.push({
+      id: '2',
       avatar: '/Images/yae.png',
       authorName: 'Yae Miko',
       authorLogin: '@FoxLady',
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit{
       commentsNumber: 58
     })
     this.posts?.push({
+      id: '3',
       avatar: '/Images/yae.png',
       authorName: 'Yae Miko',
       authorLogin: '@FoxLady',
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit{
       imgs: ['/Images/inazuma1.png','/Images/inazuma2.png','/Images/inazuma3.png'],
     })
     this.posts?.push({
+      id: '4',
       avatar: '/Images/sampoAvatar.png',
       authorName: 'Sampoooo',
       authorLogin: '@SampooooKoskii',

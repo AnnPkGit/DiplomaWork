@@ -10,31 +10,46 @@ namespace WebDiplomaWork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IMapper _mapper;
+        //private readonly IUserService _userService;
+        //private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IMapper mapper)
-        {
-            _userService = userService;
-            _mapper = mapper;
-        }
+        //public UserController(IUserService userService, IMapper mapper)
+        //{
+        //    _userService = userService;
+        //    _mapper = mapper;
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddUser([FromBody] UserDto user)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var userEntity = _mapper.Map<UserEntity>(user);
+        //    var result = await _userService.AddUserAsync(userEntity);
+
+        //    if (!result.IsSuccessful)
+        //    {
+        //        return BadRequest(result.ErrorMessage);
+        //    }
+        //    return Ok();
+        //}
 
         [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] UserDto user)
+        [Route("postpic")]
+        public IActionResult AddPicture(IFormFile pic)
         {
-            if (!ModelState.IsValid)
+            string fileName = Path.GetFileName(pic.FileName);
+            string filePath = Path.Combine("wwwroot/Images", fileName); 
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                return BadRequest(ModelState);
+                pic.CopyTo(stream);
             }
 
-            var userEntity = _mapper.Map<UserEntity>(user);
-            var result = await _userService.AddUserAsync(userEntity);
-
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            return Ok();
+            return Ok(new { FileName = fileName });
         }
     }
 }

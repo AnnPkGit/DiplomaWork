@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageModel } from '../shared/models/messageModel';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-messages',
@@ -8,6 +9,9 @@ import { MessageModel } from '../shared/models/messageModel';
 export class MessagesComponent implements OnInit{
   messages: MessageModel[] | any;
   messageInput: string = '';
+  addedPictures: string[] = [];
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.messages = [ 
@@ -62,7 +66,27 @@ export class MessagesComponent implements OnInit{
     this.messageInput = '';
   }
 
-  handleFileInput(files : any) {
+  handleFileInput(event : any) {
+    const file:File = event.target.files[0];
 
+    console.log(file);
+    if (file) {
+        const formData = new FormData();
+
+        formData.append("pic", file);
+
+        this.http.post("/user/postpic", formData).subscribe(
+          (response: any) => {
+            this.addedPictures.push('/Images/' +  response['fileName']);
+          },
+          (error: any) => {
+            console.error('Error:', error);
+          }
+        );
+    }
+  }
+
+  removeAttachment() {
+    this.addedPictures = [];
   }
 }

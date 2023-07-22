@@ -93,12 +93,12 @@
                   </div>
                 </div>
                 
-                <div class="attach-pic-container">
+                <div class="attach-pic-container" *ngIf="addedPictures.length > 0">
                   <div class="attach-crop">
-                    <div class="cancel-attachment">
+                    <div class="cancel-attachment" (click)="removeAttachment()">
                       <div class="attach-cancel-button">X</div>
                     </div>
-                    <img src="https://pbs.twimg.com/media/FyNHpx6X0AsiK8A?format=jpg&name=large">
+                    <img [src]="addedPictures[0]">
                   </div>
                 </div>
                 <div class="chat-input-container">

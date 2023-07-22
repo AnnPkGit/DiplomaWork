@@ -56,7 +56,7 @@ import { ToastItComponent } from './toast-it-page/toast-it.component';
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'toast', component: PostPAgeComponent },
+      { path: 'toast/:id', component: PostPAgeComponent },
     ])
   ],
   providers: [AuthGuard],

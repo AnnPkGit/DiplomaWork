@@ -5,7 +5,7 @@
 (shouldBeHiddenChange)="updateCloseImg($event)">
 </app-img-opened>
 
-<div [ngClass]="{'post': !isSeparatePage, 'post-no-corners': isSeparatePage}">
+<div [ngClass]="{'post': !noCornersStyle() && !commentStyle(), 'post-no-corners': noCornersStyle(), 'post-comment': commentStyle()}">
   <div class="postContent" (click)="goToPostPage($event)">
     <div class="postInfo" style=" height: 56px;">
 

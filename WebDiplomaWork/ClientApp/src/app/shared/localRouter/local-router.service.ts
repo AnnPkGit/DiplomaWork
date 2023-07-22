@@ -28,7 +28,7 @@ import { AppConfig } from '../config';
         this.router?.navigate([AppConfig.messagesEndpoint]);
     }
 
-    goToToastPage() {
-        this.router?.navigate([AppConfig.toastEndpoint]);
+    goToToastPage(id: string) {
+        this.router?.navigate([AppConfig.toastEndpoint + id]);
     }
 }

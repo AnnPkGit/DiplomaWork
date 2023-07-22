@@ -11,19 +11,20 @@ export class PostComponent {
   closeImg: boolean = true;
   currentImg: string = '';
   currentUrl: string;
-  isSeparatePage: boolean = false;
 
   constructor(private localRouter: LocalRouter) {
     this.currentUrl = window.location.href;
-    this.isSeparatePage = this.currentUrl.includes(AppConfig.toastEndpoint);
   }
+
+  @Input()
+  style: string = "post";
 
   @Input()
   postModel: PostModel | any;
 
   goToPostPage(event: Event) : void {
     event.stopPropagation();
-    this.localRouter.goToToastPage();
+    this.localRouter.goToToastPage(this.postModel.id);
     console.log('go to post page');
   }
 
@@ -51,5 +52,13 @@ export class PostComponent {
 
   updateCloseImg($event: any) {
     this.closeImg = $event;
+  }
+
+  noCornersStyle() {
+    return this.style == "no-corners";
+  }
+
+  commentStyle() {
+    return this.style == "comment";
   }
 }
