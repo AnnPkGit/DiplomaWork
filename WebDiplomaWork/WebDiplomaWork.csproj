@@ -25,7 +25,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebDiplomaWork.Infrastructure\WebDiplomaWork.Infrastructure.csproj" />
+    <Compile Update="Domain1\Entities\Test.cs">
+      <Link>Domain\Entities\Test.cs</Link>
+    </Compile>
+    <Compile Update="Domain1\Entities\User.cs">
+      <Link>Domain\Entities\User.cs</Link>
+    </Compile>
+    <Compile Update="Domain1\Entities\MediaEntity.cs">
+      <Link>Domain\Entities\MediaEntity.cs</Link>
+    </Compile>
+    <Compile Update="Domain1\Result.cs">
+      <Link>Domain\Result.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App\App.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
