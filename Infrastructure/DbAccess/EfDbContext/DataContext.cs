@@ -1,32 +1,22 @@
-﻿using Infrastructure.DbAccess.Entity;
-using Infrastructure.DbAccess.SshAccess;
+﻿using Infrastructure.Configuration.Provider;
+using Infrastructure.DbAccess.Entity;
 using Microsoft.EntityFrameworkCore;
-using Renci.SshNet;
 
 namespace Infrastructure.DbAccess.EfDbContext;
 
 public class DataContext : DbContext
 {
-    private readonly ISshConnectionProvider _shhConnectionProvider;
-    private SshClient _sshClient;
+    private readonly IDbAccessProvider _dbAccessProvider;
     public DbSet<UserEntity> Users { get; set; }
 
-    public DataContext(ISshConnectionProvider shhConnectionProvider)
+    public DataContext(IDbAccessProvider dbAccessProvider)
     {
-        _shhConnectionProvider = shhConnectionProvider;
+        _dbAccessProvider = dbAccessProvider;
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var (sshClient, localPort) = _shhConnectionProvider.ConnectSsh();
-        _sshClient = sshClient;
-        var connection = _shhConnectionProvider.CreateConnectionToDb(localPort);
-        optionsBuilder.UseMySQL( connection );
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        _sshClient.Dispose();
+        var connectionString = _dbAccessProvider.GetConnectionString();
+        optionsBuilder.UseMySQL(connectionString);
     }
 }
