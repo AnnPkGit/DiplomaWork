@@ -2,7 +2,5 @@
 
 public interface IConfigurationManager
 {
-    SshConfiguration SshConfiguration { get; }
-
     DbConfiguration DbConfiguration { get; }
 }
