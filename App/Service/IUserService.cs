@@ -6,4 +6,5 @@ namespace App.Service;
 public interface IUserService
 {
     Task<Result> AddUserAsync(User user);
+
 }
