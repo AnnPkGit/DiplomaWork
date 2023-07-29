@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
-builder.Services.AddScoped<IDbAccessProvider, MySqlDbAccessProvider>();
+builder.Services.AddScoped<IDbAccessProvider, MariaDbAccessProvider>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddDbContext<DataContext>();

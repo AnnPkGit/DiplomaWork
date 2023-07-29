@@ -19,6 +19,7 @@ public class ExampleContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = _dbAccessProvider.GetConnectionString();
-        optionsBuilder.UseMySQL(connectionString);
+        var serverVersion = _dbAccessProvider.GetServerVersion();
+        optionsBuilder.UseMySql(connectionString, serverVersion);
     }
 }
