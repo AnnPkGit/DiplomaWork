@@ -1,22 +1,27 @@
-using WebDiplomaWork.App;
-using WebDiplomaWork.Infrastructure.Configuration;
-using WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager;
-using WebDiplomaWork.Infrastructure.DbAccess;
-using WebDiplomaWork.Infrastructure.DbAccess.SshAccess;
-using WebDiplomaWork.Infrastructure.Services;
-using WebDiplomaWork.Infrastructure.Services.Helpers;
-using LocalConfigurationManager = WebDiplomaWork.Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
+using App.Repository;
+using App.Service;
+using Infrastructure.Configuration;
+using Infrastructure.Configuration.ConfigurationManager;
+using Infrastructure.Configuration.Provider;
+using Infrastructure.DbAccess.EfDbContext;
+using Infrastructure.DbAccess.Repository;
+using Infrastructure.Helper;
+using Infrastructure.Service;
+using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
-builder.Services.AddScoped<ISshConnectionProvider, SshConnectionProvider>();
+builder.Services.AddScoped<IDbAccessProvider, MySqlDbAccessProvider>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IExampleService, ExampleService>();
+builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
+builder.Services.AddDbContext<ExampleContext>();
 
 builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));
