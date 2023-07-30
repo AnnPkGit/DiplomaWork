@@ -3,8 +3,9 @@
 public class DbConfiguration
 {
     public int Port { get; set; }
-    public string? Host { get; set; }
-    public string? DatabaseUserName { get; set; }
-    public string? DatabaseName { get; set; }
-    public string? DatabasePassword { get; set; }
+    public string? Server { get; set; }
+    public string? UserId { get; set; }
+    public string? Database { get; set; }
+    public string? Password { get; set; }
+    public string? ServerVersion { get; set; }
 }
