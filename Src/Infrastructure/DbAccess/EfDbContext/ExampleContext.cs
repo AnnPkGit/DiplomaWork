@@ -7,7 +7,7 @@ namespace Infrastructure.DbAccess.EfDbContext;
 public class ExampleContext : DbContext
 {
     private readonly IDbAccessProvider _dbAccessProvider;
-    public DbSet<ExampleEntity> Example { get; private set; }
+    public DbSet<TestExampleEntity> Example { get; private set; }
     
     public ExampleContext(
         IDbAccessProvider dbAccessProvider,
