@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D51AF014-7494-4EFE-9AD3-708E68BAF86C}"
+	ProjectSection(SolutionItems) = preProject
+		Tests\README.md = Tests\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{DC8ADF5C-7BBF-4221-94F1-E866B22EC165}"
 EndProject
@@ -20,6 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiplomaWork", "Src\WebDi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{3480B6A4-E7C9-4A68-B6E6-C42AE08D662F}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\README.md = Docs\README.md
 		README.md = README.md
 	EndProjectSection
 EndProject
