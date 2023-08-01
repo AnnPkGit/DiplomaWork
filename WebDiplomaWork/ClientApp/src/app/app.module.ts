@@ -22,6 +22,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { PostPAgeComponent } from './post-page/post-page.component';
 import { ProfileBarComponent } from './home/profileBar/profile-bar.component';
 import { ToastItComponent } from './toast-it-page/toast-it.component';
+import { ProfilePageComponent } from './profile-page/profile.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ToastItComponent } from './toast-it-page/toast-it.component';
     MessagesComponent,
     PostPAgeComponent,
     ProfileBarComponent,
-    ToastItComponent 
+    ToastItComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -57,6 +59,7 @@ import { ToastItComponent } from './toast-it-page/toast-it.component';
       { path: 'auth', component: AuthComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'toast/:id', component: PostPAgeComponent },
+      { path: 'profile/:id', component: ProfilePageComponent },
     ])
   ],
   providers: [AuthGuard],

@@ -17,4 +17,8 @@ export class NavBarComponent {
   goToHome() {
     this.router.goToHome();
   }
+
+  goToProfile(id: string) {
+    this.router.goToProfilePage(id);
+  }
 }

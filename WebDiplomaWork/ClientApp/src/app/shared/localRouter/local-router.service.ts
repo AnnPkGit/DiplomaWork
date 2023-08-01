@@ -31,4 +31,8 @@ import { AppConfig } from '../config';
     goToToastPage(id: string) {
         this.router?.navigate([AppConfig.toastEndpoint + id]);
     }
+
+    goToProfilePage(id: string) {
+        this.router?.navigate([AppConfig.profileEndpoint + id]);
+    }
 }

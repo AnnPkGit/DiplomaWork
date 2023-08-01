@@ -7,6 +7,7 @@
 @import './app/home/imgOpened/imgOpened.css';
 @import './app/messages/messagesStyle.css';
 @import './app/toast-it-page/toast-it.css';
+@import './app/profile-page/profile.component.css';
 
 a {
   color: #0366d6;

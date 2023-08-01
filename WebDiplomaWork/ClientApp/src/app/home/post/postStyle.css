@@ -109,7 +109,7 @@
 }
 
   .imgCrop img {
-    max-width: 700px;
+    max-width: 100%;
   }
 
   .imgCrop:nth-child(1):nth-last-child(1),

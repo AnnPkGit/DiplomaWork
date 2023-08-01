@@ -4,5 +4,6 @@ export const AppConfig = {
     registerEndpoint: '/register',
     messagesEndpoint: '/messages',
     toastEndpoint: '/toast/',
+    profileEndpoint: '/profile/',
     authEndpoint: '',
 };
