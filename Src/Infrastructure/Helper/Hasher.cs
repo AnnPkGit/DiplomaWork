@@ -1,4 +1,9 @@
-﻿namespace Infrastructure.Helper;
+﻿using App.Common;
+using System.Security.Cryptography;
+using System.Text;
+using Konscious.Security.Cryptography;
+
+namespace Infrastructure.Helper;
 
 public class Hasher : IHasher
 {
@@ -16,5 +21,29 @@ public class Hasher : IHasher
             }
             return sb.ToString();
         }
+    }
+    public string GenerateSalt()
+    {
+        byte[] saltBytes = new byte[32];
+        using (var rng = new RNGCryptoServiceProvider())
+        {
+            rng.GetBytes(saltBytes);
+        }
+        return Convert.ToBase64String(saltBytes);
+    }
+
+    // метод для хеширования пароля
+    public string HashPassword(string password, string salt)
+    {
+        var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
+        {
+            Salt = Encoding.UTF8.GetBytes(salt),
+            DegreeOfParallelism = 8, 
+            MemorySize = 65536,      
+            Iterations = 4          
+        };
+
+        byte[] hashBytes = argon2.GetBytes(32); // Итоговый хеш
+        return Convert.ToBase64String(hashBytes);
     }
 }

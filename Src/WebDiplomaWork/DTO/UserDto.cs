@@ -31,5 +31,6 @@ namespace WebDiplomaWork.DTO
         public String? Avatar { get; set; }
 
         public String? Bio { get; set; }
+        public String? PassSalt { get; set; }
     }
 }
