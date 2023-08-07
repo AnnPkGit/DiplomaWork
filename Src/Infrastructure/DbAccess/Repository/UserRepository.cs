@@ -20,41 +20,28 @@ public class UserRepository : IUserRepository
 
     }
 
-    public async Task<bool> IsEmailUniqueAsync(string email)
-    {
-        // Проверка уникальности Email
-        return await _dbContext.Users.AllAsync(u => u.Email != email);
-    }
-
-    public async Task<bool> IsLoginUniqueAsync(string login)
-    {
-        // Проверка уникальности Login
-        return await _dbContext.Users.AllAsync(u => u.Login != login);
-    }
-
-    public Task<bool> IsPasswordStrongAsync(string password)
-    {
-        // Проверка сложности pass
-        return Task.Run(() =>
-        {
-            if (!Regex.IsMatch(password, @"\p{Lu}"))
-                return false;
-            if (!Regex.IsMatch(password, @"\p{Ll}"))
-                return false;
-            if (!Regex.IsMatch(password, @"\d"))
-                return false;
-            if (!Regex.IsMatch(password, @"[^\p{L}\p{N}]"))
-                return false;
-            if (password.Length < 8)
-                return false;
-            return true;
-        });
-    }
+ 
 
     public async Task AddUserAsync(User user)
     {
-        // Конвертируем User в UserEntity и добавляем в контекст базы данных
-        var userEntity = _mapper.Map<UserEntity>(user);
-        await _dbContext.Users.AddAsync(userEntity);
+        try
+        {
+            // Конвертируем User в UserEntity и добавляем в контекст базы данных
+            var userEntity = _mapper.Map<UserEntity>(user);
+            await _dbContext.Users.AddAsync(userEntity);
+
+            // Сохраняем изменения в базе данных
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner exception: {ex.InnerException.Message}  " + ex);
+            }
+       
+            throw; 
+        }
     }
 }
