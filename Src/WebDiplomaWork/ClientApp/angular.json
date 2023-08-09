@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "WebDiplomaWork"
+  "defaultProject": "WebDiplomaWork",
+  "cli": {
+    "analytics": false
+  }
 }

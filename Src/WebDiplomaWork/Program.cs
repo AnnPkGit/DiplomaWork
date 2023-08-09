@@ -1,5 +1,7 @@
+using App.Common;
 using App.Repository;
 using App.Service;
+using App.Validators;
 using Infrastructure.Configuration;
 using Infrastructure.Configuration.ConfigurationManager;
 using Infrastructure.Configuration.Provider;
@@ -7,6 +9,8 @@ using Infrastructure.DbAccess.EfDbContext;
 using Infrastructure.DbAccess.Repository;
 using Infrastructure.Helper;
 using Infrastructure.Service;
+using Infrastructure.Validators;
+using WebDiplomaWork.Controller;
 using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,23 +27,28 @@ builder.Services.AddScoped<IExampleService, ExampleService>();
 builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
 builder.Services.AddDbContext<ExampleContext>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserController>();
+builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));
-
+    builder.Services.AddControllers();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
 }
 
-app.UseStaticFiles();
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    // Добавление маршрута для контроллеров api
+    endpoints.MapControllers();
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action=Index}/{id?}");
+});
 
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html"); ;
-
+app.UseStaticFiles();
+app.MapFallbackToFile("index.html"); 
 app.Run();
