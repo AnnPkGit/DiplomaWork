@@ -1,10 +1,8 @@
-using System.Text.RegularExpressions;
 using App.Repository;
 using AutoMapper;
 using Domain.Entity;
 using Infrastructure.DbAccess.EfDbContext;
 using Infrastructure.DbAccess.Entity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DbAccess.Repository;
 
@@ -20,7 +18,10 @@ public class UserRepository : IUserRepository
 
     }
 
- 
+    public IQueryable<User> GetAll()
+    {
+        return _mapper.ProjectTo<User>(_dbContext.Users);
+    }
 
     public async Task AddUserAsync(User user)
     {

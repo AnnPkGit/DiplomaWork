@@ -1,42 +1,42 @@
 using System.Text.RegularExpressions;
+using App.Repository;
 using App.Validators;
-using Infrastructure.DbAccess.EfDbContext;
+using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Validators;
 
 public class UserValidator : IUserValidator
 {
-    private readonly DataContext _dbContext;
+    private readonly IUserRepository _userRepository;
 
-    public UserValidator(DataContext dbContext)
+    public UserValidator(IUserRepository userRepository)
     {
-        _dbContext = dbContext;
+        _userRepository = userRepository;
     }
     
     public async Task<bool> IsEmailUniqueAsync(string email)
     {
         // Проверка уникальности Email
-        return await _dbContext.Users.AllAsync(u => u.Email != email);
+        return await _userRepository.GetAll().AllAsync(u => u.Email != email);
     }
 
     public async Task<bool> IsLoginUniqueAsync(string login)
     {
         // Проверка уникальности Login
-        return await _dbContext.Users.AllAsync(u => u.Login != login);
+        return await _userRepository.GetAll().AllAsync(u => u.Login != login);
     }
 
     public Task<bool> IsPasswordStrongAsync(string password)
     {
         // Проверка сложности pass
-        return Task.Run(() =>
-        {
-            string regexPattern = @"^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d)(?=.*[^\p{L}\p{N}]).{8,}$";
+        return Task.Run(() => IsPasswordStrong(password));
+    }
 
-            if (!Regex.IsMatch(password, regexPattern))
-                return false;
+    public bool IsPasswordStrong(string password)
+    {
+        const string regexPattern = @"^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d)(?=.*[^\p{L}\p{N}]).{8,}$";
 
-            return true;
-        });
+        return Regex.IsMatch(password, regexPattern);
     }
 }
