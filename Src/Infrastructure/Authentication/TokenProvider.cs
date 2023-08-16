@@ -8,22 +8,21 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Authentication;
 
-public sealed class JwtProvider : IJwtProvider
+public sealed class TokenProvider : ITokenProvider
 {
     private readonly JwtOptions _options;
 
-    public JwtProvider(IOptions<JwtOptions> options)
+    public TokenProvider(IOptions<JwtOptions> options)
     {
         _options = options.Value;
     }
 
-    public string Generate(User user)
+    public string GenAccessToken(User user)
     {
         var claims = new Claim[]
         {
             new (JwtRegisteredClaimNames.Sub, user.Id),
-            new ("Login", user.Login),
-            new ("Password", user.Password)
+            new ("Id", user.Id)
         };
         
         var signingCredentials = new SigningCredentials(
@@ -36,12 +35,17 @@ public sealed class JwtProvider : IJwtProvider
             _options.Audience,
             claims,
             null,
-            DateTime.UtcNow.AddHours(1),
+            DateTime.UtcNow.Add(TimeSpan.Parse(_options.Lifetime)), // minimum 6 minutes
             signingCredentials);
 
         var tokenValue = new JwtSecurityTokenHandler()
             .WriteToken(token);
 
         return tokenValue;
+    }
+
+    public string GenRefreshToken()
+    {
+        return "Not implemented";
     }
 }

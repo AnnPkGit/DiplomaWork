@@ -7,6 +7,6 @@ namespace App.Service;
 public interface IUserService
 {
     Task<Result> AddUserAsync(User user);
-    Task<Result<string>> LoginUserAsync(LoginRequest user);
+    Task<Result<LoginResponse>> LoginUserAsync(LoginRequest user);
     Task<IEnumerable<User>> GetAllUsersAsync();
 }

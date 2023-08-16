@@ -36,7 +36,7 @@ builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));
     builder.Services.AddControllers();
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();

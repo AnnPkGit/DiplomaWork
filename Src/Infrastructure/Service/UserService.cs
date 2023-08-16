@@ -16,20 +16,20 @@ namespace Infrastructure.Service
         private readonly ILogger<UserService> _logger;
         private readonly IUserValidator _validator;
         private readonly IHasher _hasher;
-        private readonly IJwtProvider _jwtProvider;
+        private readonly ITokenProvider _tokenProvider;
 
         public UserService(
             ILogger<UserService> logger,
             IHasher hasher,
             IUserValidator validator,
             IUserRepository userRepository,
-            IJwtProvider jwtProvider)
+            ITokenProvider tokenProvider)
         {
             _logger = logger;
             _hasher = hasher;
             _validator = validator; 
             _userRepository = userRepository;
-            _jwtProvider = jwtProvider;
+            _tokenProvider = tokenProvider;
         }
 
         public async Task<Result> AddUserAsync(User user)
@@ -66,24 +66,25 @@ namespace Infrastructure.Service
             return Result.Successful();
         }
 
-        public async Task<Result<string>> LoginUserAsync(LoginRequest request)
+        public async Task<Result<LoginResponse>> LoginUserAsync(LoginRequest request)
         {
             var user = await _userRepository.GetAll()
                 .FirstOrDefaultAsync(user => user.Login == request.Login);
             if (user is null)
             {
-                return Result<string>.Failed("User not found");
+                return Result<LoginResponse>.Failed("User not found");
             }
             
             var requestPass = _hasher.HashPassword(request.Password, user.PasswordSalt);
             if (user.Password != requestPass)
             {
-                return Result<string>.Failed("Password is not correct");
+                return Result<LoginResponse>.Failed("Password is not correct");
             }
 
-            var token = _jwtProvider.Generate(user);
+            var accessToken = _tokenProvider.GenAccessToken(user);
+            var refreshToken = _tokenProvider.GenRefreshToken();
 
-            return Result<string>.Successful(token);
+            return Result<LoginResponse>.Successful(new (accessToken, refreshToken))!;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
