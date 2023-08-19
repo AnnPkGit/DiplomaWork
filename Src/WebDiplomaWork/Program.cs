@@ -14,6 +14,7 @@ using Infrastructure.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebDiplomaWork.Controller;
 using WebDiplomaWork.OptionsSetup;
+using WebDiplomaWork.Services;
 using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,11 +38,13 @@ builder.Services.Configure<GeneralConfiguration>(
     builder.Configuration.GetSection("GeneralConfiguration"));
     builder.Services.AddControllers();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+builder.Services.AddHttpContextAccessor();
     
 var app = builder.Build();
 

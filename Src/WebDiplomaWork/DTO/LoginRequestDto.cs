@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebDiplomaWork.DTO;
 
-public sealed class LoginRquestDto
+public sealed class LoginRequestDto
 {
     [Required]
     [MinLength(3)]

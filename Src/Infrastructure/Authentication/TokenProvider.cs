@@ -21,8 +21,7 @@ public sealed class TokenProvider : ITokenProvider
     {
         var claims = new Claim[]
         {
-            new (JwtRegisteredClaimNames.Sub, user.Id),
-            new ("Id", user.Id)
+            new (JwtRegisteredClaimNames.NameId, user.Id)
         };
         
         var signingCredentials = new SigningCredentials(
@@ -30,12 +29,14 @@ public sealed class TokenProvider : ITokenProvider
                 Encoding.UTF8.GetBytes(_options.SecretKey)),
             SecurityAlgorithms.HmacSha256);
         
+        var expires = DateTime.UtcNow.Add(TimeSpan.Parse(_options.Lifetime));
+        
         var token = new JwtSecurityToken(
             _options.Issuer,
             _options.Audience,
             claims,
             null,
-            DateTime.UtcNow.Add(TimeSpan.Parse(_options.Lifetime)), // minimum 6 minutes
+            expires,
             signingCredentials);
 
         var tokenValue = new JwtSecurityTokenHandler()

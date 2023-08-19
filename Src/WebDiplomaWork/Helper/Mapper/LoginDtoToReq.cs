@@ -8,6 +8,6 @@ public sealed class LoginDtoToReq : Profile
 {
     public LoginDtoToReq()
     {
-        CreateMap<LoginRquestDto, LoginRequest>().ReverseMap();
+        CreateMap<LoginRequestDto, LoginRequest>().ReverseMap();
     }
 }

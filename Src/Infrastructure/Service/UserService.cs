@@ -32,7 +32,7 @@ namespace Infrastructure.Service
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<Result> AddUserAsync(User user)
+        public async Task<Result> CreateUserAsync(User user)
         {
             // Проверка пароля на соответствие требованиям
             if (! await _validator.IsPasswordStrongAsync(user.Password))
