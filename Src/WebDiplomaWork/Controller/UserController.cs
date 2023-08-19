@@ -1,12 +1,14 @@
 using App.Service;
+using App.Users.Login;
 using AutoMapper;
 using Domain.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebDiplomaWork.DTO;
 
 namespace WebDiplomaWork.Controller
 {
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -21,13 +23,11 @@ namespace WebDiplomaWork.Controller
             _mapper = mapper;
         }
         
-        
-        [HttpPost("register")]
-        
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userDto)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] UserRegistrationDto userDto)
         {
             var userEntity = _mapper.Map<User>(userDto);
-            var result = await _userService.AddUserAsync(userEntity);
+            var result = await _userService.CreateUserAsync(userEntity);
 
             if (!result.IsSuccessful)
             {
@@ -36,6 +36,13 @@ namespace WebDiplomaWork.Controller
 
             return Ok();
         }
-        
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            var result = await _userService.GetAllUsersAsync();
+            return Ok(result);
+        }
     }
 }
