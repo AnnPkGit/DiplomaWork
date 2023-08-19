@@ -1,0 +1,117 @@
+.topHeaderLocal {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.1);
+  margin-bottom: 13px;
+}
+
+.topHeaderLocalFull {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 72px;
+}
+
+.div1, .div3 {
+  position: fixed;
+  top: 0;
+  height: 100%;
+}
+          
+.div1 {
+  left: 0;
+  width: 27vw;
+}
+
+.div2 {
+  margin-top: 72px;
+  margin-left: 27%;
+  margin-right: 30%;
+}
+
+.offsetDivLeft {
+  padding-left: 4%;
+}
+
+.offsetDivRight {
+  padding-right: 4%;
+}
+
+.div3 {
+  right: 0;
+  width: 30%;
+}
+
+@media (max-width: 1100px) {
+  .div3 {
+    display: none;
+  }
+  .div2 {
+    margin-right: 0;
+    max-width: 590px;
+    min-width: 590px;
+  }
+  .centerHeader {
+    margin-right: 0;
+    max-width: 590px;
+    min-width: 590px;
+  }
+}
+.bgColor {
+  background: #F7F9FA;
+}
+
+.centerHeader {
+  top: 0;
+  position: fixed;
+  width: 43%;
+  height: 72px;
+  margin-left: 27%;
+  margin-right: 30%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.1);
+  display: flex;
+}
+
+.inCenterHeader45end, .inCenterHeader45start, .inCenterHeader20 {
+  display: flex;
+  align-items: center;
+}
+
+.inCenterHeader45end {
+  width: 45%;
+  justify-content: end;
+  padding-right: 8%;
+  color: #5B66CA;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.inCenterHeader45start {
+  width: 45%;
+  padding-left: 8%;
+  color: #ABB9C9;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.inCenterHeader20 {
+  width: 20%;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 26px;
+  color: #5C6778;
+}
+
+  .inCenterHeader45end:hover, .inCenterHeader45start:hover, .inCenterHeader20:hover {
+    background-color: rgba(102, 104, 120, 0.07);
+    cursor: pointer;
+  }
+
+.tostContainer {
+  padding: 2%;
+}

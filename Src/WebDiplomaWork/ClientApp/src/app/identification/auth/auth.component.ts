@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
 })
 export class AuthComponent {
-  constructor(private router: Router) {}
+  constructor(private router: LocalRouter) {}
 
   RedirectToSignInPage() {
-    this.router?.navigate(['/sign-in']);
+    this.router.goToSignIn();
   }
 
   RedirectToRegisterPage() {
-    this.router?.navigate(['/register']);
+    this.router.goToRegister();
   }
 }

@@ -1,0 +1,360 @@
+.msg-flex {
+    display: flex;
+}
+
+.mesg-div1, .mesg-div3, .mesg-div2 {
+    height: 100vh;
+}
+            
+.mesg-div1 {
+    width: 27vw;
+    min-width: 27vw;
+}
+  
+.mesg-div2 {
+    width: 30%;
+    flex-direction: column;
+    display: flex;
+}
+
+@media (max-width: 900px) {
+  .mesg-div2 {
+    display: none;
+  }
+  .mesg-div3 {
+    flex-grow: 1 ;
+  }
+}
+
+.mesg-div3 {
+    width: 43%;
+    flex-direction: column;
+    display: flex;
+    min-width: 500px;
+}
+
+.chat-listContainer {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.msg-topHeaderLocal {
+    margin-bottom: 17px;
+    width: 100%;
+    height: 72px;
+    min-height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.1);
+}
+
+.chat-list {
+    margin: 17px;
+    margin-bottom: 0;
+    margin-top: 0;
+    background: #FFFFFF;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    width: 95%;
+    box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.5);
+    padding-top: 7%;
+}
+
+.chat {
+    height: 88px;
+    background: #f5f7f8;
+    display: flex;
+}
+
+.chat:hover{
+    cursor: pointer;
+    background: #eaedee;
+}
+
+.chatInfo {
+    padding-top: 5%;
+}
+
+.chat-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 3%;
+
+}
+
+.chat-seacrh-container {
+  padding-right: 3.5%;
+  padding-left: 3.5%;
+  padding-bottom: 3.5%;
+  position: relative;
+}
+
+.chat-seacrh-container img {
+  position: absolute;
+  z-index: 2;
+  padding-top: 9px;
+  padding-left: 15px;
+}
+
+.chat-seacrh {
+    color: #5C6778;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-top: 0;
+    height: 42px;
+    min-height: 42px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(239, 245, 248, 0.4), 0px 0px 15px rgba(217, 226, 235, 0.1);
+    bordeR: solid #FFFFFF;
+    border-radius: 60px;
+    padding-left: 10%;
+}
+
+.chat-seacrh:focus {
+  outline: solid  #5B66CA 2px;
+}
+
+.msg-listContainer {
+    display: flex;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.msg-list {
+    margin: 17px;
+    margin-bottom: 0;
+    margin-top: 0;
+    background: #FFFFFF;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    width: 80%;
+    height: 100%; 
+}
+
+
+
+.scroll {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+.chat-listContainer ::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .chat-listContainer ::-webkit-scrollbar-thumb {
+    background-color: #bbbdc9; 
+    border-radius: 3px;
+  }
+  
+  .chat-listContainer ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  .msgTitle {
+    font-weight: 700;
+    font-size: 26px;
+    color: #5C6778;
+    padding-left: 25px;
+    width: 50%;
+  }
+
+  .chatOptions {
+    width: 50%;
+  }
+
+  .msg {
+    padding: 10px;
+    background-color:  #f1f1f1;
+    width: fit-content;
+    margin-left: 4%;
+    margin-right: 25%;
+    border-radius: 20px 20px 20px 0;
+    color: #5C6778;
+  }
+
+  .msg-my {
+    padding: 10px;
+    background-color: #5B66CA;
+    width: fit-content;
+    margin-right: 4%;
+    margin-left: 25%;
+    border-radius: 20px 20px 0 20px;
+    color: #FFFFFF;
+    align-self: self-end;
+  }
+
+  .msg-pic-container {
+    margin-left: 4%;
+    margin-right: 25%;
+    border-radius: 20px 20px 20px 0;
+    overflow: hidden;
+  }
+
+  .msg-pic-container-my {
+    margin-right: 4%;
+    margin-left: 25%;
+    border-radius: 20px 20px 0 20px;
+    overflow: hidden;
+  }
+
+  .msg-separator {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+
+  .msg-pic-container img {
+    max-width: 100%;
+  }
+
+  .msg-pic-container-my img {
+    max-width: 100%;
+  }
+
+  .msg-listContainer ::-webkit-scrollbar {
+    width: 5px; 
+  }
+
+  .chat-input-container {
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 4%;
+    position: relative;
+  }
+    .add-img{
+      position: absolute;
+      margin-top: 12px;
+      margin-left: 15px;
+      z-index: 2;
+    }
+
+    .add-img-input{
+      position: absolute;
+      z-index: 3;
+      margin-top: 12px;
+      margin-left: 15px;
+      height: 19px;
+      width: 18px;
+      opacity: 0;
+    }
+    
+    .add-img:hover {
+      cursor: pointer;
+    }
+
+    .send {
+      position: absolute;
+      margin-top: 12px;
+      right: 20px;
+      z-index: 2;
+    }
+
+    .send {
+      cursor: pointer;
+    }
+
+  .chat-input {
+    margin-top: 0;
+    height: 42px;
+    min-height: 42px;
+    background: #F6F8F9;
+    border: solid #F6F8F9;
+    border-radius: 60px;
+    width: 100%;
+    padding: 3%;
+    padding-right: 8%;
+    padding-left: 8%;
+    position: relative;
+    z-index: 1;
+    color: #5C6778;
+  }
+
+  .chat-input:focus {
+    outline: solid  #5B66CA 2px;
+  }
+
+  .msg-scroll-conatiner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .msg-scroll {
+    flex-grow: 1; 
+    height: 100%; 
+    overflow-y: auto;
+    margin-bottom: 4%;
+  }
+
+  .msg-scroll-sub {
+    height: 100%;
+  }
+
+.attach-pic-container {
+  padding: 2%;
+}
+
+.attach-crop {
+  height: 150px;
+  width: 150px;
+  overflow: hidden;
+  border-radius: 20px;
+  position: relative;
+}
+
+.attach-crop img{
+  position: relative;
+  max-width: 150px;
+  z-index: 1;
+}
+
+.cancel-attachment {
+  position: absolute;
+  z-index: 2;
+  height: 150px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attach-cancel-button {
+  background-color:  rgb(255, 255, 255, 0.8);
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attach-cancel-button:hover {
+  cursor: pointer;
+}
+
+.msg-time {
+  margin-left: 4%;
+  font-size: 12px;
+  color: #a3aab6;
+  float: left;
+}
+
+.msg-time-my {
+  font-size: 12px;
+  color: #a3aab6;
+  margin-right: 4%;
+  align-self: flex-end;
+}

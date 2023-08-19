@@ -16,6 +16,13 @@ import { PostComponent } from './home/post/post.component';
 import { NavBarComponent } from './home/navBar/navBar';
 import { ToastCreatorComponent } from './home/toastCreator/toastCreator.component';
 import { RecProfileComponent } from './home/profileRec/recProfile.component';
+import { AuthGuard } from './shared/Guards/auth.guard';
+import { ImgOpened } from './home/imgOpened/imageOpened.component';
+import { MessagesComponent } from './messages/messages.component';
+import { PostPAgeComponent } from './post-page/post-page.component';
+import { ProfileBarComponent } from './home/profileBar/profile-bar.component';
+import { ToastItComponent } from './toast-it-page/toast-it.component';
+import { ProfilePageComponent } from './profile-page/profile.component';
 
 @NgModule({
   declarations: [
@@ -30,22 +37,32 @@ import { RecProfileComponent } from './home/profileRec/recProfile.component';
     PostComponent,
     NavBarComponent,
     ToastCreatorComponent,
-    RecProfileComponent
+    RecProfileComponent,
+    ImgOpened,
+    MessagesComponent,
+    PostPAgeComponent,
+    ProfileBarComponent,
+    ToastItComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: AuthComponent, pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'sign-in', component: SignInComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
+      { path: 'messages', component: MessagesComponent },
+      { path: 'toast/:id', component: PostPAgeComponent },
+      { path: 'profile/:id', component: ProfilePageComponent },
     ])
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AuthGuard],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
