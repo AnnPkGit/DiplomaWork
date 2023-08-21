@@ -1,8 +1,9 @@
-﻿namespace Domain.Entity;
+﻿using Domain.Common;
 
-public class ExampleItem
+namespace Domain.Entity;
+
+public class ExampleItem : BaseEntity
 {
-    public virtual Guid Id { get; set; }
-    public virtual string Login { get; set; }
-    public virtual string Name { get; set; }
+    public string Login { get; set; }
+    public string Name { get; set; }
 }

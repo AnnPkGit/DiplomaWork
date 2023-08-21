@@ -1,4 +1,5 @@
-using App.Common.Interfaces;
+using App.Common.Interfaces.Services;
+using App.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebDiplomaWork.DTO;

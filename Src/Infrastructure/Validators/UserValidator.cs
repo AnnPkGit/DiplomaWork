@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using App.Common.Interfaces;
+using App.Common.Interfaces.Validators;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Validators;
@@ -18,12 +19,6 @@ public class UserValidator : IUserValidator
     {
         // Проверка уникальности Email
         return await _dbContext.Users.AllAsync(u => u.Email != email);
-    }
-
-    public async Task<bool> IsLoginUniqueAsync(string login)
-    {
-        // Проверка уникальности Login
-        return await _dbContext.Users.AllAsync(u => u.Login != login);
     }
 
     public Task<bool> IsPasswordStrongAsync(string password)

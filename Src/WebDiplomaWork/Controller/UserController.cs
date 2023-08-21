@@ -1,4 +1,5 @@
 using App.Common.Interfaces;
+using App.Common.Interfaces.Services;
 using AutoMapper;
 using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;

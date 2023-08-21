@@ -18,7 +18,7 @@ public class ApplicationDbContext : DbContext , IApplicationDbContext
 
     public DbSet<ExampleItem> ExampleItems => Set<ExampleItem>();
     public DbSet<User> Users => Set<User>();
-
+    public DbSet<Account> Accounts => Set<Account>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

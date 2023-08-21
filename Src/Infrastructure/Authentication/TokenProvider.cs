@@ -21,7 +21,7 @@ public sealed class TokenProvider : ITokenProvider
     {
         var claims = new Claim[]
         {
-            new (JwtRegisteredClaimNames.NameId, user.Id)
+            new (JwtRegisteredClaimNames.NameId, user.Id.ToString())
         };
         
         var signingCredentials = new SigningCredentials(

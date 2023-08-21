@@ -1,6 +1,6 @@
 ﻿using Domain.Entity;
 
-namespace App.Common.Interfaces;
+namespace App.Common.Interfaces.Services;
 
 public interface IExampleService
 {

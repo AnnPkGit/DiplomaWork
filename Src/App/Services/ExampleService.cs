@@ -1,5 +1,6 @@
 ﻿using App.Common.Exceptions;
 using App.Common.Interfaces;
+using App.Common.Interfaces.Services;
 using Domain.Entity;
 
 namespace App.Services;

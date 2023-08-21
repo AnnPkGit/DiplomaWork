@@ -8,6 +8,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("Users")
+            .HasMany(e => e.Accounts)
+            .WithOne(e => e.Owner)
+            .HasForeignKey("UserId")
+            .IsRequired();
     }
 }
