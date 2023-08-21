@@ -1,38 +1,37 @@
-﻿using App.Common;
-using App.Repository;
-using App.Service;
-using App.Users.Login;
-using App.Validators;
+﻿using App.Common.Interfaces;
 using Domain.Common;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Service
+public record LoginRequest(string Login, string Password);
+public record LoginResponse(string AccessToken, string RefreshToken);
+
+namespace App.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
         private readonly ILogger<UserService> _logger;
         private readonly IUserValidator _validator;
         private readonly IHasher _hasher;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IApplicationDbContext _dbContext;
 
         public UserService(
             ILogger<UserService> logger,
             IHasher hasher,
             IUserValidator validator,
-            IUserRepository userRepository,
-            ITokenProvider tokenProvider)
+            ITokenProvider tokenProvider,
+            IApplicationDbContext dbContext)
         {
             _logger = logger;
             _hasher = hasher;
             _validator = validator; 
-            _userRepository = userRepository;
             _tokenProvider = tokenProvider;
+            _dbContext = dbContext;
         }
 
-        public async Task<Result> CreateUserAsync(User user)
+        public async Task<Result> CreateUserAsync(User user, CancellationToken cancellationToken)
         {
             // Проверка пароля на соответствие требованиям
             if (! await _validator.IsPasswordStrongAsync(user.Password))
@@ -56,7 +55,8 @@ namespace Infrastructure.Service
             try
             {
                 // Добавление пользователя в базу данных
-                await _userRepository.AddUserAsync(user);
+                await _dbContext.Users.AddAsync(user, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
@@ -66,10 +66,11 @@ namespace Infrastructure.Service
             return Result.Successful();
         }
 
-        public async Task<Result<LoginResponse>> LoginUserAsync(LoginRequest request)
+        public async Task<Result<LoginResponse>> LoginUserAsync(LoginRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAll()
-                .FirstOrDefaultAsync(user => user.Login == request.Login);
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(user => user.Login == request.Login,
+                    cancellationToken: cancellationToken);
             if (user is null)
             {
                 return Result<LoginResponse>.Failed("User not found");
@@ -87,9 +88,9 @@ namespace Infrastructure.Service
             return Result<LoginResponse>.Successful(new (accessToken, refreshToken))!;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAll().ToListAsync();
+            return await _dbContext.Users.ToListAsync(cancellationToken);
         }
     }
 }

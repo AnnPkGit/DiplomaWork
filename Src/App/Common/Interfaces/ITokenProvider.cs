@@ -1,6 +1,6 @@
 using Domain.Entity;
 
-namespace App.Common;
+namespace App.Common.Interfaces;
 
 public interface ITokenProvider
 {

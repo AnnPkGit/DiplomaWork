@@ -1,4 +1,4 @@
-using App.Service;
+using App.Common.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

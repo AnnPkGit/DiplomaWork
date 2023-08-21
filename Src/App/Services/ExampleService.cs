@@ -1,25 +1,32 @@
-﻿using App.Repository;
-using App.Service;
+﻿using App.Common.Exceptions;
+using App.Common.Interfaces;
 using Domain.Entity;
 
-namespace Infrastructure.Service;
+namespace App.Services;
 
 public class ExampleService : IExampleService
 {
-    private readonly IExampleRepository _repository;
-    public ExampleService(IExampleRepository repository)
+    private readonly IApplicationDbContext _dbContext;
+
+    public ExampleService(
+        IApplicationDbContext dbContext)
     {
-        _repository = repository;
+        _dbContext = dbContext;
     }
 
     public IQueryable<ExampleItem> GetAll()
     {
-        return _repository.GetAll();
+        return _dbContext.ExampleItems;
     }
 
     public ExampleItem GetById(Guid id)
     {
-        return _repository.GetAll().FirstOrDefault(test => test.Id == id);
+        var result = _dbContext.ExampleItems.SingleOrDefault(test => test.Id == id);
+        if (result == null)
+        {
+            throw new NotFoundException("ExampleItem", id);
+        }
+        return result;
     }
 
     public ExampleItem Create(ExampleItem exampleItem)

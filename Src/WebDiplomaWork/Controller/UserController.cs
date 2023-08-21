@@ -1,5 +1,4 @@
-using App.Service;
-using App.Users.Login;
+using App.Common.Interfaces;
 using AutoMapper;
 using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -18,16 +17,17 @@ namespace WebDiplomaWork.Controller
 
         public UserController(IUserService userService, IMapper mapper)
         {
-         
             _userService = userService;
             _mapper = mapper;
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserRegistrationDto userDto)
+        public async Task<IActionResult> Create(
+            [FromBody] UserRegistrationDto userDto,
+            CancellationToken cancellationToken)
         {
             var userEntity = _mapper.Map<User>(userDto);
-            var result = await _userService.CreateUserAsync(userEntity);
+            var result = await _userService.CreateUserAsync(userEntity, cancellationToken);
 
             if (!result.IsSuccessful)
             {
@@ -39,9 +39,9 @@ namespace WebDiplomaWork.Controller
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync()
+        public async Task<IActionResult> GetUsersAsync(CancellationToken cancellationToken)
         {
-            var result = await _userService.GetAllUsersAsync();
+            var result = await _userService.GetAllUsersAsync(cancellationToken);
             return Ok(result);
         }
     }

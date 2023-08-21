@@ -1,4 +1,4 @@
-namespace App.Validators;
+namespace App.Common.Interfaces;
 
 public interface IUserValidator
 {

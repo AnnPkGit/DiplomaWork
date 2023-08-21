@@ -1,6 +1,7 @@
 ﻿using App.Common;
 using System.Security.Cryptography;
 using System.Text;
+using App.Common.Interfaces;
 using Konscious.Security.Cryptography;
 
 namespace Infrastructure.Helper;
