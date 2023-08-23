@@ -1,30 +1,24 @@
 using System.Text.RegularExpressions;
-using App.Repository;
-using App.Validators;
-using Domain.Entity;
+using App.Common.Interfaces;
+using App.Common.Interfaces.Validators;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Validators;
 
 public class UserValidator : IUserValidator
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public UserValidator(IUserRepository userRepository)
+    public UserValidator(
+        IApplicationDbContext dbContext)
     {
-        _userRepository = userRepository;
+        _dbContext = dbContext;
     }
     
     public async Task<bool> IsEmailUniqueAsync(string email)
     {
         // Проверка уникальности Email
-        return await _userRepository.GetAll().AllAsync(u => u.Email != email);
-    }
-
-    public async Task<bool> IsLoginUniqueAsync(string login)
-    {
-        // Проверка уникальности Login
-        return await _userRepository.GetAll().AllAsync(u => u.Login != login);
+        return await _dbContext.Users.AllAsync(u => u.Email != email);
     }
 
     public Task<bool> IsPasswordStrongAsync(string password)

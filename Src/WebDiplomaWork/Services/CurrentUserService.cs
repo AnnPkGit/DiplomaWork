@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using App.Service;
+using App.Common.Interfaces;
 
 namespace WebDiplomaWork.Services;
 

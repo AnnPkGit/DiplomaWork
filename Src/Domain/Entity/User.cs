@@ -1,18 +1,16 @@
-﻿namespace Domain.Entity;
+﻿using Domain.Common;
 
-public class User
+namespace Domain.Entity;
+
+public class User : BaseEntity
 {
-    public virtual String Id { get; set;  }
-    public virtual String Login { get; set; }
-    public virtual DateTime RegistrationDt { get; set; }
-    public virtual DateTime BirthDate { get; set; }
-    public virtual String? Name { get; set; }
-    public virtual String Email { get; set; }
-    public virtual bool EmailVerified { get; set; }
-    public virtual String? Phone { get; set; }
-    public virtual bool PhoneVerified { get; set; }
-    public virtual String? Avatar { get; set; }
-    public virtual String? Bio { get; set; }
-    public virtual string Password { get; set; }
-    public virtual string PasswordSalt { get; set; }
+    public DateTime RegistrationDt { get; set; }
+    public string Email { get; set; }
+    public bool EmailVerified { get; set; }
+    public string? Phone { get; set; }
+    public bool PhoneVerified { get; set; }
+    public string Password { get; set; }
+    public string PasswordSalt { get; set; }
+    public int MaxAccountsCount { get; set; }
+    public IList<Account> Accounts { get; private set; } = new List<Account>();
 }
