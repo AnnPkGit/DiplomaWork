@@ -8,8 +8,8 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private auth: AuthService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    if (this.auth?.IsAthorized()) {
-      return true; 
+    if (this.auth?.IsAuthorized()) {
+      return true;
     } else {
       return this.router.parseUrl(AppConfig.signInEndpoint);
     }

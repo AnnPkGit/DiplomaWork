@@ -1,20 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
+import {AuthService} from "../../shared/services/auth.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
-  private mounths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  private months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   private days: number[] = [];
   private years: number[] = [];
 
   loginInput: string = '';
   emailInput: string = '';
 
-  public selectedMounth: number = 0;
+  public selectedMonth: number = 0;
   public selectedDay: number = 0;
   public selectedYear: number = 0;
 
@@ -23,12 +24,16 @@ export class RegisterComponent {
 
   private step = 1;
 
-  constructor(private router: LocalRouter, private http: HttpClient) {
+  constructor(
+    private router: LocalRouter,
+    private http: HttpClient,
+    private authService: AuthService)
+  {
     let date = new Date().getFullYear();
     for (var i = date; i > date - 106; i--) {
       this.years.push(i);
     }
-    this.UpdateDaysByMounth(28);
+    this.UpdateDaysByMonth(28);
   }
 
   public onChangeEmailInput(newValue: string) {
@@ -47,8 +52,8 @@ export class RegisterComponent {
     this.passwordInput = newValue;
   }
 
-  public GetMounths() : number[] {
-    return this.mounths;
+  public GetMonths() : number[] {
+    return this.months;
   }
 
   public GetDays(): number[] {
@@ -67,12 +72,12 @@ export class RegisterComponent {
     this.router.goToAuth();
   }
 
-  onSelectedMounth(value: string) {
-    this.selectedMounth = Number(value);
-    var daysInThisMounth = this.GetDaysInMounth(this.selectedMounth);
-    this.UpdateDaysByMounth(daysInThisMounth);
+  onSelectedMonth(value: string) {
+    this.selectedMonth = Number(value);
+    var daysInThisMonth = this.GetDaysInMonth(this.selectedMonth);
+    this.UpdateDaysByMonth(daysInThisMonth);
 
-    if (this.selectedDay > daysInThisMounth) {
+    if (this.selectedDay > daysInThisMonth) {
       this.selectedDay = 1;
     }
   }
@@ -85,11 +90,11 @@ export class RegisterComponent {
     this.selectedYear = Number(value);
   }
 
-  private GetDaysInMounth(mounth: number) : number {
-   return new Date(new Date().getFullYear(), mounth, 0).getDate();
+  private GetDaysInMonth(month: number) : number {
+   return new Date(new Date().getFullYear(), month, 0).getDate();
   }
 
-  private UpdateDaysByMounth(days : number) {
+  private UpdateDaysByMonth(days : number) {
     this.days = [];
     for (var i = 1; i < days + 1; i++) {
       this.days.push(i);
@@ -100,30 +105,63 @@ export class RegisterComponent {
     this.step = 2;
   }
 
-  public GetPriviousStep() {
+  public GetPreviousStep() {
     this.step = 1;
   }
 
-  public Register() {
-    const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
+  public Register(){
+    this.Register1()
+    this.router.goToHome()
+  }
+
+  private Register1() {
+    this.RegisterUser().add(() => {
+      this.authService.Authorize({
+        Email: this.emailInput,
+        Password: this.passwordInput
+      }).add(() => {
+        const accessToken = this.authService.GetTokens().accessToken;
+        this.RegisterAccount(accessToken);
+      })
+    });
+  }
+
+  private RegisterAccount(accessToken: string) {
+    const birthdate = new Date(this.selectedYear, this.selectedMonth - 1, this.selectedDay);
 
     const body = {
       Login: this.loginInput,
-      Email: this.emailInput,
-      Password: this.passwordInput,
       BirthDate: birthdate.toISOString()
     };
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json' 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
     });
-
-    this.http.post('user/register', body, { headers }).subscribe(
-      () => {
+    return this.http.post('api/v1/account', body, { headers }).subscribe(
+      (value: any) => {
         console.log('Registration successful');
       },
       (error) => {
-        console.error('Error during registration:', error);
+        console.error('Error during account registration:', error);
+      }
+    );
+  }
+  private RegisterUser() {
+    const body = {
+      Email: this.emailInput,
+      Password: this.passwordInput,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post('api/v1/user', body, { headers }).subscribe(
+      () => {
+      },
+      (error) => {
+        console.error('Error during user registration:', error);
       }
     );
   }

@@ -17,16 +17,16 @@
 
     <div style="height: 50%">
       <div>
-        <label class="neutralColorLabel">Phone number, email adress or login</label>
+        <label class="neutralColorLabel">Phone number or email address</label>
         <div class="separationDiv">
-          <input class="roundedInput" />
+          <input class="roundedInput" [ngModel]="userIdentifierInput" (ngModelChange)="onChangeIdentifierInput($event)"/>
         </div>
       </div>
 
       <div style="margin-top: 10px;">
         <label class="neutralColorLabel">Password</label>
         <div class="separationDiv">
-          <input class="roundedInput" type="password" />
+          <input class="roundedInput" type="password" [ngModel]="passwordInput" (ngModelChange)="onChangePasswordInput($event)"/>
         </div>
         <label class="linkTextLabel">Forgot your password?</label>
       </div>

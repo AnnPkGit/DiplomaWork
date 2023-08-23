@@ -31,10 +31,10 @@ public class AccountController : ControllerBase
         var result = await _accountService.CreateAccountAsync(newAccount ,cancellationToken);
         if (!result.IsSuccessful)
         {
-            return BadRequest(result.ErrorMessage);
+            return BadRequest();
         }
 
-        return Ok(result.Value);
+        return Ok();
     }
 
     [HttpGet]

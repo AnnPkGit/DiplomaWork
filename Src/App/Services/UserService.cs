@@ -52,6 +52,7 @@ public sealed class UserService : IUserService
 
         user.Id = Guid.NewGuid();
         user.RegistrationDt = DateTime.Now.ToUniversalTime();
+        user.MaxAccountsCount = 1;
 
         try
         {
