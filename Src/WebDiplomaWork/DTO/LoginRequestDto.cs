@@ -6,7 +6,7 @@ public sealed class LoginRequestDto
 {
     [Required]
     [MinLength(3)]
-    public string Login { get; set; }
+    public string Email { get; set; }
     [Required]
     public string Password { get; set; }
 }

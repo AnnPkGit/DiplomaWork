@@ -30,9 +30,9 @@ public class Result<T>
 
     public string? ErrorMessage { get; private set; }
 
-    public static Result<T?> Successful(T value)
+    public static Result<T> Successful(T value)
     {
-        return new Result<T?>(true, value, null);
+        return new Result<T>(true, value, null);
     }
 
     public static Result<T> Failed(string errorMessage)
