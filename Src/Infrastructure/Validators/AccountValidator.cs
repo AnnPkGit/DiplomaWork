@@ -1,4 +1,5 @@
 using App.Common.Interfaces;
+using App.Common.Interfaces.Validators;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Validators;
@@ -21,7 +22,7 @@ public class AccountValidator : IAccountValidator
     }
 
     public async Task<bool> IsAccountLimitReachedAsync(
-        Guid userId,
+        int userId,
         CancellationToken token)
     {
         var currentUser = await _dbContext.Users.AsNoTracking().

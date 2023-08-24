@@ -42,16 +42,11 @@ public sealed class UserService : IUserService
         if (!await _validator.IsEmailUniqueAsync(user.Email))
             return Result.Failed("This email is already taken.");
 
-        // if (!await _validator.IsLoginUniqueAsync(user.Login))
-        //     return Result.Failed("This login is already taken.");
-
         // Хэширование пароля и сохранение в сущность User
         user.PasswordSalt = _hasher.GenerateSalt();
         user.Password = _hasher.HashPassword(user.Password, user.PasswordSalt);
-            
-
-        user.Id = Guid.NewGuid();
         user.RegistrationDt = DateTime.Now.ToUniversalTime();
+        user.MaxAccountsCount = 1;
 
         try
         {
