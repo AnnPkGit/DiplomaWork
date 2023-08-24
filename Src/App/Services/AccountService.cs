@@ -1,5 +1,6 @@
 using App.Common.Interfaces;
 using App.Common.Interfaces.Services;
+using App.Common.Interfaces.Validators;
 using Domain.Common;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -25,20 +26,18 @@ public sealed class AccountService : IAccountService
         _currentUserService = currentUserService;
     }
 
-    public async Task<Result<string>> CreateAccountAsync(
-        Account account,
+    public async Task<Result<int>> CreateAccountAsync(Account account,
         CancellationToken token)
     {
-        if(_currentUserService.UserId == null)
-            return Result<string>.Failed("Something wrong");
+        var userId = _currentUserService.UserId;
+        if(userId == -1)
+            return Result<int>.Failed("Something wrong");
         if (!await _validator.IsLoginUniqueAsync(account.Login))
-            return Result<string>.Failed("This login is already taken.");
+            return Result<int>.Failed("This login is already taken.");
         
-        var userId = Guid.Parse(_currentUserService.UserId);
         if (!await _validator.IsAccountLimitReachedAsync(userId, token))
-            return Result<string>.Failed("Accounts limit exceeded");
+            return Result<int>.Failed("Accounts limit exceeded");
         
-        account.Id = Guid.NewGuid();
         account.CreateDt = DateTime.Now.ToUniversalTime();
         var currentUser = await _dbContext.Users.
             SingleOrDefaultAsync(u => u.Id == userId, token);
@@ -52,9 +51,10 @@ public sealed class AccountService : IAccountService
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
-            return Result<string>.Failed("Something went wrong " + ex.Message);
+            return Result<int>.Failed("Something went wrong " + ex.Message);
         }
-        return Result<string>.Successful(account.Id.ToString());
+        
+        return Result<int>.Successful(account.Id);
     }
 
     public async Task<IEnumerable<Account>> GetAllAccounts(

@@ -5,7 +5,8 @@ namespace WebDiplomaWork.DTO;
 public sealed class LoginRequestDto
 {
     [Required]
-    [MinLength(3)]
+    [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        ErrorMessage = "Wrong email format")]
     public string Email { get; set; }
     [Required]
     public string Password { get; set; }

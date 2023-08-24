@@ -17,10 +17,10 @@ namespace WebDiplomaWork.Controller
             _mapper = mapper;
         }
 
-        [HttpGet("{id}")]
-        public object GetById(string id)
+        [HttpGet("{id:int}")]
+        public object GetById(int id)
         {
-            return _userService.GetById(Guid.Parse(id));
+            return _userService.GetById(id);
         }
 
         [HttpGet]

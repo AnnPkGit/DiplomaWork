@@ -17,20 +17,8 @@ namespace WebDiplomaWork.DTO
 
         public String? Name { get; set; }
 
-        [Required]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
-            ErrorMessage = "Wrong email format")]
-        public String Email { get; set; }
-
-        public int EmailVerified { get; set; }
-
-        public String? Phone { get; set; }
-
-        public int PhoneVerified { get; set; }
-
         public String? Avatar { get; set; }
 
         public String? Bio { get; set; }
-        public String? PassSalt { get; set; }
     }
 }

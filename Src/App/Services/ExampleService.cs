@@ -20,7 +20,7 @@ public class ExampleService : IExampleService
         return _dbContext.ExampleItems;
     }
 
-    public ExampleItem GetById(Guid id)
+    public ExampleItem GetById(int id)
     {
         var result = _dbContext.ExampleItems.SingleOrDefault(test => test.Id == id);
         if (result == null)
