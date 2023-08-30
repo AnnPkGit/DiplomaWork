@@ -11,7 +11,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable("Users")
             .HasMany(e => e.Accounts)
             .WithOne(e => e.Owner)
-            .HasForeignKey("UserId")
+            .HasForeignKey(e => e.OwnerId)
             .IsRequired();
     }
 }

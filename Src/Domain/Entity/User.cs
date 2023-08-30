@@ -12,5 +12,5 @@ public class User : BaseEntity
     public string Password { get; set; }
     public string PasswordSalt { get; set; }
     public int MaxAccountsCount { get; set; }
-    public IList<Account> Accounts { get; private set; } = new List<Account>();
+    public ICollection<Account> Accounts { get; private set; } = new List<Account>();
 }

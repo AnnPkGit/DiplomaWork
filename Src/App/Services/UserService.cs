@@ -1,4 +1,5 @@
-﻿using App.Common.Interfaces;
+﻿using App.Common.Exceptions;
+using App.Common.Interfaces;
 using App.Common.Interfaces.Services;
 using App.Common.Interfaces.Validators;
 using Domain.Common;
@@ -17,22 +18,25 @@ public sealed class UserService : IUserService
     private readonly IHasher _hasher;
     private readonly ITokenProvider _tokenProvider;
     private readonly IApplicationDbContext _dbContext;
+    private readonly ICurrentUserService _currentUserService;
 
     public UserService(
         ILogger<UserService> logger,
         IHasher hasher,
         IUserValidator validator,
         ITokenProvider tokenProvider,
-        IApplicationDbContext dbContext)
+        IApplicationDbContext dbContext,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _hasher = hasher;
         _validator = validator; 
         _tokenProvider = tokenProvider;
         _dbContext = dbContext;
+        _currentUserService = currentUserService;
     }
 
-    public async Task<Result> CreateUserAsync(User user, CancellationToken cancellationToken)
+    public async Task<Result> CreateUserAsync(User user, CancellationToken token)
     {
         // Проверка пароля на соответствие требованиям
         if (! await _validator.IsPasswordStrongAsync(user.Password))
@@ -51,8 +55,8 @@ public sealed class UserService : IUserService
         try
         {
             // Добавление пользователя в базу данных
-            await _dbContext.Users.AddAsync(user, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.Users.AddAsync(user, token);
+            await _dbContext.SaveChangesAsync(token);
         }
         catch (Exception ex)
         {
@@ -84,8 +88,89 @@ public sealed class UserService : IUserService
         return Result<LoginResponse>.Successful(new (accessToken, refreshToken))!;
     }
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken token)
     {
-        return await _dbContext.Users.ToListAsync(cancellationToken);
+        return await _dbContext.Users.ToListAsync(token);
+    }
+
+    public async Task<Result> DeleteUserAsync(CancellationToken token)
+    {
+        var userId = _currentUserService.UserId;
+        var user = await _dbContext.Users.FindAsync(new object?[] { userId }, token);
+        if (user == null)
+            throw new NotFoundException("User", userId);
+        
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync(token);
+        
+        return Result.Successful();
+    }
+
+    public async Task<Result> ChangePasswordAsync(
+        string newPassword,
+        CancellationToken token)
+    {
+        var userId = _currentUserService.UserId;
+        var user = await _dbContext.Users.FindAsync(new object?[] { userId }, token);
+        
+        if (user == null)
+            throw new NotFoundException("User", userId);
+        
+        if (! await _validator.IsPasswordStrongAsync(newPassword))
+            throw new ValidationException("The password must contain uppercase and lowercase letters, digits, special characters, and be at least 8 characters long.");
+        
+        if (! await _validator.IsNewPasswordUnequalAsync(userId, newPassword, token))
+            throw new ValidationException("The new password must be different from the old one");
+
+        var newSalt = _hasher.GenerateSalt();
+        var newPassHash = _hasher.HashPassword(newPassword, newSalt);
+
+        user.PasswordSalt = newSalt;
+        user.Password = newPassHash;
+
+        var res = await _dbContext.SaveChangesAsync(token);
+        return res <= 0 ? Result.Failed("The context has not changed") : Result.Successful();
+    }
+
+    public async Task<Result> ChangeEmailAsync(
+        string newEmail,
+        CancellationToken token)
+    {
+        var userId = _currentUserService.UserId;
+        var user = await _dbContext.Users.FindAsync(new object?[] { userId }, token);
+
+        if (user == null)
+            throw new NotFoundException("User", userId);
+        
+        if (!await _validator.IsEmailUniqueAsync(newEmail))
+            throw new ValidationException("This email is already taken");
+        
+        // TODO: Implement phone number verification
+
+        user.Email = newEmail;
+        
+        var res = await _dbContext.SaveChangesAsync(token);
+        return res <= 0 ? Result.Failed("The context has not changed") : Result.Successful();
+    }
+
+    public async Task<Result> ChangePhoneAsync(
+        string newPhone,
+        CancellationToken token)
+    {
+        var userId = _currentUserService.UserId;
+        var user = await _dbContext.Users.FindAsync(new object?[] { userId }, token);
+
+        if (user == null)
+            throw new NotFoundException("User", userId);
+
+        if (!await _validator.IsPhoneUniqueAsync(newPhone, token))
+            throw new ValidationException("This phone is already taken");
+        
+        // TODO: Implement phone number verification
+        
+        user.Phone = newPhone;
+        
+        var res = await _dbContext.SaveChangesAsync(token);
+        return res <= 0 ? Result.Failed("The context has not changed") : Result.Successful();
     }
 }
