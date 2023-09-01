@@ -25,8 +25,9 @@ public class AccountValidator : IAccountValidator
         int userId,
         CancellationToken token)
     {
-        var currentUser = await _dbContext.Users.AsNoTracking().
-            SingleOrDefaultAsync(u => u.Id == userId, token);
+        var currentUser = await _dbContext.Users
+            .Include(u => u.Accounts)
+            .SingleOrDefaultAsync(u => u.Id == userId, token);
         
         if (currentUser == null)
             return false; //TODO: add ValidationException

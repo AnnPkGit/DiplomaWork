@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using App.Common.Interfaces.Services;
 using AutoMapper;
 using Domain.Entity;
@@ -24,10 +25,12 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost, Authorize]
-    public async Task<IActionResult> Post(CreateAccountDto accountDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post(
+        CreateAccountDto accountDto,
+        CancellationToken cancellationToken)
     {
         var newAccount = _mapper.Map<Account>(accountDto);
-        var result = await _accountService.CreateAccountAsync(newAccount ,cancellationToken);
+        var result = await _accountService.CreateAccountAsync(newAccount, cancellationToken);
         if (!result.IsSuccessful)
         {
             return BadRequest(result.ErrorMessage);
@@ -40,10 +43,76 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var result = await _accountService.GetAllAccounts(cancellationToken);
-        if (result == null)
+        if (!result.Any())
         {
             return NoContent();
         }
         return Ok(result);
     }
+
+    [HttpDelete, Authorize]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        var result = await _accountService.DeleteAccountAsync(id, cancellationToken);
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        return Ok("Account deleted");
+    }
+
+    [HttpPut, Authorize]
+    public async Task<IActionResult> Put(
+        [FromBody] FullyUpdateAccountDto accountDto,
+        CancellationToken cancellationToken)
+    {
+        var id = accountDto.Id;
+        var model = _mapper.Map<UpdateAccountModel>(accountDto);
+        var result = await _accountService
+            .FullyUpdateAccountAsync(id, model, cancellationToken);
+        
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+        
+        return Ok("Account changed");
+    }
+
+    [HttpPatch, Authorize]
+    public async Task<IActionResult> Patch(
+        [FromBody] UpdateAccountDto accountDto,
+        CancellationToken cancellationToken)
+    {
+        var id = accountDto.Id;
+        var model = _mapper.Map<UpdateAccountModel>(accountDto);
+        var result = await _accountService
+            .UpdateAccountAsync(id, model, cancellationToken);
+        
+        return Ok(result);
+    }
+}
+
+public record FullyUpdateAccountDto
+{
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string Login { get; set; } = string.Empty;
+    public DateTime BirthDate { get; set; }
+    public string? Name { get; set; }
+    public string? Avatar { get; set; }
+    public string? Bio { get; set; }
+}
+
+public record UpdateAccountDto
+{
+    [Required]
+    public int Id { get; set; }
+    public string? Login { get; set; }
+    public DateTime BirthDate { get; set; }
+    public string? Name { get; set; }
+    public string? Avatar { get; set; }
+    public string? Bio { get; set; }
 }

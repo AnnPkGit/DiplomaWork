@@ -10,5 +10,6 @@ public class Account : BaseEntity
     public string? Name { get; set; }
     public string? Avatar { get; set; }
     public string? Bio { get; set; }
+    public int OwnerId { get; set; }
     public User Owner { get; set; } = null!;
 }

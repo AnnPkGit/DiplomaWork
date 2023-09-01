@@ -1,3 +1,4 @@
+using App.Common.Exceptions;
 using App.Common.Interfaces;
 using App.Common.Interfaces.Services;
 using App.Common.Interfaces.Validators;
@@ -18,7 +19,8 @@ public sealed class AccountService : IAccountService
     public AccountService(
         IApplicationDbContext dbContext,
         IAccountValidator validator,
-        ILogger<AccountService> logger, ICurrentUserService currentUserService)
+        ILogger<AccountService> logger,
+        ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _validator = validator;
@@ -26,7 +28,8 @@ public sealed class AccountService : IAccountService
         _currentUserService = currentUserService;
     }
 
-    public async Task<Result<int>> CreateAccountAsync(Account account,
+    public async Task<Result<int>> CreateAccountAsync(
+        Account account,
         CancellationToken token)
     {
         var userId = _currentUserService.UserId;
@@ -57,9 +60,117 @@ public sealed class AccountService : IAccountService
         return Result<int>.Successful(account.Id);
     }
 
-    public async Task<IEnumerable<Account>> GetAllAccounts(
-        CancellationToken cancellationToken)
+    public async Task<IEnumerable<Account>> GetAllAccounts(CancellationToken token)
     {
-        return await _dbContext.Accounts.ToListAsync(cancellationToken);
+        return await _dbContext.Accounts
+            .ToListAsync(token);
+    }
+
+    public async Task<Result> DeleteAccountAsync(
+        int id,
+        CancellationToken token)
+    {
+        var account = await _dbContext.Accounts.FindAsync(
+            new object?[] { id }, token);
+        
+        if(account == null)
+            throw new NotFoundException("Account", id);
+        
+        var userId = _currentUserService.UserId;
+        // Checking whether the account being deleted belongs to the user deleting it
+        if (account.OwnerId != userId)
+            throw new ForbiddenAccessException($"User \"{userId}\" tried to delete account \"{id}\".");
+        
+        _dbContext.Accounts.Remove(account);
+        
+        await _dbContext.SaveChangesAsync(token);
+        return Result.Successful();
+    }
+
+    public async Task<Result> FullyUpdateAccountAsync(
+        int id,
+        UpdateAccountModel model,
+        CancellationToken token)
+    {
+        var account = await _dbContext.Accounts.FindAsync(
+            new object?[] { id },
+            token);
+
+        if (account == null)
+            throw new NotFoundException("Account", id);
+        
+        var userId = _currentUserService.UserId;
+        // Checking whether the account being changed belongs to the user deleting it
+        if (account.OwnerId != userId)
+            throw new ForbiddenAccessException($"User \"{userId}\" tried to changed account \"{id}\".");
+        
+        var newLogin = model.Login;
+
+        if (!await _validator.IsLoginUniqueAsync(newLogin))
+            throw new ValidationException($"Login \"{newLogin}\" is already taken");
+
+        account.Login = newLogin;
+        account.Name = model.Name;
+        account.BirthDate = model.BirthDate;
+        account.Bio = model.Bio;
+        account.Avatar = model.Avatar;
+
+        await _dbContext.SaveChangesAsync(token);
+
+        return Result.Successful();
+    }
+
+    public async Task<Account?> UpdateAccountAsync(
+        int id,
+        UpdateAccountModel model,
+        CancellationToken token)
+    {
+        var account = await _dbContext.Accounts.FindAsync(
+            new object?[] { id },
+            token);
+        
+        if (account == null)
+            throw new NotFoundException("Account", id);
+        
+        var userId = _currentUserService.UserId;
+        // Checking whether the account being changed belongs to the user deleting it
+        if (account.OwnerId != userId)
+            throw new ForbiddenAccessException($"User \"{userId}\" tried to changed account \"{id}\".");
+        
+        var newLogin = model.Login;
+        if (!string.IsNullOrEmpty(newLogin))
+        {
+            if (!await _validator.IsLoginUniqueAsync(newLogin))
+                throw new ValidationException($"Login \"{newLogin}\" is already taken");
+            
+            account.Login = newLogin;
+        }
+        
+        var newName = model.Name;
+        if (!string.IsNullOrEmpty(newName))
+        {
+            account.Name = newName;
+        }
+        
+        var newBirthDate = model.BirthDate;
+        if (newBirthDate != default)
+        {
+            account.BirthDate = newBirthDate;
+        }
+        
+        var newBio = account.Bio;
+        if (!string.IsNullOrEmpty(newBio))
+        {
+            account.Bio = newBio;
+        }
+
+        var newAvatar = model.Avatar;
+        if (!string.IsNullOrEmpty(newAvatar))
+        {
+            account.Avatar = newAvatar;
+        }
+
+        var res = await _dbContext.SaveChangesAsync(token);
+        return res == 0 ? null : account;
     }
 }
