@@ -77,12 +77,13 @@
   display: flex;
 }
 
-.inCenterHeader45end, .inCenterHeader45start, .inCenterHeader20 {
+.inCenterHeader45end, .inCenterHeader45start, .inCenterHeader20,
+.inCenterHeader45end-blank, .inCenterHeader45start-blank, .inCenterHeader20-blank {
   display: flex;
   align-items: center;
 }
 
-.inCenterHeader45end {
+.inCenterHeader45end, .inCenterHeader45end-blank {
   width: 45%;
   justify-content: end;
   padding-right: 8%;
@@ -91,7 +92,7 @@
   font-size: 16px;
 }
 
-.inCenterHeader45start {
+.inCenterHeader45start, .inCenterHeader45start-blank {
   width: 45%;
   padding-left: 8%;
   color: #ABB9C9;
@@ -99,7 +100,7 @@
   font-size: 16px;
 }
 
-.inCenterHeader20 {
+.inCenterHeader20, .inCenterHeader20-blank {
   width: 20%;
   justify-content: center;
   font-weight: 700;

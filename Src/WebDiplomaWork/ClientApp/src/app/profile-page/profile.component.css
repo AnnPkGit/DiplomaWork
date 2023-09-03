@@ -12,10 +12,16 @@
 .banner {
     height: 11vw;
     background-color: #E1E5E8;
+    overflow: hidden;
+}
+
+.banner img{
+    width: 100%;
+    min-height: 11vw;
 }
 
 .profile-page-bar {
-    height: 7vw;
+    height: 4vw;
     background-color: white;
     display: flex;
 }
@@ -41,7 +47,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80%;
+    height: 60%;
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -51,6 +57,7 @@
     max-height: 146px;
     border-radius: 15px;
     width: 70%;
+    z-index: 2;
 }
 
 .bar-options-profile{
@@ -61,5 +68,27 @@
 .bar-options-profile div {
     padding-top: 10px;
     width: fill;
-    background-color: aquamarine;
+    padding-top: 2%;
+    color: #5C6778;
+    font-size: 0.9vw;
+    font-weight: 600;
 }
+
+.profileNameHolderMain {
+    width: 10vw; 
+    min-width: 136px; 
+    height: 100%;
+    position: relative;
+}
+
+.profile-page-info-bar {
+    padding-left: 3%;
+    padding-right: 3%;
+    color: #5C6778;
+    font-size: 0.8vw;
+}
+
+.profile-page-options-bar div:hover {
+    background-color: rgba(102, 104, 120, 0.07);
+    cursor: pointer;
+  }

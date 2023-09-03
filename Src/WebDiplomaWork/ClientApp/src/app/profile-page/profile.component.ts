@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostModel } from '../shared/models/postModel';
+import { AccountModel } from '../shared/models/accountModel';
 
 @Component({
   selector: 'app-profile',
@@ -7,6 +8,7 @@ import { PostModel } from '../shared/models/postModel';
 })
 export class ProfilePageComponent implements OnInit{
   posts?: PostModel[];
+  account?: AccountModel;
 
   ngOnInit(): void {
     this.posts = [];
@@ -29,6 +31,15 @@ export class ProfilePageComponent implements OnInit{
       likesNumber: 2201,
       commentsNumber: 58
     })
+
+    this.account = {
+      userName: 'Tory',
+      userLogin: 'Tory',
+      followersCount: 1,
+      followsCount: 2,
+      joinDate: '03.09.2023',
+      bio: 'Hi my name is Tory!!!'
+    }
   }
 
   Reload() {

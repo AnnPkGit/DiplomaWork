@@ -1,10 +1,10 @@
 <div  class="bgColor">
     <div class="topHeaderLocalFull"></div> <!--//behind all-->
     
-    <div class="centerHeader">
-      <div class="inCenterHeader45end"></div>
-      <div class="inCenterHeader20">PROFILE</div>
-      <div class="inCenterHeader45start"></div>
+    <div class="centerHeader" style="z-index: 3;">
+      <div class="inCenterHeader45end-blank"></div>
+      <div class="inCenterHeader20-blank">PROFILE</div>
+      <div class="inCenterHeader45start-blank"></div>
     </div>
     
     <div class="div1">
@@ -33,25 +33,31 @@
                         <img src="https://img.devilchan.com/original/2022/06/30/11/12/27306/genshin-impact-yelan-genshinimpact-27306-3000x3000.jpeg">
                     </div>
                 </div>
-                <div class="banner"></div>
+                <div class="banner">
+                  <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-255379.jpg&fm=jpg">
+                </div>
                 <div class="profile-page-bar">
-                    <div style="width: 10vw; min-width: 136px; background-color: brown; height: 100%;"></div>
+                    <div class="profileNameHolderMain">
+                    </div>
                     <div class="bar-options-profile">
                         <div>
-                            <div>Profile name</div>
-                            <div>@Profile name</div>
+                            <div>{{account?.userName}} <br/> @{{account?.userLogin}}</div>
                         </div>
                         <div>
-                            <div>Replies</div>
+                            <div>Following {{account?.followsCount}}</div>
                         </div>
                         <div>
-                            <div>Replies</div>
+                            <div>Followers {{account?.followersCount}}</div>
                         </div>
                         <div>
-                            <div>Replies</div>
-                        </div>
+                          <div>Settings</div>
+                      </div>
                     </div>
                 </div>
+            </div>
+            <div class="profile-page-info-bar">
+              <div>Join date {{account?.joinDate}}</div>
+              <div>{{account?.bio}}</div>
             </div>
             <div class="profile-page-options-bar">
                 <div>Toasts</div>
