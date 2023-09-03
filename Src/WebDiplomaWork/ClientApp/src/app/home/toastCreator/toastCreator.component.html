@@ -4,8 +4,6 @@
       <img class="postAvatar" src="https://i.pinimg.com/564x/86/82/84/86828411400537a803f26013641c4770.jpg" />
     </div>
 
-    <div class="postTextZone" contenteditable="true">
-      Tell us about your day!
-    </div>
+    <textarea id="text-area" class="postTextZone" contenteditable="true" (input)="autoGrow()" placeholder="Enter your text here"></textarea>
   </div>
 </div>
