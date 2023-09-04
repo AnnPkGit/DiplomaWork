@@ -8,8 +8,9 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
+        // a - account
         builder.ToTable("Accounts")
-            .Property(e => e.OwnerId)
+            .Property(a => a.OwnerId)
             .HasColumnName("UserId");
     }
 }

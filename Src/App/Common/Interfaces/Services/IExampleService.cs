@@ -8,5 +8,5 @@ public interface IExampleService
     ExampleItem GetById(int id);
     ExampleItem Create(ExampleItem exampleItem);
     ExampleItem Update(ExampleItem exampleItem);
-    void Delete(Guid id);
+    void Delete(int id);
 }
