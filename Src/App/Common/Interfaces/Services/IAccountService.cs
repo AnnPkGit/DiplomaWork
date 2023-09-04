@@ -18,4 +18,6 @@ public interface IAccountService
     Task<Result> DeleteAccountAsync(int id, CancellationToken cancellationToken);
     Task<Result> FullyUpdateAccountAsync(int id, UpdateAccountModel model, CancellationToken cancellationToken);
     Task<Account?> UpdateAccountAsync(int id, UpdateAccountModel model, CancellationToken cancellationToken);
+    Task<Account> GetAccountByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Account> GetAccountByLoginAsync(string login, CancellationToken cancellationToken);
 }
