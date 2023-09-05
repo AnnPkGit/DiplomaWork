@@ -40,8 +40,12 @@ public class ExampleService : IExampleService
         throw new NotImplementedException();
     }
 
-    public void Delete(Guid id)
+    public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var item = _dbContext.ExampleItems.Find(id);
+        if (item == null)
+            throw new NotFoundException("ExampleItem", id);
+        item.DeactivationDate = DateTime.UtcNow;
+        _dbContext.SaveChangesAsync(new CancellationToken()).Wait();
     }
 }

@@ -70,18 +70,14 @@ public sealed class AccountService : IAccountService
         int id,
         CancellationToken token)
     {
-        var account = await _dbContext.Accounts.FindAsync(
-            new object?[] { id }, token);
-        
-        if(account == null)
-            throw new NotFoundException("Account", id);
+        var account = await GetByIdAsync(id, token);
         
         var userId = _currentUserService.UserId;
         // Checking whether the account being deleted belongs to the user deleting it
         if (account.OwnerId != userId)
             throw new ForbiddenAccessException($"User \"{userId}\" tried to delete account \"{id}\".");
-        
-        _dbContext.Accounts.Remove(account);
+
+        account.DeactivationDate = DateTime.UtcNow;
         
         await _dbContext.SaveChangesAsync(token);
         return Result.Successful();
@@ -92,12 +88,7 @@ public sealed class AccountService : IAccountService
         UpdateAccountModel model,
         CancellationToken token)
     {
-        var account = await _dbContext.Accounts.FindAsync(
-            new object?[] { id },
-            token);
-
-        if (account == null)
-            throw new NotFoundException("Account", id);
+        var account = await GetByIdAsync(id, token);
         
         var userId = _currentUserService.UserId;
         // Checking whether the account being changed belongs to the user deleting it
@@ -125,12 +116,7 @@ public sealed class AccountService : IAccountService
         UpdateAccountModel model,
         CancellationToken token)
     {
-        var account = await _dbContext.Accounts.FindAsync(
-            new object?[] { id },
-            token);
-        
-        if (account == null)
-            throw new NotFoundException("Account", id);
+        var account = await GetByIdAsync(id, token);
         
         var userId = _currentUserService.UserId;
         // Checking whether the account being changed belongs to the user deleting it
@@ -172,5 +158,33 @@ public sealed class AccountService : IAccountService
 
         var res = await _dbContext.SaveChangesAsync(token);
         return res == 0 ? null : account;
+    }
+
+    public async Task<Account> GetAccountByIdAsync(int id, CancellationToken token)
+    {
+        return await GetByIdAsync(id, token);
+    }
+
+    public async Task<Account> GetAccountByLoginAsync(string login, CancellationToken token)
+    {
+        var account = await _dbContext.Accounts
+            .SingleOrDefaultAsync(a => a.Login == login, token);
+        
+        if (account == null)
+            throw new NotFoundException("Account", login);
+
+        return account;
+    }
+
+    private async Task<Account> GetByIdAsync(int id, CancellationToken token)
+    {
+        var account = await _dbContext.Accounts.FindAsync(
+            new object?[] { id },
+            token);
+        
+        if (account == null)
+            throw new NotFoundException("Account", id);
+
+        return account;
     }
 }

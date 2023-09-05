@@ -39,8 +39,22 @@ public class AccountController : ControllerBase
         return Ok(result.Value);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken cancellationToken)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+    {
+        var res = await _accountService.GetAccountByIdAsync(id, cancellationToken);
+        return Ok(res);
+    }
+    
+    [HttpGet("{login}")]
+    public async Task<IActionResult> GetByLogin(string login, CancellationToken cancellationToken)
+    {
+        var res = await _accountService.GetAccountByLoginAsync(login, cancellationToken);
+        return Ok(res);
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var result = await _accountService.GetAllAccounts(cancellationToken);
         if (!result.Any())
