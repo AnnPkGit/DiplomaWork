@@ -6,4 +6,11 @@ public class ValidationException : Exception
         : base(message)
     {
     }
+    public ValidationException()
+        : base("One or more validation failures have occurred.")
+    {
+        Errors = new Dictionary<string, string[]>();
+    }
+    
+    public IDictionary<string, string[]> Errors { get; }
 }

@@ -1,9 +1,11 @@
 using App.Common.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WebDiplomaWork.Filters;
 
 namespace WebDiplomaWork.Controller
 {
+    [ApiExceptionFilter]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class ExampleController : ControllerBase

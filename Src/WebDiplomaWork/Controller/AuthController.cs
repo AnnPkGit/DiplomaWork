@@ -3,9 +3,11 @@ using App.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebDiplomaWork.DTO;
+using WebDiplomaWork.Filters;
 
 namespace WebDiplomaWork.Controller
 {
+    [ApiExceptionFilter]
     [Route("api/v1/[controller]")]
     [ApiController]
     

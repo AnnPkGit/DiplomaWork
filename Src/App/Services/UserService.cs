@@ -40,11 +40,11 @@ public sealed class UserService : IUserService
     {
         // Проверка пароля на соответствие требованиям
         if (! await _validator.IsPasswordStrongAsync(user.Password))
-            return Result.Failed("The password must contain uppercase and lowercase letters, digits, special characters, and be at least 8 characters long.");
+            throw new ValidationException("The password must contain uppercase and lowercase letters, digits, special characters, and be at least 8 characters long.");
 
         // Проверка уникальности Email и Login
         if (!await _validator.IsEmailUniqueAsync(user.Email))
-            return Result.Failed("This email is already taken.");
+            throw new ValidationException("This email is already taken.");
 
         // Хэширование пароля и сохранение в сущность User
         user.PasswordSalt = _hasher.GenerateSalt();
@@ -73,13 +73,13 @@ public sealed class UserService : IUserService
                 cancellationToken: token);
         if (user is null)
         {
-            return Result<LoginResponse>.Failed("User not found");
+            throw new NotFoundException("User", request.Email);
         }
             
         var requestPass = _hasher.HashPassword(request.Password, user.PasswordSalt);
         if (user.Password != requestPass)
         {
-            return Result<LoginResponse>.Failed("Password is not correct");
+            throw new ValidationException("Password is not correct");
         }
 
         var accessToken = _tokenProvider.GenAccessToken(user);
