@@ -39,7 +39,6 @@ public class UpdateUserEmailCommandHandler : IRequestHandler<UpdateUserEmailComm
 
         user.Email = request.NewEmail;
         
-        var res = await _context.SaveChangesAsync(token);
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync(token);
     }
 }

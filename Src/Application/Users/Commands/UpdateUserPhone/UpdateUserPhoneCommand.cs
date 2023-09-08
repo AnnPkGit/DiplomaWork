@@ -1,6 +1,7 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Validators;
+using Domain.Entity;
 using MediatR;
 
 namespace Application.Users.Commands.UpdateUserPhone;
@@ -29,7 +30,7 @@ public class UpdateUserPhoneCommandHandler : IRequestHandler<UpdateUserPhoneComm
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
 
         if (user == null)
-            throw new NotFoundException("User", userId);
+            throw new NotFoundException(nameof(User), userId);
 
         if (!await _validator.IsPhoneUniqueAsync(request.NewPhone, token))
             throw new ValidationException("This phone is already taken");

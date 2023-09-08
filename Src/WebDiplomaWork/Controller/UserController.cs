@@ -1,97 +1,50 @@
-using Application.Common.Interfaces.Services;
-using AutoMapper;
+using Application.Users.Commands.CreateUser;
+using Application.Users.Commands.UpdateUserEmail;
+using Application.Users.Commands.UpdateUserPassword;
+using Application.Users.Commands.UpdateUserPhone;
+using Application.Users.Queries.GetAllUsers;
 using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebDiplomaWork.DTO;
-using WebDiplomaWork.Filters;
 
-namespace WebDiplomaWork.Controller
+namespace WebDiplomaWork.Controller;
+
+public class UserController : ApiV1ControllerBase
 {
-    [ApiExceptionFilter]
-    [Route("api/v1/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateUserCommand command)
     {
-    
-        private readonly IUserService _userService;
-        private readonly IMapper _mapper;
-
-        public UserController(
-            IUserService userService,
-            IMapper mapper)
-        {
-            _userService = userService;
-            _mapper = mapper;
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> Create(
-            [FromBody] UserRegistrationDto userDto,
-            CancellationToken cancellationToken)
-        {
-            var userEntity = _mapper.Map<User>(userDto);
-            var result = await _userService.CreateUserAsync(userEntity, cancellationToken);
-
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-
-            return Ok();
-        }
-
-        [HttpGet, Authorize]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
-        {
-            var result = await _userService.GetAllUsersAsync(cancellationToken);
-            return Ok(result);
-        }
-
-        [HttpPatch("email"), Authorize]
-        public async Task<IActionResult> ChangeEmail(
-            [FromBody] ChangeEmailDto model,
-            CancellationToken cancellationToken)
-        {
-            // TODO: Implement new email validation
-            var result = await _userService.ChangeEmailAsync(model.new_email, cancellationToken);
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            return Ok();
-        }
-        
-        [HttpPatch("phone"), Authorize]
-        public async Task<IActionResult> ChangePhone(
-            [FromBody] ChangePhoneDto model,
-            CancellationToken cancellationToken)
-        {
-            // TODO: Implement new phone number validation
-            var result = await _userService.ChangePhoneAsync(model.new_phone, cancellationToken);
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            return Ok();
-        }
-        
-        [HttpPatch("password"), Authorize]
-        public async Task<IActionResult> ChangePassword(
-            [FromBody] ChangePasswordDto model,
-            CancellationToken cancellationToken)
-        {
-            // TODO: Implement new password validation
-            var result = await _userService.ChangePasswordAsync(model.new_password, cancellationToken);
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            return Ok();
-        }
+        await Mediator.Send(command);
+        return NoContent();
     }
 
-    public record ChangePhoneDto(string new_phone);
-    public record ChangeEmailDto(string new_email);
-    public record ChangePasswordDto(string new_password);
+    [HttpGet, Authorize]
+    public async Task<IEnumerable<User>> Get()
+    {
+        return await Mediator.Send(new GetAllUsersQuery());
+    }
+
+    [HttpPatch("email"), Authorize]
+    public async Task<IActionResult> UpdateEmail(UpdateUserEmailCommand command)
+    {
+        // TODO: Implement new email validation
+        await Mediator.Send(command);
+        return NoContent();
+    }
+        
+    [HttpPatch("phone"), Authorize]
+    public async Task<IActionResult> ChangePhone(UpdateUserPhoneCommand command)
+    {
+        // TODO: Implement new phone number validation
+        await Mediator.Send(command);
+        return NoContent();
+    }
+        
+    [HttpPatch("password"), Authorize]
+    public async Task<IActionResult> ChangePassword(UpdateUserPasswordCommand command)
+    {
+        // TODO: Implement new password validation
+        await Mediator.Send(command);
+        return NoContent();
+    }
 }
