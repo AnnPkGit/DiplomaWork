@@ -75,7 +75,7 @@ public sealed class AccountService : IAccountService
         var userId = _currentUserService.UserId;
         // Checking whether the account being deleted belongs to the user deleting it
         if (account.OwnerId != userId)
-            throw new ForbiddenAccessException($"User \"{userId}\" tried to delete account \"{id}\".");
+            throw new ForbiddenAccessException($"User ({userId}) tried to delete account ({id}).");
 
         account.DeactivationDate = DateTime.UtcNow;
         
@@ -93,12 +93,12 @@ public sealed class AccountService : IAccountService
         var userId = _currentUserService.UserId;
         // Checking whether the account being changed belongs to the user deleting it
         if (account.OwnerId != userId)
-            throw new ForbiddenAccessException($"User \"{userId}\" tried to changed account \"{id}\".");
+            throw new ForbiddenAccessException($"User ({userId}) tried to changed account ({id}).");
         
         var newLogin = model.Login;
 
         if (!await _validator.IsLoginUniqueAsync(newLogin))
-            throw new ValidationException($"Login \"{newLogin}\" is already taken");
+            throw new ValidationException($"Login ({newLogin}) is already taken");
 
         account.Login = newLogin;
         account.Name = model.Name;
@@ -121,13 +121,13 @@ public sealed class AccountService : IAccountService
         var userId = _currentUserService.UserId;
         // Checking whether the account being changed belongs to the user deleting it
         if (account.OwnerId != userId)
-            throw new ForbiddenAccessException($"User \"{userId}\" tried to changed account \"{id}\".");
+            throw new ForbiddenAccessException($"User (({userId}) tried to changed account ({id}).");
         
         var newLogin = model.Login;
         if (!string.IsNullOrEmpty(newLogin))
         {
             if (!await _validator.IsLoginUniqueAsync(newLogin))
-                throw new ValidationException($"Login \"{newLogin}\" is already taken");
+                throw new ValidationException($"Login ({newLogin}) is already taken");
             
             account.Login = newLogin;
         }
