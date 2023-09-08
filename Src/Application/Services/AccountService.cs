@@ -1,13 +1,13 @@
-using App.Common.Exceptions;
-using App.Common.Interfaces;
-using App.Common.Interfaces.Services;
-using App.Common.Interfaces.Validators;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Interfaces.Services;
+using Application.Common.Interfaces.Validators;
 using Domain.Common;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace App.Services;
+namespace Application.Services;
 
 public sealed class AccountService : IAccountService
 {

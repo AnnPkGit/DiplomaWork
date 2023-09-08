@@ -1,9 +1,9 @@
-﻿using App.Common.Exceptions;
-using App.Common.Interfaces;
-using App.Common.Interfaces.Services;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Interfaces.Services;
 using Domain.Entity;
 
-namespace App.Services;
+namespace Application.Services;
 
 public class ExampleService : IExampleService
 {

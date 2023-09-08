@@ -1,8 +1,8 @@
-﻿using App.Services;
+﻿using Application.Services;
 using Domain.Common;
 using Domain.Entity;
 
-namespace App.Common.Interfaces.Services;
+namespace Application.Common.Interfaces.Services;
 
 public interface IUserService
 {

@@ -1,4 +1,4 @@
-namespace App.Common.Interfaces.Validators;
+namespace Application.Common.Interfaces.Validators;
 
 public interface IAccountValidator
 {

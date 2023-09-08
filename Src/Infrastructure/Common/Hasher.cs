@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using App.Common.Interfaces;
+using Application.Common.Interfaces;
 using Konscious.Security.Cryptography;
 
 namespace Infrastructure.Common;

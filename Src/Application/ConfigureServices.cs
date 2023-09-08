@@ -1,5 +1,5 @@
-using App.Common.Interfaces.Services;
-using App.Services;
+using Application.Common.Interfaces.Services;
+using Application.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
