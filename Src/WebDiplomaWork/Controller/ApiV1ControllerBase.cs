@@ -6,8 +6,8 @@ namespace WebDiplomaWork.Controller;
 
 [ApiController]
 [ApiExceptionFilter]
-[Route("api/[controller]")]
-public abstract class ApiControllerBase : ControllerBase
+[Route("api/v1/[controller]")]
+public abstract class ApiV1ControllerBase : ControllerBase
 {
     private ISender? _mediator;
 
