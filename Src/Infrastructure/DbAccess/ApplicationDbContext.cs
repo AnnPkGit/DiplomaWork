@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using App.Common.Interfaces;
+using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entity;
 using Infrastructure.Configuration.Provider;
