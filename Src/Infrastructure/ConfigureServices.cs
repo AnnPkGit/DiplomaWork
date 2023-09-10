@@ -1,5 +1,5 @@
-using App.Common.Interfaces;
-using App.Common.Interfaces.Validators;
+using Application.Common.Interfaces;
+using Application.Common.Interfaces.Validators;
 using Infrastructure.Authentication;
 using Infrastructure.Common;
 using Infrastructure.Configuration;

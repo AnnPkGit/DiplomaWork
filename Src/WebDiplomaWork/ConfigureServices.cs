@@ -1,6 +1,5 @@
-using App.Common.Interfaces;
+using Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using WebDiplomaWork.OptionsSetup;
 using WebDiplomaWork.Services;
 
