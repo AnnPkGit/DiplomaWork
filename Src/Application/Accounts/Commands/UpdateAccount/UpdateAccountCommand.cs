@@ -1,6 +1,5 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Interfaces.Validators;
 using Domain.Entity;
 using MediatR;
 
@@ -18,16 +17,13 @@ public record UpdateAccountCommand : IRequest
 
 public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
 {
-    private readonly IAccountValidator _validator;
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
     public UpdateAccountCommandHandler(
-        IAccountValidator validator,
         IApplicationDbContext context,
         ICurrentUserService currentUserService)
     {
-        _validator = validator;
         _context = context;
         _currentUserService = currentUserService;
     }
@@ -44,12 +40,7 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
         if (entity.OwnerId != userId)
             throw new ForbiddenAccessException($"User ({userId}) tried to update account ({request.Id}).");
         
-        var newLogin = request.Login;
-
-        if (!await _validator.IsLoginUniqueAsync(newLogin))
-            throw new ValidationException($"Login ({newLogin}) is already taken");
-
-        entity.Login = newLogin;
+        entity.Login = request.Login;
         entity.Name = request.Name;
         entity.BirthDate = request.BirthDate;
         entity.Bio = request.Bio;

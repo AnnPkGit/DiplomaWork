@@ -1,4 +1,3 @@
-using Application.Accounts.Commands.DeleteAccount;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entity;
@@ -8,7 +7,7 @@ namespace Application.Users.Commands.DeleteUser;
 
 public record DeleteUserCommand : IRequest;
 
-public class DeleteUserCommandHandler : IRequestHandler<DeleteAccountCommand>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
@@ -21,7 +20,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteAccountCommand>
         _currentUserService = currentUserService;
     }
 
-    public async Task Handle(DeleteAccountCommand request, CancellationToken token)
+    public async Task Handle(DeleteUserCommand request, CancellationToken token)
     {
         var userId = _currentUserService.UserId;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);

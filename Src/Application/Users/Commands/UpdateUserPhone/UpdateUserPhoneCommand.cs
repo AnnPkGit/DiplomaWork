@@ -1,6 +1,5 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Interfaces.Validators;
 using Domain.Entity;
 using MediatR;
 
@@ -12,16 +11,13 @@ public class UpdateUserPhoneCommandHandler : IRequestHandler<UpdateUserPhoneComm
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IUserValidator _validator;
 
     public UpdateUserPhoneCommandHandler(
         ICurrentUserService currentUserService,
-        IApplicationDbContext context,
-        IUserValidator validator)
+        IApplicationDbContext context)
     {
         _currentUserService = currentUserService;
         _context = context;
-        _validator = validator;
     }
 
     public async Task Handle(UpdateUserPhoneCommand request, CancellationToken token)
@@ -32,11 +28,6 @@ public class UpdateUserPhoneCommandHandler : IRequestHandler<UpdateUserPhoneComm
         if (user == null)
             throw new NotFoundException(nameof(User), userId);
 
-        if (!await _validator.IsPhoneUniqueAsync(request.NewPhone, token))
-            throw new ValidationException("This phone is already taken");
-        
-        // TODO: Implement phone number verification
-        
         user.Phone = request.NewPhone;
         
         await _context.SaveChangesAsync(token);
