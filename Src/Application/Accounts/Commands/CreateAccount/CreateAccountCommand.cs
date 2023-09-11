@@ -11,7 +11,7 @@ public record CreateAccountCommand : IRequest<int>
 {
     public string Login { get; init; } = string.Empty;
     public string? Name { get; init; }
-    public string? Avatar { get; init; }
+    public string? Avatar { get; init; } // TODO: Replace the folder type
 }
 
 public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, int>
