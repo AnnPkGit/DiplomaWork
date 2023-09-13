@@ -5,6 +5,7 @@ using Infrastructure.Configuration;
 using Infrastructure.Configuration.ConfigurationManager;
 using Infrastructure.Configuration.Provider;
 using Infrastructure.DbAccess;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
@@ -28,6 +29,7 @@ public static class ConfigureServices
         // Other
         services.AddScoped<IHasher, Hasher>();
         services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IEmailService, EmailService>();
         
         return services;
     }
