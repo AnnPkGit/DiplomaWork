@@ -71,6 +71,16 @@
     display: flex;
 }
 
+.chat-selected {
+  height: 88px;
+  background: #8591ff;
+  display: flex;
+}
+
+.chat-selected * {
+  color: #eaedee;
+}
+
 .chat:hover{
     cursor: pointer;
     background: #eaedee;

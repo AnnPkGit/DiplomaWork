@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageModel } from '../shared/models/messageModel';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ChatModel } from '../shared/models/ChatModel';
 
 @Component({
   selector: 'app-messages',
@@ -10,6 +11,8 @@ export class MessagesComponent implements OnInit{
   messages: MessageModel[] | any;
   messageInput: string = '';
   addedPictures: string[] = [];
+  chats: ChatModel[] = [];
+  selectedChatId: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -52,6 +55,19 @@ export class MessagesComponent implements OnInit{
         time: '12:41 May 2023'
       }
     ]
+
+    this.chats = [{
+      Id: '1',
+      Avatar: '',
+      Login: 'Zongli',
+      Name: 'Name'
+    },
+    {
+      Id: '2',
+      Avatar: '',
+      Login: 'Zongli2',
+      Name: 'Name2'
+    }]
   }
 
   sendMessage() {
@@ -88,5 +104,13 @@ export class MessagesComponent implements OnInit{
 
   removeAttachment() {
     this.addedPictures = [];
+  }
+
+  selectChat(Id : string) {
+    this.selectedChatId = Id;
+  }
+
+  isChatSelected(Id : string) {
+    return this.selectedChatId == Id;
   }
 }
