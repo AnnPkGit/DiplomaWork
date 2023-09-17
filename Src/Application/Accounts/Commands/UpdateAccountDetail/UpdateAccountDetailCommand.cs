@@ -1,6 +1,5 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Interfaces.Validators;
 using Domain.Entity;
 using MediatR;
 
@@ -10,7 +9,7 @@ public record UpdateAccountDetailCommand : IRequest
 {
     public int Id { get; set; }
     public string? Login { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
     public string? Avatar { get; set; }
     public string? Bio { get; set; }
@@ -18,16 +17,13 @@ public record UpdateAccountDetailCommand : IRequest
 
 public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDetailCommand>
 {
-    private readonly IAccountValidator _validator;
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
     public UpdateAccountDetailCommandHandler(
-        IAccountValidator validator,
         IApplicationDbContext context,
         ICurrentUserService currentUserService)
     {
-        _validator = validator;
         _context = context;
         _currentUserService = currentUserService;
     }
@@ -46,36 +42,23 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
 
         var newLogin = request.Login;
         if (!string.IsNullOrEmpty(newLogin))
-        {
-            if (!await _validator.IsLoginUniqueAsync(newLogin))
-                throw new ValidationException($"Login ({newLogin}) is already taken");
-            
             entity.Login = newLogin;
-        }
         
         var newName = request.Name;
-        if (!string.IsNullOrEmpty(newName))
-        {
+        if (newName != null)
             entity.Name = newName;
-        }
         
         var newBirthDate = request.BirthDate;
         if (newBirthDate != default)
-        {
             entity.BirthDate = newBirthDate;
-        }
         
         var newBio = entity.Bio;
-        if (!string.IsNullOrEmpty(newBio))
-        {
+        if (newName != null)
             entity.Bio = newBio;
-        }
 
         var newAvatar = request.Avatar;
         if (!string.IsNullOrEmpty(newAvatar))
-        {
             entity.Avatar = newAvatar;
-        }
         
         await _context.SaveChangesAsync(token);
     }

@@ -1,12 +1,10 @@
 using Application.Common.Interfaces;
-using Application.Common.Interfaces.Validators;
 using Infrastructure.Authentication;
 using Infrastructure.Common;
 using Infrastructure.Configuration;
 using Infrastructure.Configuration.ConfigurationManager;
 using Infrastructure.Configuration.Provider;
 using Infrastructure.DbAccess;
-using Infrastructure.Validators;
 using Microsoft.Extensions.Configuration;
 using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
@@ -18,10 +16,6 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Validators
-        services.AddScoped<IUserValidator, UserValidator>();
-        services.AddScoped<IAccountValidator, AccountValidator>();
-        
         // Configuration
         services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
         services.Configure<GeneralConfiguration>(
