@@ -1,5 +1,5 @@
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Users.Commands.CreateUser;
@@ -29,7 +29,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
         };
 
         entity.Password = _hasher.HashPassword(entity.Password, entity.PasswordSalt);
-        entity.RegistrationDt = DateTime.Now.ToUniversalTime();
         entity.MaxAccountsCount = 1;
 
         

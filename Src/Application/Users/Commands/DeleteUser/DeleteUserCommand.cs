@@ -1,10 +1,12 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Application.Common.Security;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Users.Commands.DeleteUser;
 
+[Authorize]
 public record DeleteUserCommand : IRequest;
 
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
@@ -22,7 +24,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 
     public async Task Handle(DeleteUserCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
         if (user == null)
             throw new NotFoundException(nameof(User), userId);

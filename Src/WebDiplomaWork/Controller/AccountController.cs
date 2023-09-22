@@ -5,7 +5,7 @@ using Application.Accounts.Commands.UpdateAccountDetail;
 using Application.Accounts.Queries.GetAccountById;
 using Application.Accounts.Queries.GetAccountByLogin;
 using Application.Accounts.Queries.GetAllAccounts;
-using Domain.Entity;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -14,12 +14,12 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
         RuleFor(v => v.Email)
             .Cascade(CascadeMode.Continue)
             .NotEmpty()
-            .Matches(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+            .Matches(CommonUserValidationRules.EmailRegex);
         RuleFor(v => v.Password)
             .Cascade(CascadeMode.Continue)
             .NotEmpty()
             .MinimumLength(MinimumPasswordLenght)
             .MaximumLength(MaximumPasswordLenght)
-            .Matches(@"^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d)(?=.*[^\p{L}\p{N}]).{0,}$");
+            .Matches(CommonUserValidationRules.PasswordRegex);
     }
 }

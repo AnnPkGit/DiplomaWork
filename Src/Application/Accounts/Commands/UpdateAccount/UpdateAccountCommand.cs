@@ -1,10 +1,12 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Application.Common.Security;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Accounts.Commands.UpdateAccount;
 
+[Authorize]
 public record UpdateAccountCommand : IRequest
 {
     public int Id { get; set; }
@@ -30,7 +32,7 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
 
     public async Task Handle(UpdateAccountCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var entity = await _context.Accounts.FindAsync(
             new object?[] { request.Id }, token);
         if (entity == null)

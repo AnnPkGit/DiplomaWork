@@ -1,10 +1,12 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Application.Common.Security;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Users.Commands.UpdateUserPhone;
 
+[Authorize]
 public record UpdateUserPhoneCommand(string NewPhone) : IRequest;
 
 public class UpdateUserPhoneCommandHandler : IRequestHandler<UpdateUserPhoneCommand>
@@ -22,7 +24,7 @@ public class UpdateUserPhoneCommandHandler : IRequestHandler<UpdateUserPhoneComm
 
     public async Task Handle(UpdateUserPhoneCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
 
         if (user == null)
