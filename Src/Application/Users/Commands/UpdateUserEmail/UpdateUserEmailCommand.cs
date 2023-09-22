@@ -1,44 +1,39 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Application.Common.Security;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Users.Commands.UpdateUserEmail;
 
+[Authorize]
 public record UpdateUserEmailCommand(string NewEmail) : IRequest;
 
 public class UpdateUserEmailCommandHandler : IRequestHandler<UpdateUserEmailCommand>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IEmailService _emailService;
 
     public UpdateUserEmailCommandHandler(
         ICurrentUserService currentUserService,
-        IApplicationDbContext context,
-        IEmailService emailService)
+        IApplicationDbContext context)
     {
         _currentUserService = currentUserService;
         _context = context;
-        _emailService = emailService;
     }
 
     public async Task Handle(UpdateUserEmailCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
 
         if (user == null)
             throw new NotFoundException(nameof(User), userId);
-
-        await _emailService.SendEmailAsync(new MailRequest
-        {
-            Subject = "no-reply",
-            ToEmail = request.NewEmail,
-            Body = "Test Message"
-        }, token);
-            
+        
+        user.EmailVerified = false;
         user.Email = request.NewEmail;
+        
+        await _currentUserService.SetEmailAsync(user.Email, cancellationToken: token);
         
         await _context.SaveChangesAsync(token);
     }

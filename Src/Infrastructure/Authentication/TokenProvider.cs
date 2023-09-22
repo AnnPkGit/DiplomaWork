@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,11 +10,14 @@ namespace Infrastructure.Authentication;
 
 public sealed class TokenProvider : ITokenProvider
 {
-    private readonly JwtOptions _options;
+    private readonly AccessTokenOptions _accessOptions;
+    private readonly EmailVerifyTokenOptions _emailVerifyOptions;
 
     public TokenProvider(IOptions<JwtOptions> options)
     {
-        _options = options.Value;
+        var jwtOptions = options.Value;
+        _accessOptions = jwtOptions.AccessToken;
+        _emailVerifyOptions = jwtOptions.EmailVerifyToken;
     }
 
     public string GenAccessToken(User user)
@@ -26,14 +29,14 @@ public sealed class TokenProvider : ITokenProvider
         
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_options.SecretKey)),
+                Encoding.UTF8.GetBytes(_accessOptions.SecretKey)),
             SecurityAlgorithms.HmacSha256);
         
-        var expires = DateTime.UtcNow.Add(TimeSpan.Parse(_options.Lifetime));
+        var expires = DateTime.UtcNow.Add(TimeSpan.Parse(_accessOptions.Lifetime));
         
         var token = new JwtSecurityToken(
-            _options.Issuer,
-            _options.Audience,
+            _accessOptions.Issuer,
+            _accessOptions.Audience,
             claims,
             null,
             expires,
@@ -41,12 +44,39 @@ public sealed class TokenProvider : ITokenProvider
 
         var tokenValue = new JwtSecurityTokenHandler()
             .WriteToken(token);
-
         return tokenValue;
     }
 
     public string GenRefreshToken()
     {
         return "Not implemented";
+    }
+    
+    public string GetEmailVerifyToken(int userId, string email)
+    {
+        var claims = new Claim[]
+        {
+            new (JwtRegisteredClaimNames.NameId, userId.ToString()),
+            new (JwtRegisteredClaimNames.Email, email)
+        };
+        
+        var signingCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_emailVerifyOptions.SecretKey)),
+            SecurityAlgorithms.HmacSha256);
+        
+        var expires = DateTime.UtcNow.Add(TimeSpan.Parse(_emailVerifyOptions.Lifetime));
+        
+        var token = new JwtSecurityToken(
+            _emailVerifyOptions.Issuer,
+            _emailVerifyOptions.Audience,
+            claims,
+            null,
+            expires,
+            signingCredentials);
+
+        var tokenValue = new JwtSecurityTokenHandler()
+            .WriteToken(token);
+        return tokenValue;
     }
 }

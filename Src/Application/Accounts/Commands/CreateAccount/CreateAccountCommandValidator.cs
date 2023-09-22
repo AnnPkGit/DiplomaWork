@@ -1,6 +1,6 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Domain.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +40,7 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
     }
     private async Task<bool> HaveAccountsAvailable(string login, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var currentUser = await _context.Users
             .Include(u => u.Accounts)
             .SingleOrDefaultAsync(u => u.Id == userId, token);
