@@ -3,7 +3,8 @@ using Application.Users.Commands.UpdateUserEmail;
 using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Commands.UpdateUserPhone;
 using Application.Users.Queries.GetAllUsers;
-using Domain.Entity;
+using Application.Users.Queries.GetCurrentUser;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,16 +19,21 @@ public class UserController : ApiV1ControllerBase
         return NoContent();
     }
 
-    [HttpGet, Authorize]
+    [HttpGet("all"), Authorize]
     public async Task<IEnumerable<User>> Get()
     {
         return await Mediator.Send(new GetAllUsersQuery());
+    }
+    
+    [HttpGet, Authorize]
+    public async Task<UserBriefDto> GetCurrentUser()
+    {
+        return await Mediator.Send(new GetCurrentUserQuery());
     }
 
     [HttpPatch("email"), Authorize]
     public async Task<IActionResult> UpdateEmail(UpdateUserEmailCommand command)
     {
-        // TODO: Implement new email validation
         await Mediator.Send(command);
         return NoContent();
     }
@@ -35,7 +41,6 @@ public class UserController : ApiV1ControllerBase
     [HttpPatch("phone"), Authorize]
     public async Task<IActionResult> ChangePhone(UpdateUserPhoneCommand command)
     {
-        // TODO: Implement new phone number validation
         await Mediator.Send(command);
         return NoContent();
     }
@@ -43,7 +48,6 @@ public class UserController : ApiV1ControllerBase
     [HttpPatch("password"), Authorize]
     public async Task<IActionResult> ChangePassword(UpdateUserPasswordCommand command)
     {
-        // TODO: Implement new password validation
         await Mediator.Send(command);
         return NoContent();
     }

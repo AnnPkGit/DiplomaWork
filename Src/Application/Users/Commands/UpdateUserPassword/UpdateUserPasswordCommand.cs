@@ -1,10 +1,12 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Application.Common.Security;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Users.Commands.UpdateUserPassword;
 
+[Authorize]
 public record UpdateUserPasswordCommand(string NewPassword) : IRequest;
 
 public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommand>
@@ -25,7 +27,7 @@ public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswo
 
     public async Task Handle(UpdateUserPasswordCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
         
         if (user == null)

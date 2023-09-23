@@ -1,5 +1,6 @@
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Accounts.Commands.CreateAccount;
@@ -26,15 +27,16 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
 
     public async Task<int> Handle(CreateAccountCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
+        if (userId == null)
+            throw new NotFoundException();
         
         var entity = new Account
         {
             Login = request.Login,
             Name = request.Name,
             Avatar = request.Avatar,
-            CreateDt = DateTime.Now.ToUniversalTime(),
-            OwnerId = userId
+            OwnerId = (int)userId
         };
 
         await _context.Accounts.AddAsync(entity, token);

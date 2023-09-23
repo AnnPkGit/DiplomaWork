@@ -5,7 +5,9 @@ using Infrastructure.Configuration;
 using Infrastructure.Configuration.ConfigurationManager;
 using Infrastructure.Configuration.Provider;
 using Infrastructure.DbAccess;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,9 @@ public static class ConfigureServices
         // Other
         services.AddScoped<IHasher, Hasher>();
         services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<TokenValidationParameters, EmailVerifyTokenValidationParameters>();
+        services.AddScoped<ITokenValidator, TokenValidator>();
         
         return services;
     }

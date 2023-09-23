@@ -1,12 +1,10 @@
-using Domain.Entity;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<ExampleItem> ExampleItems { get; }
-    
     DbSet<User> Users { get; }
     
     DbSet<Account> Accounts { get;  }

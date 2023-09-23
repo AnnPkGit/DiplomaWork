@@ -1,6 +1,6 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entity;
+using Domain.Entities;
 using FluentValidation;
 
 namespace Application.Users.Commands.UpdateUserPassword;
@@ -31,7 +31,7 @@ public class UpdateUserPasswordCommandValidation : AbstractValidator<UpdateUserP
     
     private async Task<bool> BeNewPasswordUnequalOldOne(string password, CancellationToken token)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.Id;
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
         if (user == null)
             throw new NotFoundException(nameof(User), userId);

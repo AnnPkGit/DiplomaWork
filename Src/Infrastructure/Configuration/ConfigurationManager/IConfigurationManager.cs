@@ -3,4 +3,5 @@
 public interface IConfigurationManager
 {
     DbConfiguration DbConfiguration { get; }
+    EmailSettings EmailSettings { get; }
 }
