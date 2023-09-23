@@ -145,3 +145,8 @@
   color: #A1B3BD;
   margin: 6px;
 }
+
+.errorLabel {
+  color: rgb(235, 142, 142);
+  font-weight: 600;
+}

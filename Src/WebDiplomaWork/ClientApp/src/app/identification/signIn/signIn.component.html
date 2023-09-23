@@ -19,14 +19,20 @@
       <div>
         <label class="neutralColorLabel">Phone number, email adress or login</label>
         <div class="separationDiv">
-          <input class="roundedInput" />
+          <input class="roundedInput" [(ngModel)]="email"  (ngModelChange)="emailValidate()"/>
+        </div>
+        <div class="separationDiv">
+          <label class="errorLabel">{{emailError}}</label>
         </div>
       </div>
 
       <div style="margin-top: 10px;">
         <label class="neutralColorLabel">Password</label>
         <div class="separationDiv">
-          <input class="roundedInput" type="password" />
+          <input class="roundedInput" type="password" [(ngModel)]="password"/>
+        </div>
+        <div class="separationDiv">
+          <label class="errorLabel">{{passwordError}}</label>
         </div>
         <label class="linkTextLabel">Forgot your password?</label>
       </div>
