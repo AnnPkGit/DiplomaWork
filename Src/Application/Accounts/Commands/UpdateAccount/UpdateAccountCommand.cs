@@ -39,7 +39,7 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
             throw new NotFoundException(nameof(Account), request.Id);
         
         // Checking whether the account being deleted belongs to the user deleting it
-        if (entity.OwnerId != userId)
+        if (entity.Id != userId)
             throw new ForbiddenAccessException($"User ({userId}) tried to update account ({request.Id}).");
         
         entity.Login = request.Login;

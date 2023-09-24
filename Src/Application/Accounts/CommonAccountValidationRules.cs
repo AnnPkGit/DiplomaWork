@@ -7,10 +7,10 @@ namespace Application.Accounts;
 public static class CommonAccountValidationRules
 {
     public const int MinimumLoginLenght = 4;
-    public const int MaximumLoginLenght = 15;
+    public const int MaximumLoginLenght = 30;
     
     public const int MinimumNameLenght = 1;
-    public const int MaximumNameLenght = 20;
+    public const int MaximumNameLenght = 40;
     
     public const int MaximumBioLenght = 160;
     

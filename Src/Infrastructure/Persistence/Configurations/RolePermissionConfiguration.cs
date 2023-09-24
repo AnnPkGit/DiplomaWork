@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Permission = Domain.Enums.Permission;
 
-namespace Infrastructure.Configuration.EntityConf;
+namespace Infrastructure.Persistence.Configurations;
 
 public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermission>
 {

@@ -33,10 +33,10 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
         
         var entity = new Account
         {
+            Id = userId,
             Login = request.Login,
             Name = request.Name,
-            Avatar = request.Avatar,
-            OwnerId = (int)userId
+            Avatar = request.Avatar
         };
 
         await _context.Accounts.AddAsync(entity, token);

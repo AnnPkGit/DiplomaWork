@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class User : BaseEntity
+public class User : BasicLegalEntity
 {
     public string Email
     {
@@ -27,11 +27,10 @@ public class User : BaseEntity
     public string? Phone { get; set; }
     public bool PhoneVerified { get; set; }
     public int? PhoneVerifyCode { get; set; }
-    public string Password { get; set; }
-    public string PasswordSalt { get; set; }
-    public int MaxAccountsCount { get; set; }
-    public ICollection<Account> Accounts { get; private set; } = new List<Account>();
+    public string Password { get; set; } = string.Empty;
+    public string PasswordSalt { get; set; } = string.Empty;
     
+    public Account? Account { get; set; }
     public ICollection<Role> Roles { get; private set; } = new List<Role>();
 
     private string _email = null!;

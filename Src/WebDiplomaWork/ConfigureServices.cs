@@ -11,13 +11,11 @@ public static class ConfigureServices
     public static IServiceCollection AddWebUIServices(
         this IServiceCollection services)
     {
-        // Jwt Configuration
         services.ConfigureOptions<JwtOptionsSetup>();
+        services.ConfigureOptions<EmailOptionsSetup>();
         
-        // Other
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         
-        // Auth
         services.AddAuthentication()
             .AddScheme<SessionTokenAuthenticationSchemeOptions, SessionTokenAuthenticationSchemeHandler>(
                 "SessionTokens",

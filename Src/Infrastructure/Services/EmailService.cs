@@ -1,25 +1,25 @@
 using Application.Common.Interfaces;
-using Infrastructure.Configuration;
-using Infrastructure.Configuration.ConfigurationManager;
+using Infrastructure.Configurations;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace Infrastructure.Services;
 
 public class EmailService : IEmailService
 {
-    private readonly EmailSettings _emailSettings;
+    private readonly EmailOptions _emailOptions;
 
-    public EmailService(IConfigurationManager configurationManager)
+    public EmailService(IOptions<EmailOptions> options)
     {
-        _emailSettings = configurationManager.EmailSettings;
+        _emailOptions = options.Value;
     }
 
     public async Task SendEmailAsync(MailRequest mailRequest, CancellationToken token)
     {
         var email = new MimeMessage();
-        email.Sender = MailboxAddress.Parse(_emailSettings.Email);
+        email.Sender = MailboxAddress.Parse(_emailOptions.Email);
         email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
         email.Subject = mailRequest.Subject;
         var builder = new BodyBuilder
@@ -29,8 +29,8 @@ public class EmailService : IEmailService
         email.Body = builder.ToMessageBody();
         
         using var smtp = new SmtpClient();
-        await smtp.ConnectAsync(_emailSettings.Host, _emailSettings.Port, SecureSocketOptions.StartTls, token);
-        await smtp.AuthenticateAsync(_emailSettings.Email, _emailSettings.Password, token);
+        await smtp.ConnectAsync(_emailOptions.Host, _emailOptions.Port, SecureSocketOptions.StartTls, token);
+        await smtp.AuthenticateAsync(_emailOptions.Email, _emailOptions.Password, token);
         await smtp.SendAsync(email, token);
         await smtp.DisconnectAsync(true, token);
     }
