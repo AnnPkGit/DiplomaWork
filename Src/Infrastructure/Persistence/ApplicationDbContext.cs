@@ -3,23 +3,27 @@ using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
-using Infrastructure.Configuration.Provider;
+using Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Infrastructure.DbAccess;
+namespace Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly IMediator _mediator;
-    private readonly IDbAccessProvider _dbAccessProvider;
+    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+    private readonly LegalEntitySaveChangesInterceptor _legalEntitySaveChangesInterceptor;
     public ApplicationDbContext(
-        IDbAccessProvider dbAccessProvider,
-        IMediator mediator)
+        DbContextOptions<ApplicationDbContext> options,
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor,
+        LegalEntitySaveChangesInterceptor legalEntitySaveChangesInterceptor,
+        IMediator mediator) : base(options)
     {
-        _dbAccessProvider = dbAccessProvider;
         _mediator = mediator;
+        _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        _legalEntitySaveChangesInterceptor = legalEntitySaveChangesInterceptor;
     }
 
     public DbSet<User> Users => Set<User>();
@@ -28,7 +32,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
-        Expression<Func<BaseEntity, bool>> filterExpr = be => be.Deactivated == null;
+        Expression<Func<IDeactivated, bool>> filterExpr = be => be.Deactivated == null;
         foreach (var mutableEntityType in builder.Model.GetEntityTypes())
         {
             // check if current entity type is child of BaseModel
@@ -50,9 +54,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = _dbAccessProvider.GetConnectionString();
-        var serverVersion = _dbAccessProvider.GetServerVersion();
-        optionsBuilder.UseMySql(connectionString, serverVersion);
+        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor, _legalEntitySaveChangesInterceptor);
     }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

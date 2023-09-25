@@ -29,9 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
         };
 
         entity.Password = _hasher.HashPassword(entity.Password, entity.PasswordSalt);
-        entity.MaxAccountsCount = 1;
 
-        
         await _context.Users.AddAsync(entity, token);
         await _context.SaveChangesAsync(token);
     }

@@ -19,19 +19,19 @@ public class AccountController : ApiV1ControllerBase
         return await Mediator.Send(command);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("by/id")]
     public async Task<Account> GetById(int id)
     {
         return await Mediator.Send(new GetAccountByIdQuery(id));
     }
     
-    [HttpGet("{login}")]
-    public async Task<Account> GetByLogin(string login)
+    [HttpGet("by/login")]
+    public async Task<Account> GetByLogin([FromQuery] string login)
     {
         return await Mediator.Send(new GetAccountByLoginQuery(login));
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IEnumerable<Account>> GetAll()
     {
         return await Mediator.Send(new GetAllAccountsQuery());

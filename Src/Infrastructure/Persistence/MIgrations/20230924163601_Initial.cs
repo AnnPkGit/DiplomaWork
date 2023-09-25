@@ -65,8 +65,9 @@ namespace Infrastructure.MIgrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PasswordSalt = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MaxAccountsCount = table.Column<int>(type: "int", nullable: false),
-                    Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,11 +104,9 @@ namespace Infrastructure.MIgrations
                 name: "Accounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Login = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -115,16 +114,16 @@ namespace Infrastructure.MIgrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Bio = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Accounts_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Accounts_Users_Id",
+                        column: x => x.Id,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -187,17 +186,12 @@ namespace Infrastructure.MIgrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accounts_UserId",
-                table: "Accounts",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RolePermission_PermissionId",
                 table: "RolePermission",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_Usersd",
+                name: "IX_RoleUser_UserId",
                 table: "RoleUser",
                 column: "UserId");
         }

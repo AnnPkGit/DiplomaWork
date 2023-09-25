@@ -1,6 +1,6 @@
-namespace Infrastructure.Configuration;
+namespace Infrastructure.Configurations;
 
-public class EmailSettings
+public class EmailOptions
 {
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;

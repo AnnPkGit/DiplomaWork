@@ -3,16 +3,16 @@ using Infrastructure.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configuration.EntityConf;
+namespace Infrastructure.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(TableNames.Users)
-            .HasMany(e => e.Accounts)
+            .HasOne(e => e.Account)
             .WithOne(e => e.Owner)
-            .HasForeignKey(e => e.OwnerId)
+            .HasForeignKey<Account>(e => e.Id)
             .IsRequired();
         
         builder.HasMany(e => e.Roles)

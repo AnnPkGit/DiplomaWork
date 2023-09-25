@@ -25,7 +25,7 @@ public class Hasher : IHasher
     public string GenerateSalt()
     {
         byte[] saltBytes = new byte[32];
-        using (var rng = new RNGCryptoServiceProvider())
+        using (var rng = RandomNumberGenerator.Create())
         {
             rng.GetBytes(saltBytes);
         }

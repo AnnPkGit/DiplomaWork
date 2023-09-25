@@ -18,6 +18,6 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumer
 
     public async Task<IEnumerable<User>> Handle(GetAllUsersQuery request, CancellationToken token)
     {
-        return await _context.Users.ToListAsync(token);
+        return await _context.Users.IgnoreAutoIncludes().ToListAsync(token);
     }
 }
