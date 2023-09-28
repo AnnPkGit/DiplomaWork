@@ -1,5 +1,7 @@
 using System.Reflection;
 using Application.Common.Behaviours;
+using Application.Common.Interfaces;
+using Application.Common.Notification;
 using FluentValidation;
 using MediatR;
 
@@ -18,6 +20,8 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
         });
+        
+        services.AddScoped<IEmailConfirmationSender, EmailConfirmationSender>();
         
         return services;
     }

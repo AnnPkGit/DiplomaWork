@@ -2,6 +2,24 @@
 
 public class User : BasicLegalEntity
 {
+    public User() {}
+    public User(string email, string passwordHash, string passwordSalt)
+    {
+        _email = email;
+        Password = passwordHash;
+        PasswordSalt = passwordSalt;
+    }
+
+    public override DateTime? Deactivated
+    {
+        get => _deactivated;
+        set
+        {
+            _deactivated = value;
+            AddDomainEvent(new UserDeactivateEvent(this));
+        }
+    }
+
     public string Email
     {
         get => _email;
@@ -36,4 +54,6 @@ public class User : BasicLegalEntity
     private string _email = null!;
 
     private bool _emailVerified;
+
+    private DateTime? _deactivated;
 }

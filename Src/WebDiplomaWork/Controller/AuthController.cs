@@ -1,6 +1,8 @@
 using Application.Auth.Commands.LoginUserUsingSession;
+using Application.Auth.Commands.LogoutUser;
 using Application.Auth.Commands.SendVerifyMsgByEmail;
 using Application.Auth.Commands.UserEmailConfirm;
+using Application.Users.Queries.GetCurrentUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,17 +15,24 @@ public class AuthController : ApiV1ControllerBase
         await Mediator.Send(new UserEmailConfirmCommand(id, token));
         return NoContent();
     }
+    
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUserUsingSessionAsync(LoginUserUsingSessionCommand command)
+    public async Task<UserBriefDto> LoginUserUsingSessionAsync(LoginUserUsingSessionCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
     
     [HttpGet("send/email"), Authorize]
     public async Task<IActionResult> SendEmailVerifyMessage()
     {
         await Mediator.Send(new SendVerifyMsgByEmailCommand());
+        return NoContent();
+    }
+    
+    [HttpGet("logout")]
+    public async Task<IActionResult> LogoutUser()
+    {
+        await Mediator.Send(new LogoutUserCommand());
         return NoContent();
     }
 }

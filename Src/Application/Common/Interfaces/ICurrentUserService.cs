@@ -20,4 +20,5 @@ public interface ICurrentUserService
         CancellationToken cancellationToken = default);
     public Task SetEmailVerifiedAsync(bool emailVerified, string key = UserFieldNames.EmailVerified,
         CancellationToken cancellationToken = default);
+    public Task Clear(CancellationToken cancellationToken = default);
 }

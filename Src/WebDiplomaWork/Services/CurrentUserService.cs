@@ -77,4 +77,10 @@ public class CurrentUserService : ICurrentUserService
         await _session.LoadAsync(cancellationToken);
         _session.SetString(key, emailVerified.ToString());
     }
+
+    public Task Clear(CancellationToken cancellationToken = default)
+    {
+        _session.Clear();
+        return Task.CompletedTask;
+    }
 }

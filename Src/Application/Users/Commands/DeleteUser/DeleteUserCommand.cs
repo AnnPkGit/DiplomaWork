@@ -13,13 +13,16 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTime _dateTime;
 
     public DeleteUserCommandHandler(
         IApplicationDbContext context,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IDateTime dateTime)
     {
         _context = context;
         _currentUserService = currentUserService;
+        _dateTime = dateTime;
     }
 
     public async Task Handle(DeleteUserCommand request, CancellationToken token)
@@ -28,8 +31,9 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
         var user = await _context.Users.FindAsync(new object?[] { userId }, token);
         if (user == null)
             throw new NotFoundException(nameof(User), userId);
+
+        user.Deactivated = _dateTime.Now;
         
-        _context.Users.Remove(user);
         await _context.SaveChangesAsync(token);
     }
 }

@@ -42,7 +42,6 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
     {
         var userId = _currentUserService.Id;
         var currentUser = await _context.Users
-            .Include(user => user.Account)
             .SingleOrDefaultAsync(user => user.Id == userId, token);
         
         if (currentUser == null)
