@@ -1,10 +1,11 @@
 using Application.Accounts.Commands.CreateAccount;
-using Application.Accounts.Commands.DeleteAccount;
 using Application.Accounts.Commands.UpdateAccount;
 using Application.Accounts.Commands.UpdateAccountDetail;
 using Application.Accounts.Queries.GetAccountById;
 using Application.Accounts.Queries.GetAccountByLogin;
-using Application.Accounts.Queries.GetAllAccounts;
+using Application.Accounts.Queries.GetAccountsWithPaginationQuery;
+using Application.Accounts.Queries.Models;
+using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +32,10 @@ public class AccountController : ApiV1ControllerBase
         return await Mediator.Send(new GetAccountByLoginQuery(login));
     }
 
-    [HttpGet]
-    public async Task<IEnumerable<Account>> GetAll()
+    [HttpGet("pagination")]
+    public async Task<ActionResult<PaginatedList<AccountBriefDto>>> GetWithPagination([FromQuery] GetAccountsWithPaginationQuery command)
     {
-        return await Mediator.Send(new GetAllAccountsQuery());
-    }
-
-    [HttpDelete, Authorize]
-    public async Task<IActionResult> Delete(DeleteAccountCommand command)
-    {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
 
     [HttpPut, Authorize]

@@ -1,3 +1,4 @@
+using Application.Accounts.Queries.Models;
 using Application.Common.Mappings;
 using Domain.Entities;
 
@@ -9,4 +10,5 @@ public class UserBriefDto : IMapFrom<User>
     public string? Phone { get; set; }
     public bool EmailVerified { get; set; }
     public bool PhoneVerified { get; set; }
+    public AccountBriefDto? Account { get; set; }
 }

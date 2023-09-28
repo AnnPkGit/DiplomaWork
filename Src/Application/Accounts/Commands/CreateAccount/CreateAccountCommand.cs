@@ -1,10 +1,13 @@
+using Application.Common.Constants;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Accounts.Commands.CreateAccount;
 
+[Authorize]
 public record CreateAccountCommand : IRequest<int>
 {
     public string Login { get; init; } = string.Empty;
@@ -28,7 +31,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
     public async Task<int> Handle(CreateAccountCommand request, CancellationToken token)
     {
         var userId = _currentUserService.Id;
-        if (userId == null)
+        if (userId == UserDefaultValues.Id)
             throw new NotFoundException();
         
         var entity = new Account

@@ -31,7 +31,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, U
     {
         var userId = _currentUserService.Id;
         var user = await _context.Users
-            .FindAsync(new object?[] { userId }, token);
+            .SingleOrDefaultAsync(user => user.Id == userId, token);
         if (user == null)
         {
             throw new NotFoundException(nameof(User), userId);

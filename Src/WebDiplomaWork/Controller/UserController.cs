@@ -1,10 +1,11 @@
+using Application.Common.Models;
 using Application.Users.Commands.CreateUser;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUserEmail;
 using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Commands.UpdateUserPhone;
-using Application.Users.Queries.GetAllUsers;
 using Application.Users.Queries.GetCurrentUser;
-using Domain.Entities;
+using Application.Users.Queries.GetUsersWithPagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,10 @@ public class UserController : ApiV1ControllerBase
         return NoContent();
     }
 
-    [HttpGet("all"), Authorize]
-    public async Task<IEnumerable<User>> Get()
+    [HttpGet("pagination"), Authorize]
+    public async Task<ActionResult<PaginatedList<UserBriefDto>>> GetUsersWithPagination([FromQuery] GetUsersWithPaginationQuery command)
     {
-        return await Mediator.Send(new GetAllUsersQuery());
+        return await Mediator.Send(command);
     }
     
     [HttpGet, Authorize]
@@ -49,6 +50,13 @@ public class UserController : ApiV1ControllerBase
     public async Task<IActionResult> ChangePassword(UpdateUserPasswordCommand command)
     {
         await Mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpDelete, Authorize]
+    public async Task<IActionResult> Delete()
+    {
+        await Mediator.Send(new DeleteUserCommand());
         return NoContent();
     }
 }

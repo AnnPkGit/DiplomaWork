@@ -20,5 +20,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .UsingEntity<RoleUser>();
         
         builder.Navigation(e => e.Roles).AutoInclude();
+        builder.Navigation(e => e.Account).AutoInclude();
     }
 }

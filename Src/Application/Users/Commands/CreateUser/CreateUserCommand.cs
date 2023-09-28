@@ -10,27 +10,27 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
 {
     private readonly IHasher _hasher;
     private readonly IApplicationDbContext _context;
+    private readonly IEmailConfirmationSender _emailSender;
 
     public CreateUserCommandHandler(
         IHasher hasher,
-        IApplicationDbContext context)
+        IApplicationDbContext context,
+        IEmailConfirmationSender emailSender)
     {
         _hasher = hasher;
         _context = context;
+        _emailSender = emailSender;
     }
 
     public async Task Handle(CreateUserCommand request, CancellationToken token)
     {
-        var entity = new User
-        {
-            Email = request.Email,
-            Password = request.Password,
-            PasswordSalt = _hasher.GenerateSalt()
-        };
-
-        entity.Password = _hasher.HashPassword(entity.Password, entity.PasswordSalt);
-
+        var newPassSalt = _hasher.GenerateSalt();
+        var hashPassword = _hasher.HashPassword(request.Password, newPassSalt);
+        
+        var entity = new User(request.Email, hashPassword, newPassSalt);
+        
         await _context.Users.AddAsync(entity, token);
         await _context.SaveChangesAsync(token);
+        await _emailSender.SendAsync(new EmailConfirmRequest(entity.Id, entity.Email), token);
     }
 }
