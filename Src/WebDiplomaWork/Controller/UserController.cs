@@ -14,10 +14,9 @@ namespace WebDiplomaWork.Controller;
 public class UserController : ApiV1ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserCommand command)
+    public async Task<ActionResult<int>> Create(CreateUserCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
 
     [HttpGet("pagination"), Authorize]
