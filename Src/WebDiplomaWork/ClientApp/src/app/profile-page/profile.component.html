@@ -1,3 +1,5 @@
+<app-profile-edit-modal *ngIf="this.modalOpened" (booleanEmitter)="onBooleanEmitted($event)"></app-profile-edit-modal>
+
 <div  class="bgColor">
     <div class="topHeaderLocalFull"></div> <!--//behind all-->
     
@@ -23,7 +25,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="div2">
       <div class="tostContainer">
         <div class="post hidden-overflow">
@@ -40,24 +42,26 @@
                     <div class="profileNameHolderMain">
                     </div>
                     <div class="bar-options-profile">
-                        <div>
-                            <div>{{account?.userName}} <br/> @{{account?.userLogin}}</div>
+                        <div style="padding: 0;">
+                            <label style="font-size: 1.3vw; font-weight: 800; padding-bottom: 0;">{{account?.userName}}</label><br/>
+                            <label style="color: #A1B3BD; font-size: 0.8vw; font-weight: 400; padding-top: 0;">@{{account?.userLogin}}</label>
                         </div>
-                        <div>
+                        <div class="centered-op">
                             <div>Following {{account?.followsCount}}</div>
                         </div>
-                        <div>
+                        <div class="centered-op">
                             <div>Followers {{account?.followersCount}}</div>
                         </div>
-                        <div>
-                          <div>Settings</div>
+                        <div style="padding-right: 6%;">
+                          <div><img id="editProfile" (click)="openProfileEditModal()" style="float: right;" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDE1QzEyLjc5NTYgMTUgMTMuNTU4NyAxNC42ODM5IDE0LjEyMTMgMTQuMTIxM0MxNC42ODM5IDEzLjU1ODcgMTUgMTIuNzk1NiAxNSAxMkMxNSAxMS4yMDQ0IDE0LjY4MzkgMTAuNDQxMyAxNC4xMjEzIDkuODc4NjhDMTMuNTU4NyA5LjMxNjA3IDEyLjc5NTYgOSAxMiA5QzExLjIwNDQgOSAxMC40NDEzIDkuMzE2MDcgOS44Nzg2OCA5Ljg3ODY4QzkuMzE2MDcgMTAuNDQxMyA5IDExLjIwNDQgOSAxMkM5IDEyLjc5NTYgOS4zMTYwNyAxMy41NTg3IDkuODc4NjggMTQuMTIxM0MxMC40NDEzIDE0LjY4MzkgMTEuMjA0NCAxNSAxMiAxNVoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yIDEyLjg4VjExLjEyQzIgMTAuMDggMi44NSA5LjIyIDMuOSA5LjIyQzUuNzEgOS4yMiA2LjQ1IDcuOTQgNS41NCA2LjM3QzUuMDIgNS40NyA1LjMzIDQuMyA2LjI0IDMuNzhMNy45NyAyLjc5QzguNzYgMi4zMiA5Ljc4IDIuNiAxMC4yNSAzLjM5TDEwLjM2IDMuNThDMTEuMjYgNS4xNSAxMi43NCA1LjE1IDEzLjY1IDMuNThMMTMuNzYgMy4zOUMxNC4yMyAyLjYgMTUuMjUgMi4zMiAxNi4wNCAyLjc5TDE3Ljc3IDMuNzhDMTguNjggNC4zIDE4Ljk5IDUuNDcgMTguNDcgNi4zN0MxNy41NiA3Ljk0IDE4LjMgOS4yMiAyMC4xMSA5LjIyQzIxLjE1IDkuMjIgMjIuMDEgMTAuMDcgMjIuMDEgMTEuMTJWMTIuODhDMjIuMDEgMTMuOTIgMjEuMTYgMTQuNzggMjAuMTEgMTQuNzhDMTguMyAxNC43OCAxNy41NiAxNi4wNiAxOC40NyAxNy42M0MxOC45OSAxOC41NCAxOC42OCAxOS43IDE3Ljc3IDIwLjIyTDE2LjA0IDIxLjIxQzE1LjI1IDIxLjY4IDE0LjIzIDIxLjQgMTMuNzYgMjAuNjFMMTMuNjUgMjAuNDJDMTIuNzUgMTguODUgMTEuMjcgMTguODUgMTAuMzYgMjAuNDJMMTAuMjUgMjAuNjFDOS43OCAyMS40IDguNzYgMjEuNjggNy45NyAyMS4yMUw2LjI0IDIwLjIyQzUuODA0MSAxOS45NjkgNS40ODU1OCAxOS41NTUzIDUuMzU0MzUgMTkuMDY5OEM1LjIyMzExIDE4LjU4NDIgNS4yODk4OCAxOC4wNjY0IDUuNTQgMTcuNjNDNi40NSAxNi4wNiA1LjcxIDE0Ljc4IDMuOSAxNC43OEMyLjg1IDE0Ljc4IDIgMTMuOTIgMiAxMi44OFoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo='/></div>
                       </div>
                     </div>
                 </div>
             </div>
             <div class="profile-page-info-bar">
-              <div>Join date {{account?.joinDate}}</div>
-              <div>{{account?.bio}}</div>
+              <div class="calendar-info"><img style="padding-bottom: 0.8%" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuNjY2NjcgMS4xNjY2OVYyLjkxNjY5TTkuMzMzMzMgMS4xNjY2OVYyLjkxNjY5TTIuMDQxNjcgNS4zMDI1MkgxMS45NTgzTTEyLjI1IDQuOTU4MzVWOS45MTY2OUMxMi4yNSAxMS42NjY3IDExLjM3NSAxMi44MzM0IDkuMzMzMzMgMTIuODMzNEg0LjY2NjY3QzIuNjI1IDEyLjgzMzQgMS43NSAxMS42NjY3IDEuNzUgOS45MTY2OVY0Ljk1ODM1QzEuNzUgMy4yMDgzNSAyLjYyNSAyLjA0MTY5IDQuNjY2NjcgMi4wNDE2OUg5LjMzMzMzQzExLjM3NSAyLjA0MTY5IDEyLjI1IDMuMjA4MzUgMTIuMjUgNC45NTgzNVoiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuMTU1MTQgNy45OTE2NEg5LjE2MDM5TTkuMTU1MTQgOS43NDE2NEg5LjE2MDM5TTYuOTk2ODEgNy45OTE2NEg3LjAwMjY0TTYuOTk2ODEgOS43NDE2NEg3LjAwMjY0TTQuODM3ODkgNy45OTE2NEg0Ljg0MzcyTTQuODM3ODkgOS43NDE2NEg0Ljg0MzcyIiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
+                Joined {{account?.joinDate}}</div>
+              <div class="profile-bio">{{account?.bio}}</div>
             </div>
             <div class="profile-page-options-bar">
                 <div>Toasts</div>

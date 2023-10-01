@@ -84,6 +84,7 @@
 .profile-page-info-bar {
     padding-left: 3%;
     padding-right: 3%;
+    padding-bottom: 2%;
     color: #5C6778;
     font-size: 0.8vw;
 }
@@ -92,3 +93,24 @@
     background-color: rgba(102, 104, 120, 0.07);
     cursor: pointer;
   }
+
+.profile-bio {
+    font-size: 0.9vw;
+    font-weight: 600;
+}
+
+.calendar-info {
+    font-size: 0.9vw;
+    color: #A1B3BD;
+}
+
+.centered-op {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3%;
+}
+
+#editProfile:hover {
+    cursor: pointer;
+}

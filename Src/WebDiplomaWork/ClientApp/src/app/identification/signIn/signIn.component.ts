@@ -1,30 +1,40 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ServerEndpoint } from 'src/app/shared/config';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+
+const errorKey: string = 'error';
 
 @Component({
   selector: 'signIn-step',
   templateUrl: './signIn.component.html',
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
   password: string = '';
   email: string = '';
 
   emailError: string = '';
   passwordError: string = '';
+  loginError: string | null = '';
 
   constructor(private router: LocalRouter, private auth: AuthService, private http: HttpClient) { }
 
-  emailValidate() {
+  ngOnInit(): void {
+    this.loginError = localStorage.getItem(errorKey);
+  }
+
+  emailValidate(): boolean {
     const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if(!regex.exec(this.email))
-    {
+    const isMatch = regex.test(this.email); 
+  
+    if (!isMatch) {
       this.emailError = 'Wrong email format';
-    }
-    else {
+    } else {
       this.emailError = '';
     }
+  
+    return isMatch;
   }
 
   RedirectToAuthPage() {
@@ -39,27 +49,29 @@ export class SignInComponent {
     else {
       this.passwordError = '';
     }
+    
+    if(!this.emailValidate()) {
+      return;
+    }
 
     const body = {
-      Password: "this",
-      Email: "emailInput"
+      Password: this.password,
+      Email: this.email
     };
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' 
     });
 
-    this.http.post('api/v1/auth/login', body, { headers }).subscribe(
+    this.http.post(ServerEndpoint.loginEndpoint, body, { headers }).subscribe(
       () => {
-        console.log('auth successful');
+        localStorage.setItem(errorKey, '');
+        this.router.goToHome();
       },
       (error) => {
-        console.error('auth Error during registration:', error);
+        localStorage.setItem(errorKey, 'Login error');
+        window.location.reload();
       }
     );
-
-    //допилить
-    this.auth.Authorize();
-    this.router.goToHome();
   }
 }

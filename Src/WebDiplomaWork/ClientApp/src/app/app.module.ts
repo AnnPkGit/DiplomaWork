@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -23,6 +23,8 @@ import { PostPAgeComponent } from './post-page/post-page.component';
 import { ProfileBarComponent } from './home/profileBar/profile-bar.component';
 import { ToastItComponent } from './toast-it-page/toast-it.component';
 import { ProfilePageComponent } from './profile-page/profile.component';
+import { ProfileEditModal } from './modals/ProfileEditModal';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -43,12 +45,15 @@ import { ProfilePageComponent } from './profile-page/profile.component';
     PostPAgeComponent,
     ProfileBarComponent,
     ToastItComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    ProfileEditModal,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    AutosizeModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: AuthComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
@@ -60,6 +65,7 @@ import { ProfilePageComponent } from './profile-page/profile.component';
       { path: 'messages', component: MessagesComponent },
       { path: 'toast/:id', component: PostPAgeComponent },
       { path: 'profile/:id', component: ProfilePageComponent },
+      { path: 'form', component: ProfileEditModal },
     ])
   ],
   providers: [AuthGuard],

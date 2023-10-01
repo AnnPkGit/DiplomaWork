@@ -7,3 +7,7 @@ export const AppConfig = {
     profileEndpoint: '/profile/',
     authEndpoint: '',
 };
+
+export const ServerEndpoint = {
+    loginEndpoint: 'api/v1/auth/login'
+}

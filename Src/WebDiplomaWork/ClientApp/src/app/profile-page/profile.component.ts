@@ -9,6 +9,7 @@ import { AccountModel } from '../shared/models/accountModel';
 export class ProfilePageComponent implements OnInit{
   posts?: PostModel[];
   account?: AccountModel;
+  modalOpened: boolean = false;
 
   ngOnInit(): void {
     this.posts = [];
@@ -37,12 +38,21 @@ export class ProfilePageComponent implements OnInit{
       userLogin: 'Tory',
       followersCount: 1,
       followsCount: 2,
-      joinDate: '03.09.2023',
+      joinDate: 'March 2023',
       bio: 'Hi my name is Tory!!!'
     }
   }
 
+  onBooleanEmitted(value: boolean) {
+    this.modalOpened = value;
+  }
+
   Reload() {
     window.location.reload();
+  }
+
+  openProfileEditModal() {
+    //this.modalService.openModal(ProfileEditModal);
+    this.modalOpened = true;
   }
 }

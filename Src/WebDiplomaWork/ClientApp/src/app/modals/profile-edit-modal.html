@@ -1,0 +1,74 @@
+<div class="modal-bg" (click)="Close($event)">
+    <form class="modal-content" (ngSubmit)="onSubmit()" (click)="StopPropagation($event)" [formGroup]="myForm">
+        <div>
+          <button type="button" class="colorBtn-mini" type="submit">Save</button>
+          <img style="float: right;" (click)="Close($event)"
+            src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMTcgMTMuODNMMTMuODMgOC4xN00xMy44MyAxMy44M0w4LjE3IDguMTdNMTEgMjFDMTYuNSAyMSAyMSAxNi41IDIxIDExQzIxIDUuNSAxNi41IDEgMTEgMUM1LjUgMSAxIDUuNSAxIDExQzEgMTYuNSA1LjUgMjEgMTEgMjFaIiBzdHJva2U9IiM1QzY3NzgiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==' />
+        </div>
+
+        <div style="
+        font-weight: 700;
+        font-size: 26px;
+        color: #5C6778;
+        width: 100%; 
+        text-align: center;">
+        EDIT PROFILE
+        </div>
+    
+        <div class="scroll-content">
+        <div style="position: relative; min-height: 117.088px;">
+          <div class="pic-relative-container">
+            <div class="profile-picture-container">
+              <img src="https://img.devilchan.com/original/2022/06/30/11/12/27306/genshin-impact-yelan-genshinimpact-27306-3000x3000.jpeg">
+            </div>
+          </div>
+          <div class="banner" style="border-radius: 10px; max-height: 150px; min-height: 150px;">
+            <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-255379.jpg&fm=jpg">
+          </div>
+        </div>
+    
+        <div>
+          <label for="name">Name</label>
+          <input class="bio-textarea" maxlength="20" name="name" formControlName="name" id="name">
+          <label style="color: #e77f7f;"  *ngIf="myForm.get('name')?.invalid && (myForm.get('name')?.dirty || myForm.get('name')?.touched)" class="error-message">
+            Name is required and must be less than 20 characters.
+          </label>
+        </div>
+    
+        <div>
+          <label for="bio">Bio</label>
+          <input class="bio-textarea" maxlength="100" name="bio" formControlName="bio" id="bio"/>
+          <label style="color: #e77f7f;" *ngIf="myForm.get('bio')?.invalid && (myForm.get('bio')?.dirty || myForm.get('bio')?.touched)" class="error-message">
+            aaaS
+          </label>
+        </div> 
+        
+
+        <div>
+          <label>Bithrdate</label>
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <select class="dropDown" style="width: 120px" #mounth (change)="onSelectedMounth(mounth.value)">
+              <option value="" disabled selected>Mounth</option>
+              <option *ngFor="let mounth of GetMounths()" value="{{mounth}}">{{mounth}}</option>
+            </select>
+
+            <select class="dropDown" style="width: 95px" #day (change)="onSelectedDay(day.value)">
+              <option value="" disabled selected>Day</option>
+              <option *ngFor="let day of GetDays()" value="{{day}}">{{day}}</option>
+            </select>
+
+            <select class="dropDown" style="width: 95px" #year (change)="onSelectedYear(year.value)">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let year of GetYears()" value="{{year}}">{{year}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div *ngIf="myForm?.get('name')?.invalid && (myForm?.get('name')?.dirty || myForm?.get('name')?.touched)" class="error-message">
+            Please select a valid date.
+          </div>
+        </div>
+      </div>
+    </form>  
+</div>
