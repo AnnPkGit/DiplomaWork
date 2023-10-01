@@ -15,12 +15,14 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
     private const int MaximumNameLenght = CommonAccountValidationRules.MaximumNameLenght;
     
     private readonly IApplicationDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
     
-    public CreateAccountCommandValidator(IApplicationDbContext context, ICurrentUserService currentUserService)
+    public CreateAccountCommandValidator(IApplicationDbContext context)
     {
         _context = context;
-        _currentUserService = currentUserService;
+        RuleFor(v => v.UserId)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .MustAsync(HaveNotAccount).WithMessage("You already have the account");
         
         RuleFor(v => v.Login)
             .Cascade(CascadeMode.Stop)
@@ -29,7 +31,6 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
             .MaximumLength(MaximumLoginLenght)
             .Matches(CommonAccountValidationRules.LoginRegex)
             .WithMessage(CommonAccountValidationRules.LoginRegexErrStr)
-            .MustAsync(HaveNotAccount).WithMessage("You already have the account")
             .BeUniqueLogin(_context).WithMessage(command => $"Login ({command.Login}) is already taken");
         
         RuleFor(v => v.Name)
@@ -38,9 +39,8 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
             .MaximumLength(MaximumNameLenght)
             .When(command => !string.IsNullOrEmpty(command.Name));
     }
-    private async Task<bool> HaveNotAccount(string _, CancellationToken token)
+    private async Task<bool> HaveNotAccount(int userId, CancellationToken token)
     {
-        var userId = _currentUserService.Id;
         var currentUser = await _context.Users
             .SingleOrDefaultAsync(user => user.Id == userId, token);
         

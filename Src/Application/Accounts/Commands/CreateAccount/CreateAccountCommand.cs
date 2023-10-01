@@ -10,6 +10,7 @@ namespace Application.Accounts.Commands.CreateAccount;
 [Authorize]
 public record CreateAccountCommand : IRequest<int>
 {
+    public int UserId { get; set; }
     public string Login { get; init; } = string.Empty;
     public string? Name { get; init; }
     public string? Avatar { get; init; } // TODO: Replace the folder type
@@ -30,7 +31,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
 
     public async Task<int> Handle(CreateAccountCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.Id;
+        var userId = request.UserId;
         if (userId == UserDefaultValues.Id)
             throw new NotFoundException();
         
