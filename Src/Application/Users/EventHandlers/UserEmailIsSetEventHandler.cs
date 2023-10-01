@@ -1,4 +1,3 @@
-using Application.Auth.Commands.SendVerifyMsgByEmail;
 using Application.Common.Interfaces;
 using Domain.Events;
 using MediatR;
@@ -8,13 +7,13 @@ namespace Application.Users.EventHandlers;
 public class UserEmailIsSetEventHandler : INotificationHandler<UserEmailIsSetEvent>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly ISender _mediator;
+    private readonly IEmailConfirmationSender _emailSender;
     public UserEmailIsSetEventHandler(
-        ISender mediator,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IEmailConfirmationSender emailSender)
     {
-        _mediator = mediator;
         _currentUserService = currentUserService;
+        _emailSender = emailSender;
     }
 
     public async Task Handle(UserEmailIsSetEvent notification, CancellationToken token)
@@ -22,6 +21,9 @@ public class UserEmailIsSetEventHandler : INotificationHandler<UserEmailIsSetEve
         var user = notification.Item;
         
         await _currentUserService.SetEmailAsync(user.Email, cancellationToken: token);
-        await _mediator.Send(new SendVerifyMsgByEmailCommand(), token);
+        if (!user.EmailVerified)
+        {
+            await _emailSender.SendAsync(new EmailConfirmRequest(user.Id, user.Email), token);
+        }
     }
 }

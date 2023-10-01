@@ -1,4 +1,5 @@
 using System.Text;
+using Infrastructure.Configurations;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

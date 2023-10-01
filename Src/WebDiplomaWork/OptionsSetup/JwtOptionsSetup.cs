@@ -1,4 +1,4 @@
-using Infrastructure.Authentication;
+using Infrastructure.Configurations;
 using Microsoft.Extensions.Options;
 
 namespace WebDiplomaWork.OptionsSetup;

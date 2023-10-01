@@ -29,7 +29,7 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
             .MaximumLength(MaximumLoginLenght)
             .Matches(CommonAccountValidationRules.LoginRegex)
             .WithMessage(CommonAccountValidationRules.LoginRegexErrStr)
-            .MustAsync(HaveAccountsAvailable).WithMessage("Accounts limit exceeded")
+            .MustAsync(HaveNotAccount).WithMessage("You already have the account")
             .BeUniqueLogin(_context).WithMessage(command => $"Login ({command.Login}) is already taken");
         
         RuleFor(v => v.Name)
@@ -38,15 +38,14 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
             .MaximumLength(MaximumNameLenght)
             .When(command => !string.IsNullOrEmpty(command.Name));
     }
-    private async Task<bool> HaveAccountsAvailable(string login, CancellationToken token)
+    private async Task<bool> HaveNotAccount(string _, CancellationToken token)
     {
         var userId = _currentUserService.Id;
         var currentUser = await _context.Users
-            .Include(u => u.Accounts)
-            .SingleOrDefaultAsync(u => u.Id == userId, token);
+            .SingleOrDefaultAsync(user => user.Id == userId, token);
         
         if (currentUser == null)
             throw new NotFoundException(nameof(User), userId);
-        return currentUser.MaxAccountsCount > currentUser.Accounts.Count;
+        return currentUser.Account == null;
     }
 }

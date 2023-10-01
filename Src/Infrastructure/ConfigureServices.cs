@@ -1,14 +1,12 @@
 using Application.Common.Interfaces;
 using Infrastructure.Authentication;
 using Infrastructure.Common;
-using Infrastructure.Configuration;
-using Infrastructure.Configuration.ConfigurationManager;
-using Infrastructure.Configuration.Provider;
-using Infrastructure.DbAccess;
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -18,14 +16,19 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Configuration
-        services.AddScoped<IConfigurationManager, LocalConfigurationManager>();
-        services.Configure<GeneralConfiguration>(
-            configuration.GetSection("GeneralConfiguration"));
-        
-        // DbAccess
-        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<IDbAccessProvider, MariaDbAccessProvider>();
+        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+        {
+            throw new NotImplementedException();
+        }
+        else
+        {
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+            {
+                var connectionString = configuration.GetConnectionString("MariaDbConnection");
+                var serverVersion = new MariaDbServerVersion("10.11.4");
+                options.UseMySql(connectionString, serverVersion);
+            });
+        }
         
         // Other
         services.AddScoped<IHasher, Hasher>();
@@ -33,6 +36,9 @@ public static class ConfigureServices
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<TokenValidationParameters, EmailVerifyTokenValidationParameters>();
         services.AddScoped<ITokenValidator, TokenValidator>();
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+        services.AddScoped<LegalEntitySaveChangesInterceptor>();
+        services.AddTransient<IDateTime, DateTimeService>();
         
         return services;
     }

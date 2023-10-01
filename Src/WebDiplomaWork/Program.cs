@@ -1,5 +1,3 @@
-using LocalConfigurationManager = Infrastructure.Configuration.ConfigurationManager.ConfigurationManager;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
@@ -32,14 +30,10 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    // Добавление маршрута для контроллеров api
-    endpoints.MapControllers();
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller}/{action=Index}/{id?}");
-});
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html"); 
 app.Run();
