@@ -1,16 +1,13 @@
 namespace Domain.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity, IDeactivated
+public abstract class BaseAuditableEntity : BaseEntity
 {
-    public DateTime? Deactivated { get; set; }
+    public override int Id { get; init; }
+    public virtual DateTime? Deactivated { get; set; }
     
-    public string? DeactivatedBy { get; set; }
+    public User? DeactivatedBy { get; set; }
     
     public DateTime Created { get; set; }
 
-    public string? CreatedBy { get; set; }
-
     public DateTime? LastModified { get; set; }
-
-    public string? LastModifiedBy { get; set; }
 }

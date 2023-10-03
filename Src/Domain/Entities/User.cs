@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class User : BasicLegalEntity
+public class User : BaseAuditableEntity
 {
     public User() {}
     public User(string email, string passwordHash, string passwordSalt)

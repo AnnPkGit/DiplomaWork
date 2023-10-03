@@ -1,5 +1,6 @@
 using Domain.Entities;
-using Infrastructure.Constants;
+using Infrastructure.Persistence.Constants;
+using Infrastructure.Persistence.RelationshipTables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

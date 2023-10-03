@@ -16,9 +16,19 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        //....DB....
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
             throw new NotImplementedException();
+        }
+        else if(configuration.GetValue<bool>("UseTestDatabase"))
+        {
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+            {
+                var connectionString = configuration.GetConnectionString("TestDbConnection");
+                var serverVersion = new MariaDbServerVersion("10.11.4");
+                options.UseMySql(connectionString, serverVersion);
+            });
         }
         else
         {
@@ -37,7 +47,6 @@ public static class ConfigureServices
         services.AddScoped<TokenValidationParameters, EmailVerifyTokenValidationParameters>();
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        services.AddScoped<LegalEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
         
         return services;
