@@ -33,8 +33,6 @@ namespace Infrastructure.Persistence.MIgrations
                     Url = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Type = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -50,7 +48,7 @@ namespace Infrastructure.Persistence.MIgrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
-                    Context = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     QuoteId = table.Column<int>(type: "int", nullable: true),
                     Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -86,9 +84,7 @@ namespace Infrastructure.Persistence.MIgrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    MediaItemId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    MediaItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,7 +159,7 @@ namespace Infrastructure.Persistence.MIgrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToastReaction", x => new { x.ToastId, x.AccountId });
+                    table.PrimaryKey("PK_ToastReaction", x => new { x.ToastId, x.AccountId, x.ReactionId });
                     table.ForeignKey(
                         name: "FK_ToastReaction_Accounts_AccountId",
                         column: x => x.AccountId,

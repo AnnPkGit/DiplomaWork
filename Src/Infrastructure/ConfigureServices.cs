@@ -12,7 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static void AddInfrastructureServices(this IServiceCollection services,
+    public static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services,
         IConfiguration configuration)
     {
         //....DB....
@@ -47,6 +48,7 @@ public static class ConfigureServices
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddScoped<IMediaService, MediaService>();
+        
+        return services;
     }
 }

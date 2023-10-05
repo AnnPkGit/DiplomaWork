@@ -69,10 +69,6 @@ namespace Infrastructure.MIgrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -122,10 +118,6 @@ namespace Infrastructure.MIgrations
 
                     b.Property<int>("MediaItemId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -181,10 +173,6 @@ namespace Infrastructure.MIgrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Context")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
@@ -196,6 +184,10 @@ namespace Infrastructure.MIgrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("QuoteId")
                         .HasColumnType("int");
@@ -343,13 +335,13 @@ namespace Infrastructure.MIgrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Reacted")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("ReactionId")
                         .HasColumnType("int");
 
-                    b.HasKey("ToastId", "AccountId");
+                    b.Property<DateTime>("Reacted")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ToastId", "AccountId", "ReactionId");
 
                     b.HasIndex("AccountId");
 

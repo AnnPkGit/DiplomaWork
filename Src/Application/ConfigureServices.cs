@@ -9,7 +9,8 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static void AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(
+        this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -21,5 +22,7 @@ public static class ConfigureServices
         });
         
         services.AddScoped<IEmailConfirmationSender, EmailConfirmationSender>();
+        
+        return services;
     }
 }
