@@ -7,7 +7,9 @@ public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
     
-    DbSet<Account> Accounts { get;  }
+    DbSet<Account> Accounts { get; }
+    
+    DbSet<MediaItem> MediaItems { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
