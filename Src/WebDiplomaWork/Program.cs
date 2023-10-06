@@ -1,3 +1,5 @@
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
@@ -21,6 +23,8 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
+    builder.Configuration.AddEnvironmentVariables()
+        .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
 
 app.UseRouting();
