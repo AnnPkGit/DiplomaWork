@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.MIgrations
+namespace Infrastructure.Persistence.MIgrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -56,13 +56,16 @@ namespace Infrastructure.MIgrations
 
                     b.HasIndex("DeactivatedById");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Domain.Entities.MediaItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -79,7 +82,9 @@ namespace Infrastructure.MIgrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MediaItems", (string)null);
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("MediaItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -114,25 +119,50 @@ namespace Infrastructure.MIgrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
+                {
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToastId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("AccountId", "ToastId");
+
+                    b.HasIndex("ToastId");
+
+                    b.ToTable("ReToasts");
+                });
+
             modelBuilder.Entity("Domain.Entities.Reaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MediaItemId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("Reacted")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ToastId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MediaItemId")
-                        .IsUnique();
+                    b.HasIndex("AuthorId");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.HasIndex("ToastId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -178,7 +208,7 @@ namespace Infrastructure.MIgrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Context")
@@ -200,6 +230,13 @@ namespace Infrastructure.MIgrations
                     b.Property<int?>("QuoteId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -208,7 +245,9 @@ namespace Infrastructure.MIgrations
 
                     b.HasIndex("QuoteId");
 
-                    b.ToTable("Toasts", (string)null);
+                    b.HasIndex("ReplyId");
+
+                    b.ToTable("Toasts");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -263,21 +302,6 @@ namespace Infrastructure.MIgrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ReToast", b =>
-                {
-                    b.Property<int>("ToastId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ToastId", "AccountId");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("ReToasts", (string)null);
-                });
-
             modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
                 {
                     b.Property<int>("RoleId")
@@ -322,40 +346,17 @@ namespace Infrastructure.MIgrations
 
             modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastMediaItem", b =>
                 {
-                    b.Property<int>("ToastId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MediaItemId")
                         .HasColumnType("int");
 
-                    b.HasKey("ToastId", "MediaItemId");
+                    b.Property<int?>("ToastId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("MediaItemId");
+                    b.HasKey("MediaItemId", "ToastId");
+
+                    b.HasIndex("ToastId");
 
                     b.ToTable("ToastMediaItem");
-                });
-
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastReaction", b =>
-                {
-                    b.Property<int>("ToastId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Reacted")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ReactionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ToastId", "AccountId");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("ReactionId");
-
-                    b.ToTable("ToastReaction");
                 });
 
             modelBuilder.Entity("Domain.Entities.Account", b =>
@@ -375,50 +376,16 @@ namespace Infrastructure.MIgrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Reaction", b =>
-                {
-                    b.HasOne("Domain.Entities.MediaItem", "MediaItem")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Reaction", "MediaItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MediaItem");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Toast", b =>
+            modelBuilder.Entity("Domain.Entities.MediaItem", b =>
                 {
                     b.HasOne("Domain.Entities.Account", "Author")
-                        .WithMany("Toasts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
-                        .WithMany()
-                        .HasForeignKey("DeactivatedById");
-
-                    b.HasOne("Domain.Entities.Toast", "Quote")
-                        .WithMany()
-                        .HasForeignKey("QuoteId");
+                        .WithMany("MediaItems")
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
-
-                    b.Navigation("DeactivatedBy");
-
-                    b.Navigation("Quote");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
-                        .WithMany()
-                        .HasForeignKey("DeactivatedById");
-
-                    b.Navigation("DeactivatedBy");
-                });
-
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ReToast", b =>
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
                 {
                     b.HasOne("Domain.Entities.Account", null)
                         .WithMany()
@@ -431,6 +398,57 @@ namespace Infrastructure.MIgrations
                         .HasForeignKey("ToastId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reaction", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Entities.Toast", "Toast")
+                        .WithMany("Reactions")
+                        .HasForeignKey("ToastId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Toast");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("Toasts")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
+                    b.HasOne("Domain.Entities.Toast", "Quote")
+                        .WithMany("Quotes")
+                        .HasForeignKey("QuoteId");
+
+                    b.HasOne("Domain.Entities.Toast", "Reply")
+                        .WithMany("Replies")
+                        .HasForeignKey("ReplyId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("DeactivatedBy");
+
+                    b.Navigation("Quote");
+
+                    b.Navigation("Reply");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
+                    b.Navigation("DeactivatedBy");
                 });
 
             modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
@@ -478,30 +496,22 @@ namespace Infrastructure.MIgrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastReaction", b =>
-                {
-                    b.HasOne("Domain.Entities.Account", null)
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Reaction", null)
-                        .WithMany()
-                        .HasForeignKey("ReactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Toast", null)
-                        .WithMany()
-                        .HasForeignKey("ToastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Account", b =>
                 {
+                    b.Navigation("MediaItems");
+
+                    b.Navigation("Reactions");
+
                     b.Navigation("Toasts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
+                {
+                    b.Navigation("Quotes");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

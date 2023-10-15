@@ -1,7 +1,7 @@
 using Application.Common.Models;
 using Application.MediaItems.Commands.CreateMediaItem;
 using Application.MediaItems.Queries.GetMediaItemsWithPagination;
-using Domain.Entities;
+using Application.MediaItems.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ public class MediaItemController : ApiV1ControllerBase
     }
     
     [HttpGet("pagination"), Authorize]
-    public async Task<ActionResult<PaginatedList<MediaItem>>> GetMediaItemsWithPagination
+    public async Task<ActionResult<PaginatedList<MediaItemBriefDto>>> GetMediaItemsWithPagination
         ([FromQuery]  GetMediaItemsWithPaginationQuery command)
     {
         return await Mediator.Send(command);

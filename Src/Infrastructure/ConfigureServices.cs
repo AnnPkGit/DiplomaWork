@@ -47,6 +47,6 @@ public static class ConfigureServices
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IMediaStorage, MediaService>();
     }
 }

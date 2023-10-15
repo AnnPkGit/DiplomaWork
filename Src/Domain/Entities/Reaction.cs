@@ -3,7 +3,13 @@ namespace Domain.Entities;
 public class Reaction
 {
     public int Id { get; init; }
-    public int MediaItemId { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public MediaItem MediaItem { get; set; } = null!;
+    
+    public int? ToastId { get; set; }
+    public Toast? Toast { get; set; }
+    
+    public int? AuthorId { get; set; }
+    public Account? Author { get; set; }
+    
+    public string Code { get; set; } = string.Empty;
+    public DateTime Reacted { get; set; }
 }

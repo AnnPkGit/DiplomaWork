@@ -26,7 +26,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<MediaItem> MediaItems => Set<MediaItem>();
-
+    public DbSet<ReToast> ReToasts => Set<ReToast>();
+    public DbSet<Toast> Toasts => Set<Toast>();
+    public DbSet<Reaction> Reactions => Set<Reaction>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

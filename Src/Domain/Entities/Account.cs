@@ -10,5 +10,6 @@ public class Account : BaseAuditableEntity
     public User Owner { get; set; } = null!;
     public ICollection<Toast>? Toasts { get; set; }
     public ICollection<Toast>? ReToasts { get; set; }
-    public ICollection<Reaction>? MyReactions { get; set; }
+    public ICollection<Reaction>? Reactions { get; set; }
+    public ICollection<MediaItem>? MediaItems { get; set; }
 }

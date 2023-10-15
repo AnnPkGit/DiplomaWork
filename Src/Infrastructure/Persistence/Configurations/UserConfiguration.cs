@@ -19,6 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(e => e.Roles)
             .WithMany()
             .UsingEntity<RoleUser>();
+
+        builder.HasMany(e => e.DeactivatedToasts)
+            .WithOne(t => t.DeactivatedBy)
+            .HasForeignKey(t => t.DeactivatedById);
         
         builder.Navigation(e => e.Roles).AutoInclude();
         builder.Navigation(e => e.Account).AutoInclude();

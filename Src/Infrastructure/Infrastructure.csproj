@@ -20,4 +20,9 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Persistence\MIgrations\20230924163601_Initial.cs" />
+    <Compile Remove="Persistence\MIgrations\20230924163601_Initial.Designer.cs" />
+  </ItemGroup>
+
 </Project>

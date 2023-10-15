@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services;
 
-public class MediaService : IMediaService
+public class MediaService : IMediaStorage
 {
     private readonly AzureStorageConfig _storageConfig;
 

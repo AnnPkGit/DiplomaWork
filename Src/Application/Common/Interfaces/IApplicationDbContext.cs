@@ -10,6 +10,12 @@ public interface IApplicationDbContext
     DbSet<Account> Accounts { get; }
     
     DbSet<MediaItem> MediaItems { get; }
+    
+    DbSet<ReToast> ReToasts { get; }
+    
+    DbSet<Toast> Toasts { get; }
+    
+    DbSet<Reaction> Reactions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
