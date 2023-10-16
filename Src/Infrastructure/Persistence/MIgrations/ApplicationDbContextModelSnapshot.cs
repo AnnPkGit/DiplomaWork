@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.MIgrations
+namespace Infrastructure.Persistence.MIgrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -39,6 +39,9 @@ namespace Infrastructure.MIgrations
                     b.Property<DateTime?>("Deactivated")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("DeactivatedById")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime(6)");
 
@@ -51,7 +54,37 @@ namespace Infrastructure.MIgrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.HasIndex("DeactivatedById");
+
+                    b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MediaItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("MediaItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -84,6 +117,52 @@ namespace Infrastructure.MIgrations
                             Id = 3,
                             Name = "UpdateAccount"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
+                {
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToastId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("AccountId", "ToastId");
+
+                    b.HasIndex("ToastId");
+
+                    b.ToTable("ReToasts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Reacted")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ToastId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ToastId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -123,46 +202,52 @@ namespace Infrastructure.MIgrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PermissionId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
-                    b.HasKey("RoleId", "PermissionId");
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("PermissionId");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
 
-                    b.ToTable("RolePermission");
+                    b.Property<DateTime?>("Deactivated")
+                        .HasColumnType("datetime(6)");
 
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 3
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
-                {
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("DeactivatedById")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("QuoteId")
                         .HasColumnType("int");
 
-                    b.HasKey("RoleId", "UserId");
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("UserId");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.ToTable("RoleUser");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("DeactivatedById");
+
+                    b.HasIndex("QuoteId");
+
+                    b.HasIndex("ReplyId");
+
+                    b.ToTable("Toasts");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -176,6 +261,9 @@ namespace Infrastructure.MIgrations
 
                     b.Property<DateTime?>("Deactivated")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("DeactivatedById")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -209,21 +297,161 @@ namespace Infrastructure.MIgrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeactivatedById");
+
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermission");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 3
+                        });
+                });
+
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RoleUser", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastMediaItem", b =>
+                {
+                    b.Property<int>("MediaItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ToastId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MediaItemId", "ToastId");
+
+                    b.HasIndex("ToastId");
+
+                    b.ToTable("ToastMediaItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.Account", b =>
                 {
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
                     b.HasOne("Domain.Entities.User", "Owner")
                         .WithOne("Account")
                         .HasForeignKey("Domain.Entities.Account", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("DeactivatedBy");
+
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.MediaItem", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("MediaItems")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Toast", null)
+                        .WithMany()
+                        .HasForeignKey("ToastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reaction", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Entities.Toast", "Toast")
+                        .WithMany("Reactions")
+                        .HasForeignKey("ToastId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Toast");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("Toasts")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
+                    b.HasOne("Domain.Entities.Toast", "Quote")
+                        .WithMany("Quotes")
+                        .HasForeignKey("QuoteId");
+
+                    b.HasOne("Domain.Entities.Toast", "Reply")
+                        .WithMany("Replies")
+                        .HasForeignKey("ReplyId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("DeactivatedBy");
+
+                    b.Navigation("Quote");
+
+                    b.Navigation("Reply");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
+                    b.Navigation("DeactivatedBy");
+                });
+
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
                 {
                     b.HasOne("Domain.Entities.Permission", null)
                         .WithMany()
@@ -238,7 +466,7 @@ namespace Infrastructure.MIgrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RoleUser", b =>
                 {
                     b.HasOne("Domain.Entities.Role", null)
                         .WithMany()
@@ -251,6 +479,39 @@ namespace Infrastructure.MIgrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastMediaItem", b =>
+                {
+                    b.HasOne("Domain.Entities.MediaItem", null)
+                        .WithMany()
+                        .HasForeignKey("MediaItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Toast", null)
+                        .WithMany()
+                        .HasForeignKey("ToastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Account", b =>
+                {
+                    b.Navigation("MediaItems");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Toasts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
+                {
+                    b.Navigation("Quotes");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

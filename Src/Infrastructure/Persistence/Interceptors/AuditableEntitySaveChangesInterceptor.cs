@@ -7,14 +7,10 @@ namespace Infrastructure.Persistence.Interceptors;
 
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
-    private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public AuditableEntitySaveChangesInterceptor(
-        ICurrentUserService currentUserService,
-        IDateTime dateTime)
+    public AuditableEntitySaveChangesInterceptor(IDateTime dateTime)
     {
-        _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
 
@@ -38,16 +34,15 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
+            var time = _dateTime.Now;
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = _currentUserService.Id.ToString();
-                entry.Entity.Created = _dateTime.Now;
+                entry.Entity.Created = time;
             } 
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.LastModifiedBy = _currentUserService.Id.ToString();
-                entry.Entity.LastModified = _dateTime.Now;
+                entry.Entity.LastModified = time;
             }
         }
         

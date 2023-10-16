@@ -14,7 +14,7 @@ namespace WebDiplomaWork.Controller;
 
 public class AccountController : ApiV1ControllerBase
 {
-    [HttpPost, Authorize]
+    [HttpPost]
     public async Task<ActionResult<int>> Post(CreateAccountCommand command)
     {
         return await Mediator.Send(command);

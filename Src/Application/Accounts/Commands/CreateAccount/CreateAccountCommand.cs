@@ -1,13 +1,11 @@
 using Application.Common.Constants;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Accounts.Commands.CreateAccount;
 
-[Authorize]
 public record CreateAccountCommand : IRequest<int>
 {
     public int UserId { get; set; }

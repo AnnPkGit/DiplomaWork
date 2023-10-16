@@ -2,6 +2,7 @@ using System.Reflection;
 using Application.Common.Behaviours;
 using Application.Common.Interfaces;
 using Application.Common.Notification;
+using Application.Common.Services;
 using FluentValidation;
 using MediatR;
 
@@ -22,6 +23,7 @@ public static class ConfigureServices
         });
         
         services.AddScoped<IEmailConfirmationSender, EmailConfirmationSender>();
+        services.AddScoped<IMediaService, MediaService>();
         
         return services;
     }

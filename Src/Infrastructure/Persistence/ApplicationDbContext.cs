@@ -14,25 +14,26 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
-    private readonly LegalEntitySaveChangesInterceptor _legalEntitySaveChangesInterceptor;
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor,
-        LegalEntitySaveChangesInterceptor legalEntitySaveChangesInterceptor,
         IMediator mediator) : base(options)
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-        _legalEntitySaveChangesInterceptor = legalEntitySaveChangesInterceptor;
     }
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<MediaItem> MediaItems => Set<MediaItem>();
+    public DbSet<ReToast> ReToasts => Set<ReToast>();
+    public DbSet<Toast> Toasts => Set<Toast>();
+    public DbSet<Reaction> Reactions => Set<Reaction>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
-        Expression<Func<IDeactivated, bool>> filterExpr = be => be.Deactivated == null;
+        Expression<Func<BaseAuditableEntity, bool>> filterExpr = be => be.Deactivated == null;
         foreach (var mutableEntityType in builder.Model.GetEntityTypes())
         {
             // check if current entity type is child of BaseModel
@@ -51,10 +52,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         
         base.OnModelCreating(builder);
     }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor, _legalEntitySaveChangesInterceptor);
+        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
     }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
