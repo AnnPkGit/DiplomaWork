@@ -1,0 +1,27 @@
+.notification {
+    height: 88px;
+    background: #ffffff;
+    display: flex;
+    margin-bottom: 1px;
+}
+
+.notification:hover{
+    cursor: pointer;
+    background: #eaedee;
+}
+
+.notify-title {
+    height: 50%;
+    display: flex;
+    align-items: end;
+    font-weight: 600;
+    font-size: 14px;
+    color: #5C6778;
+}
+
+.notify-message {
+    height: 50%;
+    font-weight: 400;
+    font-size: 13px;
+    color: #5C6778;
+}

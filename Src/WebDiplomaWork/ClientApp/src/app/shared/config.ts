@@ -5,6 +5,8 @@ export const AppConfig = {
     messagesEndpoint: '/messages',
     toastEndpoint: '/toast/',
     profileEndpoint: '/profile/',
+    settingsEndpoint: '/settings',
+    notificationsEndpoint: '/notifications',
     authEndpoint: '',
 };
 

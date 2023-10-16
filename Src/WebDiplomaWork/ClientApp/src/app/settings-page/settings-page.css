@@ -1,0 +1,30 @@
+.setting-option-icon {
+    width: 26px;
+  }
+
+.setting-title {
+    display: flex; 
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #5C6778;
+    }
+
+.option-center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.option-center-content div {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.note-setting {
+  color: #ABB9C9;
+  font-weight: 100;
+  font-size: 14px;
+}

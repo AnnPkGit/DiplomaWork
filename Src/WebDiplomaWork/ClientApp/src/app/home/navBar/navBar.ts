@@ -21,4 +21,8 @@ export class NavBarComponent {
   goToProfile(id: string) {
     this.router.goToProfilePage(id);
   }
+
+  goToNotifications() {
+    this.router.goToNotifications();
+  }
 }

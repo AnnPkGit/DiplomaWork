@@ -25,6 +25,8 @@ import { ToastItComponent } from './toast-it-page/toast-it.component';
 import { ProfilePageComponent } from './profile-page/profile.component';
 import { ProfileEditModal } from './modals/ProfileEditModal';
 import { AutosizeModule } from 'ngx-autosize';
+import { NotifactionsPageComponent } from './notification-page/notification-page';
+import { SettingsPageComponent } from './settings-page/settings-page.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { AutosizeModule } from 'ngx-autosize';
     ToastItComponent,
     ProfilePageComponent,
     ProfileEditModal,
+    NotifactionsPageComponent,
+    SettingsPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,7 +69,9 @@ import { AutosizeModule } from 'ngx-autosize';
       { path: 'messages', component: MessagesComponent },
       { path: 'toast/:id', component: PostPAgeComponent },
       { path: 'profile/:id', component: ProfilePageComponent },
-      { path: 'form', component: ProfileEditModal },
+      { path: 'notifications', component: NotifactionsPageComponent },
+      { path: 'settings', component: SettingsPageComponent },
+
     ])
   ],
   providers: [AuthGuard],

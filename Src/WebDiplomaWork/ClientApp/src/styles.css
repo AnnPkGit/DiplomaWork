@@ -9,6 +9,9 @@
 @import './app/toast-it-page/toast-it.css';
 @import './app/profile-page/profile.component.css';
 @import './app/modals/profile-edit-modal.css';
+@import './app/notification-page/notifactions-page.css';
+@import './app/settings-page/settings-page.css';
+
 
 a {
   color: #0366d6;

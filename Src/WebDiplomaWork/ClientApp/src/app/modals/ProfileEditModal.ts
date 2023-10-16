@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { LocalRouter } from "../shared/localRouter/local-router.service";
 
 @Component({
   selector: 'app-profile-edit-modal',
@@ -20,7 +21,7 @@ export class ProfileEditModal {
 
     myForm: FormGroup;
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private localRouter: LocalRouter) {
       this.myForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(10)]],
         bio: ['', [Validators.maxLength(50)]],
@@ -34,7 +35,6 @@ export class ProfileEditModal {
     }
   
     onSubmit() {
-      // Handle form submission here
     }
     
 
@@ -85,5 +85,9 @@ export class ProfileEditModal {
       for (var i = 1; i < days + 1; i++) {
         this.days.push(i);
       }
+    }
+
+    goToAdvncedSettings() {
+      this.localRouter.goToSettings();
     }
 }

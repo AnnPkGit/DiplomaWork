@@ -84,3 +84,19 @@
     line-height: 16px;
     color: #5B66CA;
   }
+
+.colorBtn-not-mini {
+    margin-top: 10%;
+    width: 100%;
+    min-width: 200px;
+    height: 60px;
+    padding: 1vh;
+    background: #5B66CA;
+    border-radius: 100px;
+    border: solid #5B66CA 2px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    color: white;
+}

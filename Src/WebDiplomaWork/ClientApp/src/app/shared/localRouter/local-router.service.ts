@@ -35,4 +35,12 @@ import { AppConfig } from '../config';
     goToProfilePage(id: string) {
         this.router?.navigate([AppConfig.profileEndpoint + id]);
     }
+
+    goToNotifications() {
+        this.router?.navigate([AppConfig.notificationsEndpoint]);
+    }
+
+    goToSettings() {
+        this.router?.navigate([AppConfig.settingsEndpoint]);
+    }
 }

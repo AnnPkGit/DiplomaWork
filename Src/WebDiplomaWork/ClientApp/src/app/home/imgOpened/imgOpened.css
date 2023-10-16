@@ -17,8 +17,12 @@
 
 .imgOpenedBg button {
     margin: 1%;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-color: rgba(0, 0, 0, 0.1);;
+    background-color: rgba(0, 0, 0, 0.425);
+    border-color: rgba(0, 0, 0, 0.425);
     color: white;
     font-size: large;
+    border-radius: 100%;
+    height: 60px;
+    width: 60px;
+    display: flex; justify-content: center; align-items: center;  
 }
