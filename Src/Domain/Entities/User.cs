@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class User : BasicLegalEntity
+public class User : BaseAuditableEntity
 {
     public User() {}
     public User(string email, string passwordHash, string passwordSalt)
@@ -56,4 +56,5 @@ public class User : BasicLegalEntity
     private bool _emailVerified;
 
     private DateTime? _deactivated;
+    public ICollection<Toast>? DeactivatedToasts { get; set; }
 }

@@ -1,5 +1,6 @@
 using Domain.Entities;
-using Infrastructure.Constants;
+using Infrastructure.Persistence.Constants;
+using Infrastructure.Persistence.RelationshipTables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(e => e.Roles)
             .WithMany()
             .UsingEntity<RoleUser>();
+
+        builder.HasMany(e => e.DeactivatedToasts)
+            .WithOne(t => t.DeactivatedBy)
+            .HasForeignKey(t => t.DeactivatedById);
         
         builder.Navigation(e => e.Roles).AutoInclude();
         builder.Navigation(e => e.Account).AutoInclude();

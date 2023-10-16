@@ -1,4 +1,4 @@
-namespace Domain.Entities;
+namespace Infrastructure.Persistence.RelationshipTables;
 
 public class RolePermission
 {

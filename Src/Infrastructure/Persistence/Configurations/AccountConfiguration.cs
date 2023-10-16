@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Infrastructure.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +8,20 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-        // a - account
-        builder.ToTable(TableNames.Accounts);
+        builder.HasMany(a => a.Toasts)
+            .WithOne(t => t.Author)
+            .HasForeignKey(t => t.AuthorId);
+        
+        builder.HasMany(a => a.ReToasts)
+            .WithMany()
+            .UsingEntity<ReToast>();
+
+        builder.HasMany(a => a.Reactions)
+            .WithOne(r => r.Author)
+            .HasForeignKey(r => r.AuthorId);
+
+        builder.HasMany(a => a.MediaItems)
+            .WithOne(r => r.Author)
+            .HasForeignKey(r => r.AuthorId);
     }
 }

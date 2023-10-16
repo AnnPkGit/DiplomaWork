@@ -28,4 +28,13 @@ public class PaginatedList<T>
 
         return new PaginatedList<T>(items, count, pageNumber, pageSize);
     }
+
+    public static PaginatedList<T> Create(IEnumerable<T> source, int pageNumber, int pageSize)
+    {
+        var array = source as T[] ?? source.ToArray();
+        var count = array.Length;
+        var items = array.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+
+        return new PaginatedList<T>(items, count, pageNumber, pageSize);
+    }
 }
