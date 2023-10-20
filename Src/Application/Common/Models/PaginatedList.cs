@@ -28,13 +28,17 @@ public class PaginatedList<T>
 
         return new PaginatedList<T>(items, count, pageNumber, pageSize);
     }
+    
+    public static IQueryable<T> GetPaginatedSource(IQueryable<T> source, int pageNumber, int pageSize, out int totalCount)
+    {
+        totalCount = source.Count();
+        return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+    }
 
-    public static PaginatedList<T> Create(IEnumerable<T> source, int pageNumber, int pageSize)
+    public static PaginatedList<T> FromPaginatedArray(IEnumerable<T> source, int pageNumber, int pageSize, int totalCount)
     {
         var array = source as T[] ?? source.ToArray();
-        var count = array.Length;
-        var items = array.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
 
-        return new PaginatedList<T>(items, count, pageNumber, pageSize);
+        return new PaginatedList<T>(array, totalCount, pageNumber, pageSize);
     }
 }

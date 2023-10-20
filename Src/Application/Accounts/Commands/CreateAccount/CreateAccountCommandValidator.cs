@@ -41,11 +41,6 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
     }
     private async Task<bool> HaveNotAccount(int userId, CancellationToken token)
     {
-        var currentUser = await _context.Users
-            .SingleOrDefaultAsync(user => user.Id == userId, token);
-        
-        if (currentUser == null)
-            throw new NotFoundException(nameof(User), userId);
-        return currentUser.Account == null;
+        return !await _context.Accounts.AnyAsync(account => account.Id == userId, token);
     }
 }

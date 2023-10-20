@@ -11,8 +11,6 @@ public interface IApplicationDbContext
     
     DbSet<MediaItem> MediaItems { get; }
     
-    DbSet<ReToast> ReToasts { get; }
-    
     DbSet<Toast> Toasts { get; }
     
     DbSet<Reaction> Reactions { get; }

@@ -16,10 +16,10 @@ public class ToastConfiguration : IEntityTypeConfiguration<Toast>
         builder.HasMany(t => t.Reactions)
             .WithOne(t => t.Toast)
             .HasForeignKey(t => t.ToastId);
-
-        builder.HasMany(t => t.ReToasters)
-            .WithMany()
-            .UsingEntity<ReToast>();
+        
+        builder.HasMany(t => t.ReToasts)
+            .WithOne(t => t.ReToast)
+            .HasForeignKey(t => t.ReToastId);
 
         builder.HasOne(t => t.Quote)
             .WithMany(t => t.Quotes)
@@ -28,5 +28,8 @@ public class ToastConfiguration : IEntityTypeConfiguration<Toast>
         builder.HasOne(t => t.Reply)
             .WithMany(t => t.Replies)
             .HasForeignKey(t => t.ReplyId);
+
+        builder.Navigation(t => t.Author).AutoInclude();
+        builder.Navigation(t => t.MediaItems).AutoInclude();
     }
 }

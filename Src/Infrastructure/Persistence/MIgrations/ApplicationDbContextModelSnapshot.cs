@@ -42,7 +42,7 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("DeactivatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Login")

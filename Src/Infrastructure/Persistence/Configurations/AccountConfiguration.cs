@@ -11,10 +11,6 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasMany(a => a.Toasts)
             .WithOne(t => t.Author)
             .HasForeignKey(t => t.AuthorId);
-        
-        builder.HasMany(a => a.ReToasts)
-            .WithMany()
-            .UsingEntity<ReToast>();
 
         builder.HasMany(a => a.Reactions)
             .WithOne(r => r.Author)

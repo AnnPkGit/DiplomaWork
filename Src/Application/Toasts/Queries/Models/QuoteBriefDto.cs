@@ -5,12 +5,13 @@ using Domain.Entities;
 
 namespace Application.Toasts.Queries.Models;
 
-public class QuoteBriefDto : IMapFrom<Toast>
+public class QuoteBriefDto : IMapFrom<Toast>, IMapFrom<ToastSelectModel>
 {
     public int Id { get; set; }
-    public DateTime? LastModified { get; set; }
+    public DateTime LastModified { get; set; }
     public DateTime Created { get; set; }
     public AccountBriefDto? Author { get; set; }
     public string Context { get; set; } = string.Empty;
-    public ICollection<MediaItemBriefDto>? MediaItems { get; set; }
+    
+    public ICollection<MediaItemBriefDto> MediaItems { get; set; } = null!;
 }
