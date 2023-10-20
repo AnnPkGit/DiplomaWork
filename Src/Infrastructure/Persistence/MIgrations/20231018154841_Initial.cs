@@ -68,7 +68,7 @@ namespace Infrastructure.Persistence.MIgrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DeactivatedById = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +123,7 @@ namespace Infrastructure.Persistence.MIgrations
                     Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DeactivatedById = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,10 +205,11 @@ namespace Infrastructure.Persistence.MIgrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ReplyId = table.Column<int>(type: "int", nullable: true),
                     QuoteId = table.Column<int>(type: "int", nullable: true),
+                    ReToastId = table.Column<int>(type: "int", nullable: true),
                     Deactivated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DeactivatedById = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,6 +222,11 @@ namespace Infrastructure.Persistence.MIgrations
                     table.ForeignKey(
                         name: "FK_Toasts_Toasts_QuoteId",
                         column: x => x.QuoteId,
+                        principalTable: "Toasts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Toasts_Toasts_ReToastId",
+                        column: x => x.ReToastId,
                         principalTable: "Toasts",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -261,32 +267,6 @@ namespace Infrastructure.Persistence.MIgrations
                         column: x => x.ToastId,
                         principalTable: "Toasts",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ReToasts",
-                columns: table => new
-                {
-                    ToastId = table.Column<int>(type: "int", nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReToasts", x => new { x.AccountId, x.ToastId });
-                    table.ForeignKey(
-                        name: "FK_ReToasts_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ReToasts_Toasts_ToastId",
-                        column: x => x.ToastId,
-                        principalTable: "Toasts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -366,11 +346,6 @@ namespace Infrastructure.Persistence.MIgrations
                 column: "ToastId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReToasts_ToastId",
-                table: "ReToasts",
-                column: "ToastId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RolePermission_PermissionId",
                 table: "RolePermission",
                 column: "PermissionId");
@@ -406,6 +381,11 @@ namespace Infrastructure.Persistence.MIgrations
                 column: "ReplyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Toasts_ReToastId",
+                table: "Toasts",
+                column: "ReToastId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_DeactivatedById",
                 table: "Users",
                 column: "DeactivatedById");
@@ -416,9 +396,6 @@ namespace Infrastructure.Persistence.MIgrations
         {
             migrationBuilder.DropTable(
                 name: "Reactions");
-
-            migrationBuilder.DropTable(
-                name: "ReToasts");
 
             migrationBuilder.DropTable(
                 name: "RolePermission");

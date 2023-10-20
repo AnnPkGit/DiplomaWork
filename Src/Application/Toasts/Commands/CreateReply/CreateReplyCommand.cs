@@ -4,8 +4,10 @@ using Application.Common.Security;
 using Application.Common.Services;
 using Application.Toasts.Queries.Models;
 using AutoMapper;
+using Domain.Constants;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Toasts.Commands.CreateReply;
 
@@ -31,13 +33,13 @@ public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, Toa
         _mediaService = mediaService;
     }
 
-    public async Task<ToastBriefDto> Handle(CreateReplyCommand request, CancellationToken cancellationToken)
+    public async Task<ToastBriefDto> Handle(CreateReplyCommand request, CancellationToken token)
     {
         var userId = _userService.Id;
         
-        var mediaItems = _mediaService.GetMediaItemsAsync(cancellationToken, request.MediaItemIds);
+        var mediaItems = _mediaService.GetMediaItemsAsync(token, request.MediaItemIds);
         
-        var toast = await _context.Toasts.FindAsync(new object?[] { request.ToastId }, cancellationToken);
+        var toast = await _context.Toasts.SingleOrDefaultAsync(t => t.Id == request.ToastId && t.Type != ToastType.ReToast, token);
         if (toast == null)
         {
             throw new NotFoundException(nameof(Toast), request.ToastId);
@@ -46,7 +48,7 @@ public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, Toa
         var newReply = Toast.CreateReply(userId, request.Context, request.ToastId, await mediaItems);
         
         _context.Toasts.Add(newReply);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(token);
 
         newReply.Reply = toast;
         

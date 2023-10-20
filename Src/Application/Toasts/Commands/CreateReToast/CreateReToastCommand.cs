@@ -3,8 +3,10 @@ using Application.Common.Interfaces;
 using Application.Common.Security;
 using Application.Toasts.Queries.Models;
 using AutoMapper;
+using Domain.Constants;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Toasts.Commands.CreateReToast;
 
@@ -16,37 +18,33 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
     private readonly ICurrentUserService _userService;
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
 
     public CreateReToastCommandHandler(
         ICurrentUserService userService,
         IApplicationDbContext context,
-        IMapper mapper,
-        IDateTime dateTime)
+        IMapper mapper)
     {
         _userService = userService;
         _context = context;
         _mapper = mapper;
-        _dateTime = dateTime;
     }
 
-    public async Task<ToastBriefDto> Handle(CreateReToastCommand request, CancellationToken cancellationToken)
+    public async Task<ToastBriefDto> Handle(CreateReToastCommand request, CancellationToken token)
     {
         var userId = _userService.Id;
-        var newReToast = new ReToast(request.ToastId, userId, _dateTime.Now);
 
-        var toast = await _context.Toasts.FindAsync(new object?[] { request.ToastId }, cancellationToken);
+        var toast = await _context.Toasts.SingleOrDefaultAsync(t => t.Id == request.ToastId && t.Type != ToastType.ReToast, token);
         if (toast == null)
         {
             throw new NotFoundException(nameof(Toast), request.ToastId);
         }
         
-        _context.ReToasts.Add(newReToast);
-        await _context.SaveChangesAsync(cancellationToken);
+        var newReToast = Toast.CreateReToast(userId, request.ToastId);
+        _context.Toasts.Add(newReToast);
+        await _context.SaveChangesAsync(token);
             
-        toast.Created = newReToast.Created;
-        toast.Type = "reToast";
+        newReToast.ReToast = toast;
         
-        return _mapper.Map<ToastBriefDto>(toast);
+        return _mapper.Map<ToastBriefDto>(newReToast);
     }
 }
