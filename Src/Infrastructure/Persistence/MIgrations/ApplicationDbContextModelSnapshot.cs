@@ -119,24 +119,6 @@ namespace Infrastructure.Persistence.MIgrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.ReToast", b =>
-                {
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToastId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("AccountId", "ToastId");
-
-                    b.HasIndex("ToastId");
-
-                    b.ToTable("ReToasts");
-                });
-
             modelBuilder.Entity("Domain.Entities.Reaction", b =>
                 {
                     b.Property<int>("Id")
@@ -224,10 +206,13 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("DeactivatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int?>("QuoteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReToastId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ReplyId")
@@ -244,6 +229,8 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasIndex("DeactivatedById");
 
                     b.HasIndex("QuoteId");
+
+                    b.HasIndex("ReToastId");
 
                     b.HasIndex("ReplyId");
 
@@ -275,7 +262,7 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("EmailVerifyCode")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Password")
@@ -385,21 +372,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ReToast", b =>
-                {
-                    b.HasOne("Domain.Entities.Account", null)
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Toast", null)
-                        .WithMany()
-                        .HasForeignKey("ToastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Reaction", b =>
                 {
                     b.HasOne("Domain.Entities.Account", "Author")
@@ -422,12 +394,16 @@ namespace Infrastructure.Persistence.MIgrations
                         .HasForeignKey("AuthorId");
 
                     b.HasOne("Domain.Entities.User", "DeactivatedBy")
-                        .WithMany()
+                        .WithMany("DeactivatedToasts")
                         .HasForeignKey("DeactivatedById");
 
                     b.HasOne("Domain.Entities.Toast", "Quote")
                         .WithMany("Quotes")
                         .HasForeignKey("QuoteId");
+
+                    b.HasOne("Domain.Entities.Toast", "ReToast")
+                        .WithMany("ReToasts")
+                        .HasForeignKey("ReToastId");
 
                     b.HasOne("Domain.Entities.Toast", "Reply")
                         .WithMany("Replies")
@@ -438,6 +414,8 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Navigation("DeactivatedBy");
 
                     b.Navigation("Quote");
+
+                    b.Navigation("ReToast");
 
                     b.Navigation("Reply");
                 });
@@ -509,6 +487,8 @@ namespace Infrastructure.Persistence.MIgrations
                 {
                     b.Navigation("Quotes");
 
+                    b.Navigation("ReToasts");
+
                     b.Navigation("Reactions");
 
                     b.Navigation("Replies");
@@ -517,6 +497,8 @@ namespace Infrastructure.Persistence.MIgrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("Account");
+
+                    b.Navigation("DeactivatedToasts");
                 });
 #pragma warning restore 612, 618
         }

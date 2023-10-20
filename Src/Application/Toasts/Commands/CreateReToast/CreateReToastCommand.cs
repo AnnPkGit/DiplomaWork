@@ -27,7 +27,6 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         _userService = userService;
         _context = context;
         _mapper = mapper;
-        _dateTime = dateTime;
     }
 
     public async Task<ToastBriefDto> Handle(CreateReToastCommand request, CancellationToken token)
