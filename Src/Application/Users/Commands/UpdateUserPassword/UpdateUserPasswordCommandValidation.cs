@@ -2,6 +2,7 @@ using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Users.Commands.UpdateUserPassword;
 
@@ -19,23 +20,40 @@ public class UpdateUserPasswordCommandValidation : AbstractValidator<UpdateUserP
         _hasher = hasher;
         _context = context;
         _currentUserService = currentUserService;
-
-        RuleFor(v => v.NewPassword)
+        
+        RuleFor(command => command.NewPassword)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
+            .NotEqual(command => command.OldPassword)
             .MinimumLength(MinimumPasswordLenght)
             .MaximumLength(MaximumPasswordLenght)
-            .Matches(CommonUserValidationRules.PasswordRegex).WithMessage(CommonUserValidationRules.PassRegexErrStr)
-            .MustAsync(BeNewPasswordUnequalOldOne).WithMessage("The new password must be different from the old one");
+            .Matches(CommonUserValidationRules.PasswordRegex)
+            .WithMessage(CommonUserValidationRules.PassRegexErrStr)
+            .DependentRules(() =>
+            {
+                RuleFor(command => command.OldPassword)
+                    .Cascade(CascadeMode.Stop)
+                    .NotEmpty()
+                    .MinimumLength(MinimumPasswordLenght)
+                    .MaximumLength(MaximumPasswordLenght)
+                    .Matches(CommonUserValidationRules.PasswordRegex)
+                    .WithMessage(CommonUserValidationRules.PassRegexErrStr)
+                    .MustAsync(CheckOldPassword).WithMessage("The old password is incorrect");
+            });
     }
-    
-    private async Task<bool> BeNewPasswordUnequalOldOne(string password, CancellationToken token)
+
+    private async Task<bool> CheckOldPassword(string oldPassword, CancellationToken token)
     {
         var userId = _currentUserService.Id;
-        var user = await _context.Users.FindAsync(new object?[] { userId }, token);
-        if (user == null)
+
+        var userHashes = await _context.Users.Where(user => user.Id == userId)
+            .Select(user => new {user.Password , user.PasswordSalt}).SingleOrDefaultAsync(token);
+        if (userHashes == null)
+        {
             throw new NotFoundException(nameof(User), userId);
-        var newPassHash = _hasher.HashPassword(password, user.PasswordSalt);
-        return newPassHash != user.Password;
+        }
+        
+        var oldPassHash = _hasher.HashPassword(userHashes.Password, userHashes.PasswordSalt);
+        return oldPassHash == userHashes.Password;
     }
 }
