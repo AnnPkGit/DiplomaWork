@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Users.Commands.UpdateUserPassword;
 
 [Authorize]
-public record UpdateUserPasswordCommand(string NewPassword) : IRequest;
+public record UpdateUserPasswordCommand(string OldPassword, string NewPassword) : IRequest;
 
 public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommand>
 {
