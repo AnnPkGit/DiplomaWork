@@ -1,14 +1,31 @@
-.post, .post-no-corners, .post-comment {
+.post, .post-no-corners, .post-comment, .post-end-no-corners, .quote-post {
   background-color: #FFFFFF;
-  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
+}
+
+.quote-post {
+  border: 1px solid #e2e7ee;
+  border-radius: 15px;
 }
 
 .post {
   border-radius: 15px;
+  box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
 }
 
 .post-no-corners {
   border-radius: 15px 15px 0px 0px;
+  box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4), 0 -4px 4px rgba(238, 243, 246, 0.4);
+}
+
+.post-end-no-corners {
+  border-radius: 0px 0px 15px 15px;
+  box-shadow: 4px 0 4px rgba(238, 243, 246, 0.4),
+            -4px 0 4px rgba(238, 243, 246, 0.4),
+            0 4px 4px rgba(238, 243, 246, 0.4);
+}
+
+.post-comment {
+  box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4);
 }
 
 .postContainer {

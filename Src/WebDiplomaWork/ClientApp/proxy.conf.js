@@ -13,7 +13,12 @@ const PROXY_CONFIG = [
       "/api/v1/user/",
       "/api/v1/user",
       "/api/v1/account",
-      "/api/v1/toast"
+      "/api/v1/toast",
+      "/api/toast/by/account",
+      "/api/toast/reply",
+      "/api/toast/quote",
+      "/api/toast/reToast",
+      "/api/toast/replies/by/toast",
    ],
     target: target,
     secure: false,

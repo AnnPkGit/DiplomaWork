@@ -36,7 +36,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchUSersToasts() {
-    this.httpClient.get<ToastResponse>("api/v1/toast/pagination").subscribe((response) => {
+    this.httpClient.get<ToastResponse>("api/v1/toast/by/account?AccountId=" +  this.user?.account.id).subscribe((response) => {
       this.toastResponse = response;
     });
   }
@@ -64,6 +64,7 @@ export interface ToastItem {
   reToastCount: number;
   replyCount: number;
   isReToast: boolean;
+  reToast: ToastResponse;
   mediaItems: string[];
   thread: ToastResponse[];
 }

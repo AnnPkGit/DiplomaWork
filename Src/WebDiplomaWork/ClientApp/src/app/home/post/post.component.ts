@@ -23,6 +23,9 @@ export class PostComponent {
   @Input()
   toast: ToastItem | any;
 
+  @Input()
+  reToast: boolean = false;
+
   goToPostPage(event: Event) : void {
     event.stopPropagation();
     this.localRouter.goToToastPage(this.toast.id);
@@ -55,11 +58,16 @@ export class PostComponent {
     this.closeImg = $event;
   }
 
-  noCornersStyle() {
-    return this.style == "no-corners";
-  }
-
-  commentStyle() {
-    return this.style == "comment";
+  currentStyle() : String {
+    if(this.style == "no-corners") {
+      return 'post-no-corners';
+    }
+    if(this.style == "comment") {
+      return 'post-comment';
+    }
+    if(this.style == "no-corners-end") {
+      return 'post-end-no-corners';
+    }
+    return "post"
   }
 }

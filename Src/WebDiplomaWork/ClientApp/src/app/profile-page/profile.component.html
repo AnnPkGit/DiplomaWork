@@ -72,7 +72,8 @@
         </div>
       </div>
       <div class="tostContainer"  *ngFor="let toast of toastResponse?.items">
-        <app-post [toast]="toast"></app-post>
+        <app-post [toast]="toast.type == 'retoast' ? toast.reToast : toast" [style]="toast.thread.length > 0 ? 'no-corners' : 'post'" [reToast]="toast.type == 'retoast'"></app-post>
+        <app-post *ngFor="let threadToast of toast.thread; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="threadToast"></app-post>
       </div>
     </div>
     
