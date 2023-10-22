@@ -22,6 +22,7 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginError = localStorage.getItem(errorKey);
+    localStorage.setItem(errorKey, '');
   }
 
   emailValidate(): boolean {
@@ -63,9 +64,10 @@ export class SignInComponent implements OnInit {
       'Content-Type': 'application/json' 
     });
 
-    this.http.post(ServerEndpoint.loginEndpoint, body, { headers }).subscribe(
-      () => {
+    this.http.post<UserResponse>(ServerEndpoint.loginEndpoint, body, { headers }).subscribe(
+      (user: UserResponse) => {
         localStorage.setItem(errorKey, '');
+        localStorage.setItem("userInfo", JSON.stringify(user));
         this.router.goToHome();
       },
       (error) => {
@@ -74,4 +76,19 @@ export class SignInComponent implements OnInit {
       }
     );
   }
+}
+
+export interface UserResponse {
+  email: string;
+  phone: string | null;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  account: {
+    id: number;
+    login: string;
+    birthDate: Date | null;
+    name: string;
+    avatar: string | null;
+    bio: string | null;
+  };
 }

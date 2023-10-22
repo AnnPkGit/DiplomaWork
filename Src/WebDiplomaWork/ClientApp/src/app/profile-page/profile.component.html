@@ -43,8 +43,8 @@
                     </div>
                     <div class="bar-options-profile">
                         <div style="padding: 0;">
-                            <label style="font-size: 1.3vw; font-weight: 800; padding-bottom: 0;">{{account?.userName}}</label><br/>
-                            <label style="color: #A1B3BD; font-size: 0.8vw; font-weight: 400; padding-top: 0;">@{{account?.userLogin}}</label>
+                            <label style="font-size: 1.3vw; font-weight:       00; padding-bottom: 0;">{{user?.account?.name}}</label><br/>
+                            <label style="color: #A1B3BD; font-size: 0.8vw; font-weight: 400; padding-top: 0;">@{{user?.account?.login}}</label>
                         </div>
                         <div class="centered-op">
                             <div>Following {{account?.followsCount}}</div>
@@ -71,8 +71,8 @@
             </div>
         </div>
       </div>
-      <div class="tostContainer"  *ngFor="let post of posts">
-        <app-post [postModel]="post"></app-post>
+      <div class="tostContainer"  *ngFor="let toast of toastResponse?.items">
+        <app-post [toast]="toast"></app-post>
       </div>
     </div>
     

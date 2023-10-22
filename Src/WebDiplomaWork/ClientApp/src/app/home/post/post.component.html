@@ -1,5 +1,5 @@
 <app-img-opened *ngIf="!closeImg"
-[imgs]="postModel?.imgs"
+[imgs]="toast?.imgs"
 [currentImg]="currentImg"
 [(shouldBeHidden)]="closeImg"
 (shouldBeHiddenChange)="updateCloseImg($event)">
@@ -10,15 +10,15 @@
     <div class="postInfo" style=" height: 56px;">
 
       <div class="postAvatar" (click)="goToProfilePage($event)">
-        <img class="postImg" [src]="postModel?.avatar" />
+        <img class="postImg" [src]="toast?.avatar" />
       </div>
 
       <div class="loginNameContainer">
         <div class="postLogin" (click)="goToProfilePage($event)">
-          {{postModel?.authorName}}
+          {{toast?.authorName}}
         </div>
         <div class="postName" (click)="goToProfilePage($event)">
-          {{postModel?.authorLogin}}
+          {{toast?.authorLogin}}
         </div>
       </div>
 
@@ -29,11 +29,11 @@
     </div>
     
     <div class="postText">
-      {{postModel?.text}}
+      {{toast?.context}}
     </div>
 
-    <div class="postImgsContainer" *ngIf="postModel?.imgs?.length ?? 0 > 0">
-      <div class="imgCrop" (click)="openImg($event, img)" *ngFor="let img of postModel?.imgs">
+    <div class="postImgsContainer" *ngIf="toast?.imgs?.length ?? 0 > 0">
+      <div class="imgCrop" (click)="openImg($event, img)" *ngFor="let img of toast?.imgs">
         <img [src]="img" />
       </div>
     </div>
@@ -41,11 +41,11 @@
     <div class="actionsContainer">
       <div>
         <img (click)="goToPostPage($event)" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE2IDJIOEM0IDIgMiA0IDIgOFYyMUMyIDIxLjU1IDIuNDUgMjIgMyAyMkgxNkMyMCAyMiAyMiAyMCAyMiAxNlY4QzIyIDQgMjAgMiAxNiAyWiIgc3Ryb2tlPSIjQTFCM0JEIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik04LjUgMTJIMTUuNSIgc3Ryb2tlPSIjQTFCM0JEIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==' />
-        {{postModel?.commentsNumber}}
+        {{toast?.commentsNumber}}
       </div>
       <div>
         <img (click)="like($event)" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjYyIDE4LjgwOTZDMTEuMjggMTguOTI5NiAxMC43MiAxOC45Mjk2IDEwLjM4IDE4LjgwOTZDNy40OCAxNy44MTk2IDEgMTMuNjg5NiAxIDYuNjg5NjFDMSAzLjU5OTYxIDMuNDkgMS4wOTk2MSA2LjU2IDEuMDk5NjFDOC4zOCAxLjA5OTYxIDkuOTkgMS45Nzk2MSAxMSAzLjMzOTYxQzExLjUxMzggMi42NDU0OCAxMi4xODMgMi4wODEzNCAxMi45NTQgMS42OTIzNUMxMy43MjUgMS4zMDMzNyAxNC41NzY0IDEuMTAwMzcgMTUuNDQgMS4wOTk2MUMxOC41MSAxLjA5OTYxIDIxIDMuNTk5NjEgMjEgNi42ODk2MUMyMSAxMy42ODk2IDE0LjUyIDE3LjgxOTYgMTEuNjIgMTguODA5NloiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K' />
-        {{postModel?.likesNumber}}
+        {{toast?.likesNumber}}
       </div>
       <div>
         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMuNTgwMDggNS4xNjAxNkgxNy40MjAxQzE5LjA4MDEgNS4xNjAxNiAyMC40MjAxIDYuNTAwMTYgMjAuNDIwMSA4LjE2MDE2VjExLjQ4MDIiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02Ljc0MDA4IDJMMy41ODAwOCA1LjE2TDYuNzQwMDggOC4zMk0yMC40MjAxIDE4Ljg0SDYuNTgwMDhDNC45MjAwOCAxOC44NCAzLjU4MDA4IDE3LjUgMy41ODAwOCAxNS44NFYxMi41MiIgc3Ryb2tlPSIjQTFCM0JEIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE3LjI1OTggMjEuOTk5N0wyMC40MTk4IDE4LjgzOTdMMTcuMjU5OCAxNS42Nzk3IiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K' />

@@ -10,9 +10,11 @@ export class RegisterComponent {
   private mounths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   private days: number[] = [];
   private years: number[] = [];
+  private createdUserId: number = 0;
 
   loginInput: string = '';
   emailInput: string = '';
+  nameInput: string = '';
 
   public selectedMounth: number = 0;
   public selectedDay: number = 0;
@@ -22,6 +24,8 @@ export class RegisterComponent {
   confirmPasswordInput: string = '';
 
   private step = 1;
+
+  private userSuccessfulyCreated: boolean = false;
 
   constructor(private router: LocalRouter, private http: HttpClient) {
     let date = new Date().getFullYear();
@@ -37,6 +41,10 @@ export class RegisterComponent {
 
   public onChangeLoginInput(newValue: string) {
     this.loginInput = newValue;
+  }
+
+  onChangeNameInput(newValue: string) {
+    this.nameInput = newValue;
   }
 
   onChangeConfirmPasswordInput(newValue: string) {
@@ -97,6 +105,10 @@ export class RegisterComponent {
   }
 
   public getNextStep() {
+    if(!this.userSuccessfulyCreated) {
+      return;
+    }
+    
     this.step = 2;
   }
 
@@ -104,26 +116,47 @@ export class RegisterComponent {
     this.step = 1;
   }
 
-  public Register() {
-    const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
-
-    const body = {
-      Login: this.loginInput,
+  public CreateUserRequest() {
+    const createUserBody = {
       Email: this.emailInput,
-      Password: this.passwordInput,
-      BirthDate: birthdate.toISOString()
+      Password: this.passwordInput
     };
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' 
     });
 
-    this.http.post('user/register', body, { headers }).subscribe(
-      () => {
-        console.log('Registration successful');
+    this.http.post<number>('api/v1/user', createUserBody, { headers }).subscribe(
+      (result: number) => {
+        console.log(result);
+        this.userSuccessfulyCreated = true;
+        this.createdUserId = result;
+        this.getNextStep();
       },
       (error) => {
-        console.error('Error during registration:', error);
+        console.log(error);
+      }
+    );
+  }
+
+  public Register() {
+    // const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
+
+    const createAccountBody = {
+      UserId: this.createdUserId,
+      Login: this.loginInput,
+      Name:  this.nameInput
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+
+    this.http.post('api/v1/account', createAccountBody, { headers }).subscribe(
+      () => {
+        this.router.goToSignIn();
+      },
+      (error) => {
       }
     );
   }

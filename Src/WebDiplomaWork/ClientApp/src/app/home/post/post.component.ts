@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ToastItem } from 'src/app/profile-page/profile.component';
 import { AppConfig } from 'src/app/shared/config';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { PostModel } from 'src/app/shared/models/postModel';
@@ -20,11 +21,11 @@ export class PostComponent {
   style: string = "post";
 
   @Input()
-  postModel: PostModel | any;
+  toast: ToastItem | any;
 
   goToPostPage(event: Event) : void {
     event.stopPropagation();
-    this.localRouter.goToToastPage(this.postModel.id);
+    this.localRouter.goToToastPage(this.toast.id);
     console.log('go to post page');
   }
 

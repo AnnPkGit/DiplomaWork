@@ -22,12 +22,6 @@
 
     <div style="height: 70%" *ngIf="GetStep() == 1">
       <div style="height: 72%">
-        <div>
-          <label class="neutralColorLabel">Login</label>
-          <div class="separationDiv">
-            <input class="roundedInput" type="text" [(ngModel)]="loginInput" (ngModelChange)="onChangeLoginInput($event)"/>
-          </div>
-        </div>
 
         <div style="margin-top: 10px;">
           <label class="neutralColorLabel">Email adress</label>
@@ -36,10 +30,36 @@
           </div>
         </div>
 
-        <div style="margin-top: 10px;">
-          <label class="neutralColorLabel">Birth date</label>
-
+        <div>
+          <label class="neutralColorLabel">Passowrd</label>
           <div class="separationDiv">
+            <input class="roundedInput" type="password" [(ngModel)]="passwordInput" (ngModelChange)="onChangePasswordInput($event)"/>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <label class="neutralColorLabel">Confirm passowrd</label>
+          <div class="separationDiv">
+            <input class="roundedInput" type="password" [(ngModel)]="confirmPasswordInput" (ngModelChange)="onChangeConfirmPasswordInput($event)"/>
+          </div>
+        </div>
+
+        <!-- <div>
+          <label class="neutralColorLabel">Login</label>
+          <div class="separationDiv">
+            <input class="roundedInput" type="text" [(ngModel)]="loginInput" (ngModelChange)="onChangeLoginInput($event)"/>
+          </div>
+        </div> -->
+
+
+        <div class="separationDiv">
+          <label class="errorLabel"></label>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <!-- <label class="neutralColorLabel">Birth date</label> -->
+
+          <!-- <div class="separationDiv">
             <select class="dropDown" style="width: 22%" #mounth (change)="onSelectedMounth(mounth.value)">
               <option value="" disabled selected>Mounth</option>
               <option *ngFor="let mounth of GetMounths()" value="{{mounth}}">{{mounth}}</option>
@@ -54,14 +74,14 @@
               <option value="" disabled selected>Year</option>
               <option *ngFor="let year of GetYears()" value="{{year}}">{{year}}</option>
             </select>
-          </div>
+          </div> -->
 
         </div>
       </div>
 
       <div style="height: 10%">
         <div class="separationDiv">
-          <button class="greyBtn" (click)="getNextStep()">Continue</button>
+          <button class="greyBtn" (click)="CreateUserRequest()">Continue</button>
         </div>
       </div>
     </div>
@@ -69,6 +89,20 @@
     <div style="height: 70%" *ngIf="GetStep() == 2">
       <div style="height: 72%">
         <div>
+          <label class="neutralColorLabel">Login</label>
+          <div class="separationDiv">
+            <input class="roundedInput" type="text" [(ngModel)]="loginInput" (ngModelChange)="onChangeLoginInput($event)"/>
+          </div>
+        </div>
+
+        <div>
+          <label class="neutralColorLabel">Name</label>
+          <div class="separationDiv">
+            <input class="roundedInput" type="text" [(ngModel)]="nameInput" (ngModelChange)="onChangeNameInput($event)"/>
+          </div>
+        </div>    
+
+        <!-- <div>
           <label class="neutralColorLabel">Passowrd</label>
           <div class="separationDiv">
             <input class="roundedInput" type="password" [(ngModel)]="passwordInput" (ngModelChange)="onChangePasswordInput($event)"/>
@@ -80,7 +114,7 @@
           <div class="separationDiv">
             <input class="roundedInput" type="password" [(ngModel)]="confirmPasswordInput" (ngModelChange)="onChangeConfirmPasswordInput($event)"/>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div style="height: 10%">
