@@ -26,19 +26,24 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<MediaItem> MediaItems => Set<MediaItem>();
-    public DbSet<Toast> Toasts => Set<Toast>();
     public DbSet<Reaction> Reactions => Set<Reaction>();
+    public DbSet<BaseToast> BaseToasts => Set<BaseToast>();
+    public DbSet<BaseToastWithContent> BaseToastsWithContent => Set<BaseToastWithContent>();
+    public DbSet<Toast> Toasts => Set<Toast>();
+    public DbSet<ReToast> ReToasts => Set<ReToast>();
+    public DbSet<Reply> Replies => Set<Reply>();
+    public DbSet<Quote> Quotes => Set<Quote>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
         Expression<Func<BaseAuditableEntity, bool>> filterExpr = be => be.Deactivated == null;
-        foreach (var mutableEntityType in builder.Model.GetEntityTypes())
+        foreach (var entityType in builder.Model.GetEntityTypes())
         {
-            // check if current entity type is child of BaseModel
-            if (!mutableEntityType.ClrType.IsAssignableTo(typeof(BaseEntity))) continue;
+            // check if current entity type is child of BaseAuditableEntity
+            if (!entityType.ClrType.IsAssignableTo(typeof(BaseAuditableEntity)) || entityType.BaseType != null) continue;
             // modify expression to handle correct child type
-            var parameter = Expression.Parameter(mutableEntityType.ClrType);
+            var parameter = Expression.Parameter(entityType.ClrType);
             var body = ReplacingExpressionVisitor.Replace(
                 filterExpr.Parameters.First(), 
                 parameter, 
@@ -46,7 +51,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             var lambdaExpression = Expression.Lambda(body, parameter);
 
             // set filter
-            mutableEntityType.SetQueryFilter(lambdaExpression); // <-- must come after all entity definitions
+            entityType.SetQueryFilter(lambdaExpression); // <-- must come after all entity definitions
         }
         
         base.OnModelCreating(builder);

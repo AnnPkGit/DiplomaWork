@@ -35,10 +35,10 @@ public class PaginatedList<T>
         return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
     }
 
-    public static PaginatedList<T> FromPaginatedArray(IEnumerable<T> source, int pageNumber, int pageSize, int totalCount)
+    public static PaginatedList<T> FromPaginatedArray(IEnumerable<T> source, int pageNumber, int pageSize)
     {
         var array = source as T[] ?? source.ToArray();
-
-        return new PaginatedList<T>(array, totalCount, pageNumber, pageSize);
+        var length = array.Length;
+        return new PaginatedList<T>(array, length, pageNumber, pageSize);
     }
 }

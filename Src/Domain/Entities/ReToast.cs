@@ -1,19 +1,16 @@
 namespace Domain.Entities;
 
-public class ReToast
+public class ReToast : BaseToast
 {
     public ReToast()
     {
     }
-    
-    public ReToast(int toastId, int accountId, DateTime created)
+
+    public ReToast(int authorId, int toastWithContentId) : base(authorId, typeof(ReToast))
     {
-        ToastId = toastId;
-        AccountId = accountId;
-        Created = created;
+        ToastWithContentId = toastWithContentId;
     }
 
-    public int ToastId { get; set; }
-    public int AccountId { get; set; }
-    public DateTime Created { get; set; }
+    public int ToastWithContentId { get; set; }
+    public BaseToastWithContent ToastWithContent { get; set; } = null!;
 }
