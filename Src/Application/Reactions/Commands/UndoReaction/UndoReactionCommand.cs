@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Security;
+using Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ namespace Application.Reactions.Commands.UndoReaction;
 [Authorize]
 public class UndoReactionCommand : IRequest
 {
-    public int ToastId { get; set; }
+    public int ToastWithContentId { get; set; }
 }
 
 public class UndoReactionCommandHandler : IRequestHandler<UndoReactionCommand>
@@ -30,11 +31,11 @@ public class UndoReactionCommandHandler : IRequestHandler<UndoReactionCommand>
         var accountId = _userService.Id;
 
         var reaction = await _context.Reactions
-            .SingleOrDefaultAsync(t => t.AuthorId == accountId && t.ToastId == request.ToastId, token);
+            .SingleOrDefaultAsync(t => t.AuthorId == accountId && t.ToastWithContentId == request.ToastWithContentId, token);
         
         if (reaction == null)
         {
-            throw new NotFoundException();
+            throw new NotFoundException(nameof(BaseToastWithContent), request.ToastWithContentId);
         }
         
         _context.Reactions.Remove(reaction);

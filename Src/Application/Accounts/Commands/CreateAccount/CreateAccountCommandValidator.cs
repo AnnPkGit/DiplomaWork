@@ -22,7 +22,7 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
         RuleFor(v => v.UserId)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .MustAsync(HaveNotAccount).WithMessage("You already have the account");
+            .MustAsync(HaveNotAccount).WithMessage("You already have an account or this user does not exist");
         
         RuleFor(v => v.Login)
             .Cascade(CascadeMode.Stop)
@@ -41,6 +41,6 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
     }
     private async Task<bool> HaveNotAccount(int userId, CancellationToken token)
     {
-        return !await _context.Accounts.AnyAsync(account => account.Id == userId, token);
+        return await _context.Users.AnyAsync(user => user.Id == userId && user.Account == null, token);
     }
 }

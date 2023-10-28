@@ -36,9 +36,9 @@ public class CreateToastCommandHandler : IRequestHandler<CreateToastCommand, Toa
         
         var mediaItems = _mediaService.GetMediaItemsAsync(cancellationToken, request.MediaItemIds);
 
-        var newToast = Toast.CreateToast(userId, request.Context, await mediaItems);
+        var newToast = new Toast(userId, request.Context, await mediaItems);
         
-        _context.Toasts.Add(newToast);
+        await _context.Toasts.AddAsync(newToast, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<ToastBriefDto>(newToast);
