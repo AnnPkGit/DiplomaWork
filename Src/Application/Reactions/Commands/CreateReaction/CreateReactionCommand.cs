@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Reactions.Commands.CreateReaction;
 
 [Authorize]
-public record CreateReactionCommand(int ToastId) : IRequest;
+public record CreateReactionCommand(int ToastWithContentId) : IRequest;
 
 public class CreateReactionCommandHandler : IRequestHandler<CreateReactionCommand>
 {
@@ -29,17 +29,19 @@ public class CreateReactionCommandHandler : IRequestHandler<CreateReactionComman
     public async Task Handle(CreateReactionCommand request, CancellationToken cancellationToken)
     {
         var accountId = _userService.Id;
-        if (!await _context.Toasts.AnyAsync(t => t.Id == request.ToastId, cancellationToken))
+        if (!await _context.BaseToastsWithContent.AnyAsync(t => t.Id == request.ToastWithContentId, cancellationToken))
         {
-            throw new NotFoundException(nameof(Toast), request.ToastId);
+            throw new NotFoundException(nameof(Toast), request.ToastWithContentId);
         }
 
-        if (await _context.Reactions.AnyAsync(r => r.ToastId == request.ToastId && r.AuthorId == accountId, cancellationToken))
+        if (await _context.Reactions.AnyAsync(r => 
+                r.ToastWithContentId == request.ToastWithContentId &&
+                r.AuthorId == accountId, cancellationToken))
         {
             throw new ForbiddenAccessException();
         }
 
-        var newReaction = new Reaction(request.ToastId, accountId, _dateTime.Now);
+        var newReaction = new Reaction(request.ToastWithContentId, accountId, _dateTime.Now);
 
         await _context.Reactions.AddAsync(newReaction, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

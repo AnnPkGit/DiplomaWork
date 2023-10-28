@@ -17,4 +17,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BaseToasts\Commands\" />
+    <Folder Include="Quotes\Commands\" />
+    <Folder Include="Replies\Commands\" />
+    <Folder Include="ReToasts\Commands\" />
+  </ItemGroup>
+
 </Project>

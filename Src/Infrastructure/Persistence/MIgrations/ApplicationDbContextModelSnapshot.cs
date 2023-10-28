@@ -19,6 +19,42 @@ namespace Infrastructure.Persistence.MIgrations
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Domain.Common.BaseToast", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("Deactivated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("DeactivatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("BaseToasts");
+
+                    b.HasDiscriminator<string>("Type").HasValue("BaseToast");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("Domain.Entities.Account", b =>
                 {
                     b.Property<int>("Id")
@@ -68,6 +104,9 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BaseToastWithContentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -83,6 +122,8 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("BaseToastWithContentId");
 
                     b.ToTable("MediaItems");
                 });
@@ -125,7 +166,7 @@ namespace Infrastructure.Persistence.MIgrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
@@ -135,14 +176,14 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<DateTime>("Reacted")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("ToastId")
+                    b.Property<int>("ToastWithContentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("ToastId");
+                    b.HasIndex("ToastWithContentId");
 
                     b.ToTable("Reactions");
                 });
@@ -182,59 +223,6 @@ namespace Infrastructure.Persistence.MIgrations
                             Id = 4,
                             Name = "Verified"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Entities.Toast", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Context")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("Deactivated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("DeactivatedById")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReToastId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReplyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("DeactivatedById");
-
-                    b.HasIndex("QuoteId");
-
-                    b.HasIndex("ReToastId");
-
-                    b.HasIndex("ReplyId");
-
-                    b.ToTable("Toasts");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -331,19 +319,77 @@ namespace Infrastructure.Persistence.MIgrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastMediaItem", b =>
+            modelBuilder.Entity("Domain.Common.BaseToastWithContent", b =>
                 {
-                    b.Property<int>("MediaItemId")
+                    b.HasBaseType("Domain.Common.BaseToast");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("BaseToastWithContent");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseToast");
+
+                    b.Property<int>("ToastWithContentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ToastId")
+                    b.HasIndex("DeactivatedById");
+
+                    b.HasIndex("ToastWithContentId");
+
+                    b.HasDiscriminator().HasValue("ReToast");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Quote", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseToastWithContent");
+
+                    b.Property<int>("QuotedToastId")
                         .HasColumnType("int");
 
-                    b.HasKey("MediaItemId", "ToastId");
+                    b.HasIndex("DeactivatedById");
 
-                    b.HasIndex("ToastId");
+                    b.HasIndex("QuotedToastId");
 
-                    b.ToTable("ToastMediaItem");
+                    b.HasDiscriminator().HasValue("Quote");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reply", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseToastWithContent");
+
+                    b.Property<int>("ReplyToToastId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("DeactivatedById");
+
+                    b.HasIndex("ReplyToToastId");
+
+                    b.HasDiscriminator().HasValue("Reply");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Toast", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseToastWithContent");
+
+                    b.HasIndex("DeactivatedById");
+
+                    b.HasDiscriminator().HasValue("Toast");
+                });
+
+            modelBuilder.Entity("Domain.Common.BaseToast", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Author")
+                        .WithMany("AllToasts")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Domain.Entities.Account", b =>
@@ -369,6 +415,10 @@ namespace Infrastructure.Persistence.MIgrations
                         .WithMany("MediaItems")
                         .HasForeignKey("AuthorId");
 
+                    b.HasOne("Domain.Common.BaseToastWithContent", null)
+                        .WithMany("MediaItems")
+                        .HasForeignKey("BaseToastWithContentId");
+
                     b.Navigation("Author");
                 });
 
@@ -376,48 +426,19 @@ namespace Infrastructure.Persistence.MIgrations
                 {
                     b.HasOne("Domain.Entities.Account", "Author")
                         .WithMany("Reactions")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Domain.Entities.Toast", "Toast")
+                    b.HasOne("Domain.Common.BaseToastWithContent", "ToastWithContent")
                         .WithMany("Reactions")
-                        .HasForeignKey("ToastId");
+                        .HasForeignKey("ToastWithContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
-                    b.Navigation("Toast");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Toast", b =>
-                {
-                    b.HasOne("Domain.Entities.Account", "Author")
-                        .WithMany("Toasts")
-                        .HasForeignKey("AuthorId");
-
-                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
-                        .WithMany("DeactivatedToasts")
-                        .HasForeignKey("DeactivatedById");
-
-                    b.HasOne("Domain.Entities.Toast", "Quote")
-                        .WithMany("Quotes")
-                        .HasForeignKey("QuoteId");
-
-                    b.HasOne("Domain.Entities.Toast", "ReToast")
-                        .WithMany("ReToasts")
-                        .HasForeignKey("ReToastId");
-
-                    b.HasOne("Domain.Entities.Toast", "Reply")
-                        .WithMany("Replies")
-                        .HasForeignKey("ReplyId");
-
-                    b.Navigation("Author");
-
-                    b.Navigation("DeactivatedBy");
-
-                    b.Navigation("Quote");
-
-                    b.Navigation("ReToast");
-
-                    b.Navigation("Reply");
+                    b.Navigation("ToastWithContent");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -459,39 +480,73 @@ namespace Infrastructure.Persistence.MIgrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.ToastMediaItem", b =>
+            modelBuilder.Entity("Domain.Entities.ReToast", b =>
                 {
-                    b.HasOne("Domain.Entities.MediaItem", null)
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
                         .WithMany()
-                        .HasForeignKey("MediaItemId")
+                        .HasForeignKey("DeactivatedById");
+
+                    b.HasOne("Domain.Common.BaseToastWithContent", "ToastWithContent")
+                        .WithMany("ReToasts")
+                        .HasForeignKey("ToastWithContentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Toast", null)
-                        .WithMany()
-                        .HasForeignKey("ToastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("DeactivatedBy");
+
+                    b.Navigation("ToastWithContent");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Account", b =>
+            modelBuilder.Entity("Domain.Entities.Quote", b =>
                 {
-                    b.Navigation("MediaItems");
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
 
-                    b.Navigation("Reactions");
+                    b.HasOne("Domain.Common.BaseToastWithContent", "QuotedToast")
+                        .WithMany("Quotes")
+                        .HasForeignKey("QuotedToastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Toasts");
+                    b.Navigation("DeactivatedBy");
+
+                    b.Navigation("QuotedToast");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reply", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany()
+                        .HasForeignKey("DeactivatedById");
+
+                    b.HasOne("Domain.Common.BaseToastWithContent", "ReplyToToast")
+                        .WithMany("Replies")
+                        .HasForeignKey("ReplyToToastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeactivatedBy");
+
+                    b.Navigation("ReplyToToast");
                 });
 
             modelBuilder.Entity("Domain.Entities.Toast", b =>
                 {
-                    b.Navigation("Quotes");
+                    b.HasOne("Domain.Entities.User", "DeactivatedBy")
+                        .WithMany("DeactivatedToasts")
+                        .HasForeignKey("DeactivatedById");
 
-                    b.Navigation("ReToasts");
+                    b.Navigation("DeactivatedBy");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Account", b =>
+                {
+                    b.Navigation("AllToasts");
+
+                    b.Navigation("MediaItems");
 
                     b.Navigation("Reactions");
-
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -499,6 +554,19 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Navigation("Account");
 
                     b.Navigation("DeactivatedToasts");
+                });
+
+            modelBuilder.Entity("Domain.Common.BaseToastWithContent", b =>
+                {
+                    b.Navigation("MediaItems");
+
+                    b.Navigation("Quotes");
+
+                    b.Navigation("ReToasts");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,4 @@ public class MediaItem
     public string Url { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
-    
-    public ICollection<Toast> Toasts { get; set; } = null!;
 }
