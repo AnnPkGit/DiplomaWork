@@ -3,7 +3,6 @@
   box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
   border-radius: 15px;
   width: 100%;
-  padding: 2%;
   padding-bottom: 6%;
   min-height: 120px;
 }
@@ -16,11 +15,25 @@
   font-weight: 600;
   font-size: 14px;
   color: #5C6778;
-  color: #ABB9C9;
   border: none;
 }
 
 .postTextZone:focus, input:focus{
   outline: none;
   border: none;
+}
+
+.toast-btn {
+  margin: 10px;
+  width: 180px;
+  height: 4vh;
+  background: #5B66CA;
+  border-radius: 100px;
+  border: solid #5B66CA 2px;
+  font-style: normal;
+  font-weight: 550;
+  font-size: 0.9vw;
+  line-height: 16px;
+  color: #FFFFFF;
+  float: right;
 }
