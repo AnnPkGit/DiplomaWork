@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,44 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.MIgrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231026103310_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Domain.Common.BaseNotification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ToAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("Viewed")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ToAccountId");
-
-                    b.ToTable("BaseNotifications");
-
-                    b.HasDiscriminator<string>("Type").HasValue("BaseNotification");
-
-                    b.UseTphMappingStrategy();
-                });
 
             modelBuilder.Entity("Domain.Common.BaseToast", b =>
                 {
@@ -349,54 +322,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Notifications.QuoteNotification", b =>
-                {
-                    b.HasBaseType("Domain.Common.BaseNotification");
-
-                    b.Property<int>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("QuoteId");
-
-                    b.HasDiscriminator().HasValue("QuoteNotification");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReToastNotification", b =>
-                {
-                    b.HasBaseType("Domain.Common.BaseNotification");
-
-                    b.Property<int>("ReToastId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ReToastId");
-
-                    b.HasDiscriminator().HasValue("ReToastNotification");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReactionNotification", b =>
-                {
-                    b.HasBaseType("Domain.Common.BaseNotification");
-
-                    b.Property<int>("ReactionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ReactionId");
-
-                    b.HasDiscriminator().HasValue("ReactionNotification");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReplyNotification", b =>
-                {
-                    b.HasBaseType("Domain.Common.BaseNotification");
-
-                    b.Property<int>("ReplyId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ReplyId");
-
-                    b.HasDiscriminator().HasValue("ReplyNotification");
-                });
-
             modelBuilder.Entity("Domain.Common.BaseToastWithContent", b =>
                 {
                     b.HasBaseType("Domain.Common.BaseToast");
@@ -457,17 +382,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasIndex("DeactivatedById");
 
                     b.HasDiscriminator().HasValue("Toast");
-                });
-
-            modelBuilder.Entity("Domain.Common.BaseNotification", b =>
-                {
-                    b.HasOne("Domain.Entities.Account", "ToAccount")
-                        .WithMany()
-                        .HasForeignKey("ToAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ToAccount");
                 });
 
             modelBuilder.Entity("Domain.Common.BaseToast", b =>
@@ -567,50 +481,6 @@ namespace Infrastructure.Persistence.MIgrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.QuoteNotification", b =>
-                {
-                    b.HasOne("Domain.Entities.Quote", "Quote")
-                        .WithMany()
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quote");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReToastNotification", b =>
-                {
-                    b.HasOne("Domain.Entities.ReToast", "ReToast")
-                        .WithMany()
-                        .HasForeignKey("ReToastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ReToast");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReactionNotification", b =>
-                {
-                    b.HasOne("Domain.Entities.Reaction", "Reaction")
-                        .WithMany()
-                        .HasForeignKey("ReactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reaction");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Notifications.ReplyNotification", b =>
-                {
-                    b.HasOne("Domain.Entities.Reply", "Reply")
-                        .WithMany()
-                        .HasForeignKey("ReplyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reply");
                 });
 
             modelBuilder.Entity("Domain.Entities.ReToast", b =>

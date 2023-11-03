@@ -1,7 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Security;
+using Domain.Common;
 using Domain.Entities;
+using Domain.Entities.Notifications;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,21 +31,31 @@ public class CreateReactionCommandHandler : IRequestHandler<CreateReactionComman
     public async Task Handle(CreateReactionCommand request, CancellationToken cancellationToken)
     {
         var accountId = _userService.Id;
-        if (!await _context.BaseToastsWithContent.AnyAsync(t => t.Id == request.ToastWithContentId, cancellationToken))
+        var toastWithContentId = request.ToastWithContentId;
+        var toastWithContent = await _context.BaseToastsWithContent.FindAsync( new object?[]{ toastWithContentId } , cancellationToken);
+        
+        if (toastWithContent == null)
         {
-            throw new NotFoundException(nameof(Toast), request.ToastWithContentId);
+            throw new NotFoundException(nameof(BaseToastWithContent), toastWithContentId);
         }
 
         if (await _context.Reactions.AnyAsync(r => 
-                r.ToastWithContentId == request.ToastWithContentId &&
+                r.ToastWithContentId == toastWithContentId &&
                 r.AuthorId == accountId, cancellationToken))
         {
             throw new ForbiddenAccessException();
         }
 
-        var newReaction = new Reaction(request.ToastWithContentId, accountId, _dateTime.Now);
-
+        var createDate = _dateTime.Now;
+        var newReaction = new Reaction(toastWithContentId, accountId, createDate);
+        
         await _context.Reactions.AddAsync(newReaction, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        var res = await _context.SaveChangesAsync(cancellationToken);
+        if (res != 0 && toastWithContent.AuthorId != accountId)
+        {
+            var newReactNotification = new ReactionNotification(toastWithContent.AuthorId, newReaction.Id, createDate);
+            await _context.BaseNotifications.AddAsync(newReactNotification, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

@@ -20,5 +20,9 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasMany(a => a.MediaItems)
             .WithOne(r => r.Author)
             .HasForeignKey(r => r.AuthorId);
+
+        builder.HasMany<BaseNotification>()
+            .WithOne(bn => bn.ToAccount)
+            .HasForeignKey(bn => bn.ToAccountId);
     }
 }
