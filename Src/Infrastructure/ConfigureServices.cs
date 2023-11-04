@@ -25,7 +25,7 @@ public static class ConfigureServices
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("TestDbConnection");
-                var serverVersion = new MariaDbServerVersion("10.4.28");
+                var serverVersion = new MariaDbServerVersion("10.11.4");
                 options.UseMySql(connectionString, serverVersion);
             });
         }
@@ -34,7 +34,7 @@ public static class ConfigureServices
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("MariaDbConnection");
-                var serverVersion = new MariaDbServerVersion("10.4.28");
+                var serverVersion = new MariaDbServerVersion("10.11.4");
                 options.UseMySql(connectionString, serverVersion);
             });
         }

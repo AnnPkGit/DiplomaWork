@@ -1,4 +1,5 @@
 using System.Reflection;
+using WebDiplomaWork.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddHttpContextAccessor();
     
 builder.Services.AddDistributedMemoryCache();
@@ -18,6 +19,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
 
 var app = builder.Build();
 
@@ -40,4 +43,6 @@ app.MapControllerRoute(
 
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html"); 
+
+app.MapHub<NotificationHub>("/sync/notification");
 app.Run();

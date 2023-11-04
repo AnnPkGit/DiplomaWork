@@ -3,6 +3,7 @@ using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
+using Domain.Entities.Notifications;
 using Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,12 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ReToast> ReToasts => Set<ReToast>();
     public DbSet<Reply> Replies => Set<Reply>();
     public DbSet<Quote> Quotes => Set<Quote>();
+    public DbSet<BaseNotification> BaseNotifications => Set<BaseNotification>();
+    public DbSet<ReactionNotification> ReactionNotifications => Set<ReactionNotification>();
+    public DbSet<ReToastNotification> ReToastNotifications => Set<ReToastNotification>();
+    public DbSet<QuoteNotification> QuoteNotifications => Set<QuoteNotification>();
+    public DbSet<ReplyNotification> ReplyNotifications => Set<ReplyNotification>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

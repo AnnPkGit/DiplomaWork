@@ -1,5 +1,6 @@
 using Domain.Common;
 using Domain.Entities;
+using Domain.Entities.Notifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
@@ -25,6 +26,12 @@ public interface IApplicationDbContext
     DbSet<Reply> Replies { get; }
     
     DbSet<Quote> Quotes { get; }
+    
+    DbSet<BaseNotification> BaseNotifications { get; }
+    DbSet<ReactionNotification> ReactionNotifications { get; }
+    DbSet<ReToastNotification> ReToastNotifications { get; }
+    DbSet<QuoteNotification> QuoteNotifications { get; }
+    DbSet<ReplyNotification> ReplyNotifications { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
