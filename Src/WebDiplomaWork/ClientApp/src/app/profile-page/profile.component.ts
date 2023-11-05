@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PostModel } from '../shared/models/postModel';
 import { AccountModel } from '../shared/models/accountModel';
 import { UserResponse } from '../identification/signIn/signIn.component';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +19,7 @@ export class ProfilePageComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("userInfo") ?? "");
-    this.fetchUSersToasts();
+    this.fetchUSersToasts(); 
   }
 
   onBooleanEmitted(value: boolean) {
@@ -36,7 +35,13 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchUSersToasts() {
-    this.httpClient.get<ToastResponse>("api/v1/toast/by/account?AccountId=" +  this.user?.account.id).subscribe((response) => {
+    this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.user?.account.id).subscribe((response) => {
+      this.toastResponse = response;
+    });
+  }
+
+  fetchUsersReplies() {
+    this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.user?.account.id).subscribe((response) => {
       this.toastResponse = response;
     });
   }
@@ -56,15 +61,15 @@ export interface ToastItem {
   lastModified: string;
   created: string;
   author: string | null;
-  context: string;
+  content: string;
   type: string;
   reply: string | null;
-  quote: string | null;
+  quotedToast: ToastResponse | null;
   reactionCount: number;
   reToastCount: number;
   replyCount: number;
   isReToast: boolean;
-  reToast: ToastResponse;
+  toastWithContent: ToastResponse;
   mediaItems: string[];
   thread: ToastResponse[];
 }

@@ -1,0 +1,5 @@
+<toast-modal *ngIf="createToast" (booleanEmitter)="onBooleanEmitted($event)"></toast-modal>
+
+<button class="toastButton" (click)="openModal()">
+Toast it!
+</button>

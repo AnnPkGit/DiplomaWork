@@ -11,6 +11,7 @@
 @import './app/modals/profile-edit-modal.css';
 @import './app/notification-page/notifactions-page.css';
 @import './app/settings-page/settings-page.css';
+@import './app/toast-modal/toast-modal.css';
 
 
 a {

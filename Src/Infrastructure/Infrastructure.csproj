@@ -25,4 +25,8 @@
     <Compile Remove="Persistence\MIgrations\20230924163601_Initial.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\MIgrations\" />
+  </ItemGroup>
+
 </Project>

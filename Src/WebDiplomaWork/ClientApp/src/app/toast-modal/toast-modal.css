@@ -1,0 +1,21 @@
+.create-toast-modal-bg {
+    position: absolute;
+}
+
+.modal-content-toast {
+    height: auto;
+    max-height: 500px;
+
+    /**/
+    width: 40%;
+    min-width: 500px;
+
+    padding-right: 1%;
+    padding-left: 1%;
+    padding-top: 1%;
+
+    border-radius: 20px;
+    border: none;
+
+    background-color: white;
+}

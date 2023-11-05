@@ -13,14 +13,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.BaseToasts.Queries.GetAccountBaseToasts;
 
-public class GetAccountBaseToastsQuery : IRequest<PaginatedList<BaseToastDto>>
+public class GetAccountBaseToastsQuery : IRequest<PaginatedList<object>>
 {
     public int AccountId { get; set; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseToastsQuery, PaginatedList<BaseToastDto>>
+public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseToastsQuery, PaginatedList<object>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<BaseToastDto>> Handle(GetAccountBaseToastsQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<object>> Handle(GetAccountBaseToastsQuery request, CancellationToken cancellationToken)
     {
         if (!await _context.Accounts.AnyAsync(a => a.Id == request.AccountId, cancellationToken))
         {
@@ -90,6 +90,6 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
             objectsDto.AddRange(reToastsDto);
         }
 
-        return new PaginatedList<BaseToastDto>(objectsDto.OrderByDescending(bt => bt.Created).ToArray(), totalCount, request.PageNumber, request.PageSize);
+        return new PaginatedList<object>(objectsDto.OrderByDescending(bt => bt.Created).ToArray(), totalCount, request.PageNumber, request.PageSize);
     }
 }

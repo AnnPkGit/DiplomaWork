@@ -20,7 +20,7 @@ public class BaseToastController : ApiV1ControllerBase
     }
     
     [HttpGet("by/account")]
-    public async Task<PaginatedList<BaseToastDto>> GetAccountBaseToasts([FromQuery] GetAccountBaseToastsQuery command)
+    public async Task<PaginatedList<object>> GetAccountBaseToasts([FromQuery] GetAccountBaseToastsQuery command)
     {
         return await Mediator.Send(command);
     }

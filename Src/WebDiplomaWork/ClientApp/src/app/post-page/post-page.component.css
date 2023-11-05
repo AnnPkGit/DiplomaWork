@@ -1,0 +1,36 @@
+.rounded-btn { 
+    width: 180px;
+    height: 4vh;
+    background: #5B66CA;
+    border-radius: 100px;
+    border: solid #5B66CA 2px;
+    font-style: normal;
+    font-weight: 550;
+    font-size: 0.9vw;
+    line-height: 16px;
+    color: #FFFFFF;
+}
+
+.no-corners-txt {
+    padding-top: 1%;
+    padding-right: 2%;
+    padding-left: 2%;
+
+    width: 100%;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #5C6778;
+}
+
+.no-corners-txt:focus {
+    border: none;
+    outline: none;
+    border: none;
+}
+
+.reply-area {
+    width: 100%;
+    border: 1px solid #e2e7ee;
+    background-color: #FFFFFF;;
+}

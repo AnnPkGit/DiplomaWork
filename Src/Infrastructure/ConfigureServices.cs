@@ -24,8 +24,8 @@ public static class ConfigureServices
         {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
-                var connectionString = configuration.GetConnectionString("TestDbConnection");
-                var serverVersion = new MariaDbServerVersion("10.4.28");
+                var connectionString = "Server=localhost;User ID=admin_tester;Password=yV{CQtNoN{$0_)u|;Database=admin_toaster_db_test";
+                var serverVersion = new MariaDbServerVersion("10.4.24");
                 options.UseMySql(connectionString, serverVersion);
             });
         }
@@ -33,8 +33,8 @@ public static class ConfigureServices
         {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
-                var connectionString = configuration.GetConnectionString("MariaDbConnection");
-                var serverVersion = new MariaDbServerVersion("10.4.28");
+                var connectionString = "Server=localhost;User ID=admin_tester;Password=yV{CQtNoN{$0_)u|;Database=admin_toaster_db_test";
+                var serverVersion = new MariaDbServerVersion("10.4.24");
                 options.UseMySql(connectionString, serverVersion);
             });
         }

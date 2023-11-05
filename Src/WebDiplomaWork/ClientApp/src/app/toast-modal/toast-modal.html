@@ -1,0 +1,56 @@
+<div class="modal-bg">
+  <div class="modal-content-toast">
+    <div style="background-color: aqua;">
+      <img (click)="Close()" style="float: right;"
+      src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMTcgMTMuODNMMTMuODMgOC4xN00xMy44MyAxMy44M0w4LjE3IDguMTdNMTEgMjFDMTYuNSAyMSAyMSAxNi41IDIxIDExQzIxIDUuNSAxNi41IDEgMTEgMUM1LjUgMSAxIDUuNSAxIDExQzEgMTYuNSA1LjUgMjEgMTEgMjFaIiBzdHJva2U9IiM1QzY3NzgiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==' />
+    </div>
+    <div class="scroll-content" style="max-height: 400px;">
+      <div style="display: flex;">
+          <div style="width: 10%;">
+              <div class="postAvatar" style="margin: 0;">
+                  <img class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
+              </div>
+          </div>
+          <div style="width: 90%;">
+            <div style="width: 100%;">
+                <textarea class="postTextZone" style="width: 98%;background-color: initial;" autosize placeholder="TOAST IT" rows="5" [(ngModel)]="content"></textarea>
+            </div>
+
+            <div *ngIf="toast && !this.reply" style="width: 100%;">
+              <div class="quote-post">
+                <div class="postContent">
+                  <div class="postInfo" style=" height: 56px;">
+              
+                    <div class="postAvatar">
+                      <img *ngIf="toast?.author?.avatar" class="postImg" [src]="toast?.author.avatar" />
+                      <img *ngIf="!toast?.author?.avatar" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
+                    </div>
+              
+                    <div class="loginNameContainer">
+                      <div class="postLogin">
+                        <label *ngIf="toast?.toastWithContent"><img  style="height: 20px; width: 20px; margin-bottom: 3px;" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMuNTgwMDggNS4xNjAxNkgxNy40MjAxQzE5LjA4MDEgNS4xNjAxNiAyMC40MjAxIDYuNTAwMTYgMjAuNDIwMSA4LjE2MDE2VjExLjQ4MDIiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02Ljc0MDA4IDJMMy41ODAwOCA1LjE2TDYuNzQwMDggOC4zMk0yMC40MjAxIDE4Ljg0SDYuNTgwMDhDNC45MjAwOCAxOC44NCAzLjU4MDA4IDE3LjUgMy41ODAwOCAxNS44NFYxMi41MiIgc3Ryb2tlPSIjQTFCM0JEIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE3LjI1OTggMjEuOTk5N0wyMC40MTk4IDE4LjgzOTdMMTcuMjU5OCAxNS42Nzk3IiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K' /></label> 
+                        {{toast?.author?.name}}
+                      </div>
+                      <div class="postName">
+                        @{{toast?.author?.login}}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="postText">
+                    {{toast?.content}}
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+
+      </div>
+    </div>
+    <div>
+      <div style="width: 100%; display: flex;">
+          <button class="toast-btn" style="margin-left: auto;" (click)="PostContent()">TOAST</button>
+      </div>
+    </div>
+  </div>  
+</div>

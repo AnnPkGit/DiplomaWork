@@ -17,9 +17,7 @@
       <profile-bar></profile-bar>
       <app-navBar></app-navBar>
 
-      <button class="toastButton">
-        Toast it!
-      </button>
+      <toast-button></toast-button>
     </div>
   </div>
 </div>
@@ -28,8 +26,8 @@
   <div class="tostContainer">
     <app-toast-creator></app-toast-creator>
   </div>
-  <div class="tostContainer"  *ngFor="let post of posts">
-    <!-- <app-post [toast]="post"></app-post> -->
+  <div class="tostContainer"  *ngFor="let post of posts?.items">
+    <app-post [toast]="post"></app-post>
   </div>
 </div>
 

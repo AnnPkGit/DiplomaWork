@@ -27,6 +27,8 @@ import { ProfileEditModal } from './modals/ProfileEditModal';
 import { AutosizeModule } from 'ngx-autosize';
 import { NotifactionsPageComponent } from './notification-page/notification-page';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
+import { ToastModalComponent } from './toast-modal/toast-modal';
+import { ToastBtn } from './toast-button/toast-button';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { SettingsPageComponent } from './settings-page/settings-page.component';
     ProfilePageComponent,
     ProfileEditModal,
     NotifactionsPageComponent,
-    SettingsPageComponent
+    SettingsPageComponent,
+    ToastModalComponent,
+    ToastBtn
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

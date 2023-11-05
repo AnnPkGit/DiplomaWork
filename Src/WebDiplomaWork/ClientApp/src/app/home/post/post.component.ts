@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, HostListener, Input } from '@angular/core';
 import { ToastItem } from 'src/app/profile-page/profile.component';
-import { AppConfig } from 'src/app/shared/config';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
-import { PostModel } from 'src/app/shared/models/postModel';
 
 @Component({
   selector: 'app-post',
@@ -12,8 +11,10 @@ export class PostComponent {
   closeImg: boolean = true;
   currentImg: string = '';
   currentUrl: string;
+  reToastOptionsOpen = false;
+  makeQuoteOpen = false;
 
-  constructor(private localRouter: LocalRouter) {
+  constructor(private localRouter: LocalRouter, private http: HttpClient) {
     this.currentUrl = window.location.href;
   }
 
@@ -26,9 +27,64 @@ export class PostComponent {
   @Input()
   reToast: boolean = false;
 
-  goToPostPage(event: Event) : void {
+  isReply = false;
+
+  @HostListener('document:click', ['$event'])
+  handlePageClick(event: MouseEvent): void {
+    if(this.reToastOptionsOpen) {
+      this.reToastOptionsOpen = false;
+      event.stopPropagation();
+    }
+  }
+
+  OpenQuote(id: number) {
+    this.isReply = false;
+    this.makeQuoteOpen = true;
+  }
+
+  OpenReply(event: Event) {
+    this.isReply = true;
     event.stopPropagation();
-    this.localRouter.goToToastPage(this.toast.id);
+    this.makeQuoteOpen = true;
+  }
+
+  reToastToast(id: number) {
+    const body = {
+      ToastWithContentId: id
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+
+    this.http.post("/api/v1/ReToast", body, { headers }).subscribe(
+      // (user: UserResponse) => {
+      //   localStorage.setItem(errorKey, '');
+      //   localStorage.setItem("userInfo", JSON.stringify(user));
+      //   this.router.goToHome();
+      // },
+      // (error) => {
+      //   localStorage.setItem(errorKey, 'Login error');
+      //   window.location.reload();
+      // }
+    );
+  }
+
+  openReToastOptions(event: Event) {
+    event.stopPropagation();
+    this.reToastOptionsOpen = true;
+  }
+
+  goToPostPage(event: Event) : void {
+    if(this.reToastOptionsOpen) {
+      this.reToastOptionsOpen = false;
+      event.stopPropagation();
+      return;
+    }
+
+    event.stopPropagation();
+    this.localRouter.goToToastPage(this.toast.toastWithContent?.id == null ? this.toast.id : this.toast.toastWithContent?.id );
+    console.log(this.toast);
     console.log('go to post page');
   }
 
@@ -68,6 +124,14 @@ export class PostComponent {
     if(this.style == "no-corners-end") {
       return 'post-end-no-corners';
     }
+    if(this.style == "quote") {
+      return 'quote-post';
+    }
     return "post"
+  }
+
+  onBooleanEmitted(value: boolean) {
+    this.makeQuoteOpen = value;
+    this.isReply = false;
   }
 }
