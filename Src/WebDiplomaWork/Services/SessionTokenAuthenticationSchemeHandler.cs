@@ -21,7 +21,8 @@ public class SessionTokenAuthenticationSchemeHandler : AuthenticationHandler<Ses
     {
         try
         {
-            if (Request.HttpContext.Session.TryGetValue(UserFieldNames.Id, out _))
+            var id = Request.HttpContext.Session.GetInt32(UserFieldNames.Id) ?? UserDefaultValues.Id;
+            if (id != UserDefaultValues.Id)
             {
                 // If the session is valid, return success:
                 var claims = new[] { new Claim(ClaimTypes.Name, "Test") };
@@ -31,7 +32,7 @@ public class SessionTokenAuthenticationSchemeHandler : AuthenticationHandler<Ses
             }
 
             // If the token is missing or the session is invalid, return failure:
-            return Task.FromResult(AuthenticateResult.Fail("Authentication failed"));
+            return Task.FromResult(AuthenticateResult.NoResult());
         }
         catch (InvalidOperationException)
         {
