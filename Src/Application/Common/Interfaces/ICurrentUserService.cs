@@ -16,9 +16,10 @@ public interface ICurrentUserService
         CancellationToken cancellationToken = default);
     public Task SetRolesAsync(IEnumerable<Role> roles, string key = UserFieldNames.Roles,
         CancellationToken cancellationToken = default);
-    public Task SetPermissionAsync(IEnumerable<Permission> permissions, string key = UserFieldNames.Roles,
+    public Task SetPermissionsAsync(IEnumerable<Permission> permissions, string key = UserFieldNames.Roles,
         CancellationToken cancellationToken = default);
     public Task SetEmailVerifiedAsync(bool emailVerified, string key = UserFieldNames.EmailVerified,
         CancellationToken cancellationToken = default);
     public Task Clear(CancellationToken cancellationToken = default);
+    public Task SetAllPropertiesAsync(int id, string email, bool emailVerified, IEnumerable<Role> roles, IEnumerable<Permission> permissions, CancellationToken cancellationToken = default);
 }

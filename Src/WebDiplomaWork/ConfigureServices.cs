@@ -14,7 +14,7 @@ public static class ConfigureServices
         services.ConfigureOptions<EmailOptionsSetup>();
         services.ConfigureOptions<AzureStorageConfigSetup>();
         
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
         
         services.AddAuthentication()
             .AddScheme<SessionTokenAuthenticationSchemeOptions, SessionTokenAuthenticationSchemeHandler>(

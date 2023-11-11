@@ -33,7 +33,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
             throw new NotFoundException(nameof(User), userId);
 
         user.Deactivated = _dateTime.Now;
-        
+        await _currentUserService.Clear(token);
         await _context.SaveChangesAsync(token);
     }
 }
