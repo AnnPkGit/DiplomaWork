@@ -45,6 +45,11 @@ export class ProfilePageComponent implements OnInit{
       this.toastResponse = response;
     });
   }
+
+  addToast($event : ToastItem): void {
+    $event.author = this.toastResponse?.items[0].author ?? null;
+    this.toastResponse?.items.unshift($event);
+  }
 }
 
 export interface ToastResponse {
@@ -60,7 +65,7 @@ export interface ToastItem {
   id: number;
   lastModified: string;
   created: string;
-  author: string | null;
+  author: {} | null;
   content: string;
   type: string;
   reply: string | null;

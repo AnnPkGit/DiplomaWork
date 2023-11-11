@@ -7,8 +7,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './toast-modal.html',
 })
 export class ToastModalComponent {
+  @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
+
   @Output() booleanEmitter: EventEmitter<boolean> = new EventEmitter();
   close!: () => void;
+
+  @Output() replyEmitter = new EventEmitter<void>();
 
   @Input()
   toast: ToastItem | any;
@@ -43,6 +47,7 @@ export class ToastModalComponent {
         MediaItemIds: []
       };
       url = "/api/v1/reply";
+      this.replyEmitter.emit();
     }
     else {
       body = {
@@ -56,8 +61,11 @@ export class ToastModalComponent {
       'Content-Type': 'application/json' 
     });
 
-    this.http.post(url, body, { headers }).subscribe(
-      (res) => {
+    this.http.post<ToastItem>(url, body, { headers }).subscribe(
+      (res: ToastItem) => {
+        if(res) {
+          this.onToastCreation.emit(res);
+        }
         this.Close();
       },
       (error) => {

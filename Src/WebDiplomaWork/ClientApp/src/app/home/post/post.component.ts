@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, Input } from '@angular/core';
-import { ToastItem } from 'src/app/profile-page/profile.component';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ToastItem, ToastResponse } from 'src/app/profile-page/profile.component';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 
 @Component({
@@ -17,6 +17,8 @@ export class PostComponent {
   constructor(private localRouter: LocalRouter, private http: HttpClient) {
     this.currentUrl = window.location.href;
   }
+
+  @Output() onReToast: EventEmitter<ToastItem> = new EventEmitter();
 
   @Input()
   style: string = "post";
@@ -57,17 +59,39 @@ export class PostComponent {
       'Content-Type': 'application/json' 
     });
 
-    this.http.post("/api/v1/ReToast", body, { headers }).subscribe(
-      // (user: UserResponse) => {
-      //   localStorage.setItem(errorKey, '');
-      //   localStorage.setItem("userInfo", JSON.stringify(user));
-      //   this.router.goToHome();
-      // },
-      // (error) => {
-      //   localStorage.setItem(errorKey, 'Login error');
-      //   window.location.reload();
-      // }
+    this.http.post<ToastResponse>("/api/v1/ReToast", body, { headers }).subscribe(
+      () => {
+        this.toast.reToastsCount += 1;
+        var newReToast: ToastItem = {
+          toastWithContent: this.toast,
+          id: 0,
+          author: this.toast.author,
+          lastModified: '', 
+          created: '', 
+          content: '', 
+          type: '',
+          reply: '', 
+          quotedToast: null, 
+          reactionCount: 0, 
+          reToastCount: 0,
+          replyCount: 0, 
+          isReToast: false, 
+          mediaItems: [], 
+          thread: []
+        }
+        this.onReToast.emit(newReToast);
+      },
+      (error) => {
+      }
     );
+  }
+
+  addRepliesCount() {
+    if(this.toast.toastWithContent) {
+      this.toast.toastWithContent.repliesCount += 1;
+      return;
+    }
+    this.toast.repliesCount += 1;
   }
 
   openReToastOptions(event: Event) {

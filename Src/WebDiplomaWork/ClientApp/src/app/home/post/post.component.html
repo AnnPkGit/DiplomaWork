@@ -1,4 +1,4 @@
-<toast-modal *ngIf="makeQuoteOpen" [reply]="isReply" (booleanEmitter)="onBooleanEmitted($event)" [toast]="toast?.toastWithContent == null ? toast : toast?.toastWithContent"></toast-modal>
+<toast-modal *ngIf="makeQuoteOpen" [reply]="isReply" (booleanEmitter)="onBooleanEmitted($event)" (replyEmitter)="addRepliesCount()" [toast]="toast?.toastWithContent == null ? toast : toast?.toastWithContent"></toast-modal>
 
 <app-img-opened *ngIf="!closeImg"
 [imgs]="toast?.imgs"

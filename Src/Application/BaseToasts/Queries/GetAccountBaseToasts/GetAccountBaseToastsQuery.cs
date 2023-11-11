@@ -89,7 +89,7 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
             var reToastsDto = reToasts.Select(t => _mapper.Map<ReToastBriefDto>(t));
             objectsDto.AddRange(reToastsDto);
         }
-
+        
         return new PaginatedList<object>(objectsDto.OrderByDescending(bt => bt.Created).ToArray(), totalCount, request.PageNumber, request.PageSize);
     }
 }
