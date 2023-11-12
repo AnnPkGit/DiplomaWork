@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand(string Email, string Password) : IRequest<int>;
+public record CreateUserCommand(string Email, string Password) : BaseCreateUserModel(Email, Password), IRequest<int>;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 {

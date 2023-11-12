@@ -18,20 +18,18 @@ public class GetAllToastsQueryHandler : IRequestHandler<GetAllToastsQuery, Pagin
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly ICurrentUserService _userService;
 
     public GetAllToastsQueryHandler(
         IApplicationDbContext context,
-        IMapper mapper,
-        ICurrentUserService userService)
+        IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _userService = userService;
     }
 
     public async Task<PaginatedList<ToastBriefDto>> Handle(GetAllToastsQuery request, CancellationToken token)
     {
+        var toasts = _context.Toasts.ToList();
         return await _context.Toasts
             .OrderByDescending(t => t.Created)
             .ProjectTo<ToastBriefDto>(_mapper.ConfigurationProvider)

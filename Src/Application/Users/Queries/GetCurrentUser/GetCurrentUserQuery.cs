@@ -4,7 +4,6 @@ using Application.Common.Security;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Users.Queries.GetCurrentUser;
 
@@ -30,8 +29,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, U
     public async Task<UserBriefDto> Handle(GetCurrentUserQuery request, CancellationToken token)
     {
         var userId = _currentUserService.Id;
-        var user = await _context.Users
-            .SingleOrDefaultAsync(user => user.Id == userId, token);
+        var user = await _context.Users.FindAsync(new object?[] { userId, token }, token);
         if (user == null)
         {
             throw new NotFoundException(nameof(User), userId);

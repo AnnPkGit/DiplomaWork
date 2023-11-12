@@ -13,19 +13,19 @@ public class MediaService : IMediaService
         _context = context;
     }
 
-    public async Task<MediaItem[]> GetMediaItemsAsync(CancellationToken cancellationToken, params int[] mediaItemIds)
+    public async Task<ToastMediaItem[]> GetToastMediaItemsAsync(CancellationToken cancellationToken, params int[] toastMediaItemIds)
     {
-        var maxMediaItems = mediaItemIds.Length;
-        var mediaItems = new MediaItem[maxMediaItems];
+        var maxToastMediaItems = toastMediaItemIds.Length;
+        var toastMediaItems = new ToastMediaItem[maxToastMediaItems];
         
-        for (var i = 0; i < maxMediaItems; i++)
+        for (var i = 0; i < maxToastMediaItems; i++)
         {
-            var itemId = mediaItemIds[i];
-            var item = await _context.MediaItems.FindAsync(new object[] { itemId }, cancellationToken);
+            var itemId = toastMediaItemIds[i];
+            var item = await _context.ToastMediaItems.FindAsync(new object[] { itemId }, cancellationToken);
 
-            mediaItems[i] = item ?? throw new NotFoundException(nameof(MediaItem), itemId);
+            toastMediaItems[i] = item ?? throw new NotFoundException(nameof(ToastMediaItem), itemId);
         }
 
-        return mediaItems;
+        return toastMediaItems;
     }
 }

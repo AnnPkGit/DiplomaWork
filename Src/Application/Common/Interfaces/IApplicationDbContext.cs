@@ -11,8 +11,6 @@ public interface IApplicationDbContext
     
     DbSet<Account> Accounts { get; }
     
-    DbSet<MediaItem> MediaItems { get; }
-    
     DbSet<Reaction> Reactions { get; }
     
     DbSet<BaseToast> BaseToasts { get; }
@@ -32,6 +30,7 @@ public interface IApplicationDbContext
     DbSet<ReToastNotification> ReToastNotifications { get; }
     DbSet<QuoteNotification> QuoteNotifications { get; }
     DbSet<ReplyNotification> ReplyNotifications { get; }
-
+    DbSet<ToastMediaItem> ToastMediaItems { get; }
+    DbSet<AvatarMediaItem> AvatarMediaItems { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

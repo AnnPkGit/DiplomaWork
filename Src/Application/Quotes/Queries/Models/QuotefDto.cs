@@ -28,5 +28,5 @@ public class QuoteDto : BaseToastWithContentDto, IMapFrom<Quote>
 public class QuotedToastDto : BaseToastDto, IMapFrom<BaseToastWithContent>
 {
     public string Content { get; set; } = string.Empty;
-    public IEnumerable<MediaItemBriefDto> MediaItems { get; set; } = null!;
+    public IEnumerable<BaseMediaItemDto> MediaItems { get; set; } = null!;
 }

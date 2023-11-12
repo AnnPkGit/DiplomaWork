@@ -9,7 +9,7 @@ using MediatR;
 namespace Application.Toasts.Commands.CreateToast;
 
 [Authorize]
-public record CreateToastCommand(string Context, params int[] MediaItemIds) : IRequest<ToastBriefDto>;
+public record CreateToastCommand(string Context, params int[] ToastMediaItemIds) : IRequest<ToastBriefDto>;
 
 public class CreateToastCommandHandler : IRequestHandler<CreateToastCommand, ToastBriefDto>
 {
@@ -34,7 +34,7 @@ public class CreateToastCommandHandler : IRequestHandler<CreateToastCommand, Toa
     {
         var userId = _userService.Id;
         
-        var mediaItems = _mediaService.GetMediaItemsAsync(cancellationToken, request.MediaItemIds);
+        var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
 
         var newToast = new Toast(userId, request.Context, await mediaItems);
         

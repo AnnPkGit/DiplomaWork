@@ -16,10 +16,7 @@ public class ReplyDto : BaseToastWithContentDto, IMapFrom<Reply>
 
     public override void Mapping(Profile profile)
     {
-        var destinationType = typeof(BaseToastWithContentDto);
-        profile.CreateMap<Reply, ReplyDto>()
-            .ForMember(dto => dto.ReplyToToast, opt => opt
-                .MapFrom((reply, _, _, context) => context.Mapper.Map(reply.ReplyToToast, reply.ReplyToToast.GetType(), destinationType)));
+        profile.CreateMap<Reply, ReplyDto>();
         base.Mapping(profile);
     }
 

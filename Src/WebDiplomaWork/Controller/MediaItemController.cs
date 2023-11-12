@@ -1,6 +1,7 @@
-using Application.Common.Models;
-using Application.MediaItems.Commands.CreateMediaItem;
-using Application.MediaItems.Queries.GetMediaItemsWithPagination;
+using Application.MediaItems.Commands.Common;
+using Application.MediaItems.Commands.CreateAvatarMediaItem;
+using Application.MediaItems.Commands.CreateToastMediaItem;
+using Application.MediaItems.Queries.GetAllMediaItems;
 using Application.MediaItems.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,22 @@ namespace WebDiplomaWork.Controller;
 
 public class MediaItemController : ApiV1ControllerBase
 {
-    [HttpPost, Authorize]
-    public async Task<CreateMediaItemDto> CreateMedia(IFormFile file)
+    [HttpPost("toast"), Authorize]
+    public async Task<CreateBaseMediaItemDto> CreateToastMediaItem(IFormFile file)
     {
-        return await Mediator.Send(new CreateMediaItemCommand(file.OpenReadStream(), file.FileName, file.ContentType));
+        return await Mediator.Send(new CreateToastMediaItemCommand(file.OpenReadStream(), file.FileName, file.ContentType));
     }
     
-    [HttpGet("pagination"), Authorize]
-    public async Task<ActionResult<PaginatedList<MediaItemBriefDto>>> GetMediaItemsWithPagination
-        ([FromQuery]  GetMediaItemsWithPaginationQuery command)
+    [HttpPost("avatar"), Authorize]
+    public async Task<CreateBaseMediaItemDto> CreateAvatarMediaItem(IFormFile file)
     {
-        return await Mediator.Send(command);
+        return await Mediator.Send(new CreateAvatarMediaItemCommand(file.OpenReadStream(), file.FileName, file.ContentType));
+    }
+    
+    [HttpGet("all")]
+    public async Task<IEnumerable<BaseMediaItemDto>> GetAllMediaItems
+        ([FromQuery]  GetAllMediaItemsQuery query)
+    {
+        return await Mediator.Send(query);
     }
 }

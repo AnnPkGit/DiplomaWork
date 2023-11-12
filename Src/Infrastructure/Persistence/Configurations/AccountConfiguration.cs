@@ -19,10 +19,17 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder.HasMany(a => a.MediaItems)
             .WithOne(r => r.Author)
-            .HasForeignKey(r => r.AuthorId);
+            .HasForeignKey(r => r.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(a => a.Avatar)
+            .WithMany()
+            .HasForeignKey(a => a.AvatarId);
 
         builder.HasMany<BaseNotification>()
             .WithOne(bn => bn.ToAccount)
             .HasForeignKey(bn => bn.ToAccountId);
+
+        builder.Navigation(a => a.Avatar).AutoInclude();
     }
 }

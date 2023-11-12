@@ -1,6 +1,6 @@
 using Application.Common.Models;
-using Application.Users.Commands.CreateUser;
 using Application.Users.Commands.DeleteUser;
+using Application.Users.Commands.RegistrateUserWithAccount;
 using Application.Users.Commands.UpdateUserEmail;
 using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Commands.UpdateUserPhone;
@@ -13,10 +13,11 @@ namespace WebDiplomaWork.Controller;
 
 public class UserController : ApiV1ControllerBase
 {
-    [HttpPost]
-    public async Task<ActionResult<int>> Create(CreateUserCommand command)
+    [HttpPost("registration")]
+    public async Task<IActionResult> RegistrateUserAndAccount(RegistrateUserAndAccountCommand command)
     {
-        return await Mediator.Send(command);
+        await Mediator.Send(command);
+        return NoContent();
     }
 
     [HttpGet("pagination"), Authorize]
