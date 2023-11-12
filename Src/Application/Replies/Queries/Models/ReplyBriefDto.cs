@@ -8,7 +8,7 @@ namespace Application.Replies.Queries.Models;
 
 public class ReplyBriefDto : BaseToastWithContentDto, IMapFrom<Reply>
 {
-    public BaseToastDto ReplyToToast { get; set; } = null!;
+    public BaseToastWithContentDto ReplyToToast { get; set; } = null!;
 
     public ReplyBriefDto()
     {

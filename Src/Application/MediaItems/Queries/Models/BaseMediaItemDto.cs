@@ -1,9 +1,9 @@
 ﻿using Application.Common.Mappings;
-using Domain.Entities;
+using Domain.Common;
 
 namespace Application.MediaItems.Queries.Models;
 
-public class MediaItemBriefDto : IMapFrom<MediaItem>
+public class BaseMediaItemDto : IMapFrom<BaseMediaItem>
 {
     public int Id { get; set; }
     public string Url { get; set; } = string.Empty;

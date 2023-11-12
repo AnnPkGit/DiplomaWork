@@ -12,7 +12,7 @@ using MediatR;
 namespace Application.Replies.Commands.CreateReply;
 
 [Authorize]
-public record CreateReplyCommand(string Content, int ReplyToToastId, params int[] MediaItemIds) : IRequest<ReplyBriefDto>;
+public record CreateReplyCommand(string Content, int ReplyToToastId, params int[] ToastMediaItemIds) : IRequest<ReplyBriefDto>;
 
 public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, ReplyBriefDto>
 {
@@ -47,7 +47,7 @@ public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, Rep
             throw new NotFoundException(nameof(BaseToastWithContent), replyToToastId);
         }
         
-        var mediaItems = _mediaService.GetMediaItemsAsync(cancellationToken, request.MediaItemIds);
+        var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
         
         var createDate = _dateTime.Now;
         var newReply = new Reply(accountId, request.Content, replyToToastId, await mediaItems);

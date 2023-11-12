@@ -1,10 +1,10 @@
-﻿namespace Domain.Entities;
+﻿namespace Domain.Common;
 
-public class MediaItem
+public abstract class BaseMediaItem
 {
-    public MediaItem(){}
-
-    public MediaItem(string url, string name, string type, int authorId)
+    public BaseMediaItem() {}
+    
+    protected BaseMediaItem(string url, string name, string type, int authorId)
     {
         Url = url;
         Name = name;

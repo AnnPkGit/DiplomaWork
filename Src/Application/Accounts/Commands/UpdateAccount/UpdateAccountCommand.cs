@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Accounts.Commands.UpdateAccount;
 
@@ -13,7 +14,7 @@ public record UpdateAccountCommand : IRequest
     public string Login { get; set; } = string.Empty;
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
-    public string? Avatar { get; set; }
+    public int? AvatarId { get; set; }
     public string? Bio { get; set; }
 }
 
@@ -42,11 +43,16 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
         if (entity.Id != userId)
             throw new ForbiddenAccessException($"User ({userId}) tried to update account ({request.Id}).");
         
+        if (request.AvatarId != null && !await _context.AvatarMediaItems.AnyAsync(item => item.Id == request.AvatarId, token))
+        {
+            throw new NotFoundException(nameof(AvatarMediaItem), request.AvatarId);
+        }
+        
         entity.Login = request.Login;
         entity.Name = request.Name;
         entity.BirthDate = request.BirthDate;
         entity.Bio = request.Bio;
-        entity.Avatar = request.Avatar;
+        entity.AvatarId = request.AvatarId;
 
         await _context.SaveChangesAsync(token);
     }

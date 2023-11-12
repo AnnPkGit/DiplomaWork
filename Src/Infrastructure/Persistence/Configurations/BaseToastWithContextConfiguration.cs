@@ -8,7 +8,8 @@ public class BaseToastWithContextConfiguration : IEntityTypeConfiguration<BaseTo
 {
     public void Configure(EntityTypeBuilder<BaseToastWithContent> builder)
     {
-        builder.HasMany(entity => entity.MediaItems).WithOne();
+        builder.HasMany(entity => entity.MediaItems)
+            .WithMany();
         
         builder.HasMany(entity => entity.Reactions)
             .WithOne(r => r.ToastWithContent)

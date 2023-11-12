@@ -8,7 +8,7 @@ public class Quote : BaseToastWithContent
         QuotedToastId = quotedToastId;
     }
     
-    public Quote(int authorId, string content, int quotedToastId, params MediaItem[] mediaItems)
+    public Quote(int authorId, string content, int quotedToastId, params ToastMediaItem[] mediaItems)
         : base(authorId, content, typeof(Quote), mediaItems)
     {
         QuotedToastId = quotedToastId;

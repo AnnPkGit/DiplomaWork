@@ -10,7 +10,7 @@ public class Reply : BaseToastWithContent
         ReplyToToastId = replyToToastId;
     }
 
-    public Reply(int authorId, string content, int replyToToastId, params MediaItem[] mediaItems)
+    public Reply(int authorId, string content, int replyToToastId, params ToastMediaItem[] mediaItems)
         : base(authorId, content, typeof(Reply), mediaItems)
     {
         ReplyToToastId = replyToToastId;

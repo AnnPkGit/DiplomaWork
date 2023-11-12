@@ -13,7 +13,7 @@ public class BaseToastWithContent : BaseToast
         Content = content;
     }
     
-    protected BaseToastWithContent(int authorId, string content, MemberInfo childType, params MediaItem[] mediaItems) : base(authorId, childType)
+    protected BaseToastWithContent(int authorId, string content, MemberInfo childType, params ToastMediaItem[] mediaItems) : base(authorId, childType)
     {
         Content = content;
         MediaItems = mediaItems;
@@ -24,5 +24,5 @@ public class BaseToastWithContent : BaseToast
     public ICollection<ReToast> ReToasts { get; set; } = new List<ReToast>();
     public ICollection<Quote> Quotes { get; set; } = new List<Quote>();
     public ICollection<Reaction> Reactions { get; set; } = new List<Reaction>();
-    public ICollection<MediaItem> MediaItems { get; set; } = new List<MediaItem>();
+    public ICollection<ToastMediaItem> MediaItems { get; set; } = new List<ToastMediaItem>();
 }
