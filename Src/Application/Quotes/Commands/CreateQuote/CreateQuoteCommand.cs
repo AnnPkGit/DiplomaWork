@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Quotes.Commands.CreateQuote;
 
 [Authorize]
-public record CreateQuoteCommand(string Content, int QuotedToastId, params int[] MediaItemIds) : IRequest<QuoteDto>;
+public record CreateQuoteCommand(string Content, int QuotedToastId, params int[] ToastMediaItemIds) : IRequest<QuoteDto>;
 
 public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, QuoteDto>
 {
@@ -53,7 +53,7 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
             throw new ForbiddenAccessException();
         }
         
-        var mediaItems = _mediaService.GetMediaItemsAsync(cancellationToken, request.MediaItemIds);
+        var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
 
         var newQuote = new Quote(accountId, request.Content, quotedToastId, await mediaItems);
         var createDate = _dateTime.Now;

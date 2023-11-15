@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Accounts.Commands.UpdateAccountDetail;
 
@@ -13,7 +14,7 @@ public record UpdateAccountDetailCommand : IRequest
     public string? Login { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
-    public string? Avatar { get; set; }
+    public int? AvatarId { get; set; }
     public string? Bio { get; set; }
 }
 
@@ -58,9 +59,15 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
         if (newName != null)
             entity.Bio = newBio;
 
-        var newAvatar = request.Avatar;
-        if (!string.IsNullOrEmpty(newAvatar))
-            entity.Avatar = newAvatar;
+        var newAvatar = request.AvatarId;
+        if (newAvatar != null)
+        {
+            if (!await _context.AvatarMediaItems.AnyAsync(item => item.Id == newAvatar, token))
+            {
+                throw new NotFoundException(nameof(AvatarMediaItem), newAvatar);
+            }
+            entity.AvatarId = newAvatar;
+        }
         
         await _context.SaveChangesAsync(token);
     }

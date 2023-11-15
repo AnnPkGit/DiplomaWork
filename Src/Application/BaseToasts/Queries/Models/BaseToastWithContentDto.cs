@@ -30,7 +30,7 @@ public class BaseToastWithContentDto : BaseToastDto, IMapFrom<BaseToastWithConte
     public int RepliesCount { get; set; }
     public int ReToastsCount { get; set; }
     public int QuotesCount { get; set; }
-    public IEnumerable<MediaItemBriefDto> MediaItems { get; set; } = null!;
+    public IEnumerable<BaseMediaItemDto> MediaItems { get; set; } = new List<BaseMediaItemDto>();
 
     public virtual void Mapping(Profile profile)
     {

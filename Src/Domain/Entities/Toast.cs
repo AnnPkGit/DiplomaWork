@@ -11,7 +11,7 @@ public class Toast : BaseToastWithContent
     {
     }
 
-    public Toast(int authorId, string content, params MediaItem[] mediaItems)
+    public Toast(int authorId, string content, params ToastMediaItem[] mediaItems)
         : base(authorId, content, typeof(Toast), mediaItems)
     {
     }

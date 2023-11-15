@@ -26,7 +26,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Account> Accounts => Set<Account>();
-    public DbSet<MediaItem> MediaItems => Set<MediaItem>();
     public DbSet<Reaction> Reactions => Set<Reaction>();
     public DbSet<BaseToast> BaseToasts => Set<BaseToast>();
     public DbSet<BaseToastWithContent> BaseToastsWithContent => Set<BaseToastWithContent>();
@@ -39,6 +38,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ReToastNotification> ReToastNotifications => Set<ReToastNotification>();
     public DbSet<QuoteNotification> QuoteNotifications => Set<QuoteNotification>();
     public DbSet<ReplyNotification> ReplyNotifications => Set<ReplyNotification>();
+    public DbSet<ToastMediaItem> ToastMediaItems => Set<ToastMediaItem>();
+    public DbSet<AvatarMediaItem> AvatarMediaItems => Set<AvatarMediaItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
