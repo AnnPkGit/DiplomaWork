@@ -38,16 +38,16 @@
     
     <div class="div2">
       <div class="tostContainer">
-        <app-post [toast]="toast" [style]="'no-corners'"></app-post>
+        <app-post [toast]="toast" [style]="'no-corners'" (onToastCreation)="addToast($event)"></app-post>
 
         <div class="reply-area">
           <textarea autosize class="no-corners-txt" placeholder="Reply..." [maxRows]=10 [(ngModel)]="input"></textarea>
-          <div style="display: flex;justify-content: flex-end; border-top: 1px solid #e2e7ee;">
+          <div style="display: flex;justify-content: flex-end; border-top: 1px solid #e2e7ee;" *ngIf="input != ''">
             <button class="rounded-btn" (click)="toastReply()">REPLY</button>
           </div>
         </div>
 
-        <app-post *ngFor="let reply of replies?.items; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="reply"></app-post> 
+        <app-post *ngFor="let reply of replies?.items; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="reply" (onDelete)="onDelete($event)"></app-post> 
       </div>
     </div>
     

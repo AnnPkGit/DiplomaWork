@@ -30,7 +30,8 @@
             <div style="position: relative;">
                 <div class="pic-relative-container">
                     <div class="profile-picture-container">
-                        <img src="https://img.devilchan.com/original/2022/06/30/11/12/27306/genshin-impact-yelan-genshinimpact-27306-3000x3000.jpeg">
+                        <img *ngIf="!user?.avatar" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
+                        <img *ngIf="user?.avatar" src="user?.avatar">
                     </div>
                 </div>
                 <div class="banner">
@@ -41,38 +42,36 @@
                     </div>
                     <div class="bar-options-profile">
                         <div style="padding: 0;">
-                            <label style="font-size: 1.3vw; font-weight:       00; padding-bottom: 0;">{{user?.account?.name}}</label><br/>
-                            <label style="color: #A1B3BD; font-size: 0.8vw; font-weight: 400; padding-top: 0;">@{{user?.account?.login}}</label>
+                            <label style="font-size: 1.3vw; font-weight:       00; padding-bottom: 0;">{{user?.name}}</label><br/>
+                            <label style="color: #A1B3BD; font-size: 0.8vw; font-weight: 400; padding-top: 0;">@{{user?.login}}</label>
                         </div>
                         <div class="centered-op">
-                            <div>Following {{account?.followsCount}}</div>
+                            <div>Following {{account?.followsCount ?? 0}}</div>
                         </div>
                         <div class="centered-op">
-                            <div>Followers {{account?.followersCount}}</div>
+                            <div>Followers {{account?.followersCount ?? 0}}</div>
                         </div>
                         <div style="padding-right: 6%;">
-                          <div><img id="editProfile" (click)="openProfileEditModal()" style="float: right;" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDE1QzEyLjc5NTYgMTUgMTMuNTU4NyAxNC42ODM5IDE0LjEyMTMgMTQuMTIxM0MxNC42ODM5IDEzLjU1ODcgMTUgMTIuNzk1NiAxNSAxMkMxNSAxMS4yMDQ0IDE0LjY4MzkgMTAuNDQxMyAxNC4xMjEzIDkuODc4NjhDMTMuNTU4NyA5LjMxNjA3IDEyLjc5NTYgOSAxMiA5QzExLjIwNDQgOSAxMC40NDEzIDkuMzE2MDcgOS44Nzg2OCA5Ljg3ODY4QzkuMzE2MDcgMTAuNDQxMyA5IDExLjIwNDQgOSAxMkM5IDEyLjc5NTYgOS4zMTYwNyAxMy41NTg3IDkuODc4NjggMTQuMTIxM0MxMC40NDEzIDE0LjY4MzkgMTEuMjA0NCAxNSAxMiAxNVoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yIDEyLjg4VjExLjEyQzIgMTAuMDggMi44NSA5LjIyIDMuOSA5LjIyQzUuNzEgOS4yMiA2LjQ1IDcuOTQgNS41NCA2LjM3QzUuMDIgNS40NyA1LjMzIDQuMyA2LjI0IDMuNzhMNy45NyAyLjc5QzguNzYgMi4zMiA5Ljc4IDIuNiAxMC4yNSAzLjM5TDEwLjM2IDMuNThDMTEuMjYgNS4xNSAxMi43NCA1LjE1IDEzLjY1IDMuNThMMTMuNzYgMy4zOUMxNC4yMyAyLjYgMTUuMjUgMi4zMiAxNi4wNCAyLjc5TDE3Ljc3IDMuNzhDMTguNjggNC4zIDE4Ljk5IDUuNDcgMTguNDcgNi4zN0MxNy41NiA3Ljk0IDE4LjMgOS4yMiAyMC4xMSA5LjIyQzIxLjE1IDkuMjIgMjIuMDEgMTAuMDcgMjIuMDEgMTEuMTJWMTIuODhDMjIuMDEgMTMuOTIgMjEuMTYgMTQuNzggMjAuMTEgMTQuNzhDMTguMyAxNC43OCAxNy41NiAxNi4wNiAxOC40NyAxNy42M0MxOC45OSAxOC41NCAxOC42OCAxOS43IDE3Ljc3IDIwLjIyTDE2LjA0IDIxLjIxQzE1LjI1IDIxLjY4IDE0LjIzIDIxLjQgMTMuNzYgMjAuNjFMMTMuNjUgMjAuNDJDMTIuNzUgMTguODUgMTEuMjcgMTguODUgMTAuMzYgMjAuNDJMMTAuMjUgMjAuNjFDOS43OCAyMS40IDguNzYgMjEuNjggNy45NyAyMS4yMUw2LjI0IDIwLjIyQzUuODA0MSAxOS45NjkgNS40ODU1OCAxOS41NTUzIDUuMzU0MzUgMTkuMDY5OEM1LjIyMzExIDE4LjU4NDIgNS4yODk4OCAxOC4wNjY0IDUuNTQgMTcuNjNDNi40NSAxNi4wNiA1LjcxIDE0Ljc4IDMuOSAxNC43OEMyLjg1IDE0Ljc4IDIgMTMuOTIgMiAxMi44OFoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo='/></div>
+                          <div><img *ngIf="userCurrent?.account?.id?.toString() == currentUserId" id="editProfile" (click)="openProfileEditModal()" style="float: right;" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDE1QzEyLjc5NTYgMTUgMTMuNTU4NyAxNC42ODM5IDE0LjEyMTMgMTQuMTIxM0MxNC42ODM5IDEzLjU1ODcgMTUgMTIuNzk1NiAxNSAxMkMxNSAxMS4yMDQ0IDE0LjY4MzkgMTAuNDQxMyAxNC4xMjEzIDkuODc4NjhDMTMuNTU4NyA5LjMxNjA3IDEyLjc5NTYgOSAxMiA5QzExLjIwNDQgOSAxMC40NDEzIDkuMzE2MDcgOS44Nzg2OCA5Ljg3ODY4QzkuMzE2MDcgMTAuNDQxMyA5IDExLjIwNDQgOSAxMkM5IDEyLjc5NTYgOS4zMTYwNyAxMy41NTg3IDkuODc4NjggMTQuMTIxM0MxMC40NDEzIDE0LjY4MzkgMTEuMjA0NCAxNSAxMiAxNVoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yIDEyLjg4VjExLjEyQzIgMTAuMDggMi44NSA5LjIyIDMuOSA5LjIyQzUuNzEgOS4yMiA2LjQ1IDcuOTQgNS41NCA2LjM3QzUuMDIgNS40NyA1LjMzIDQuMyA2LjI0IDMuNzhMNy45NyAyLjc5QzguNzYgMi4zMiA5Ljc4IDIuNiAxMC4yNSAzLjM5TDEwLjM2IDMuNThDMTEuMjYgNS4xNSAxMi43NCA1LjE1IDEzLjY1IDMuNThMMTMuNzYgMy4zOUMxNC4yMyAyLjYgMTUuMjUgMi4zMiAxNi4wNCAyLjc5TDE3Ljc3IDMuNzhDMTguNjggNC4zIDE4Ljk5IDUuNDcgMTguNDcgNi4zN0MxNy41NiA3Ljk0IDE4LjMgOS4yMiAyMC4xMSA5LjIyQzIxLjE1IDkuMjIgMjIuMDEgMTAuMDcgMjIuMDEgMTEuMTJWMTIuODhDMjIuMDEgMTMuOTIgMjEuMTYgMTQuNzggMjAuMTEgMTQuNzhDMTguMyAxNC43OCAxNy41NiAxNi4wNiAxOC40NyAxNy42M0MxOC45OSAxOC41NCAxOC42OCAxOS43IDE3Ljc3IDIwLjIyTDE2LjA0IDIxLjIxQzE1LjI1IDIxLjY4IDE0LjIzIDIxLjQgMTMuNzYgMjAuNjFMMTMuNjUgMjAuNDJDMTIuNzUgMTguODUgMTEuMjcgMTguODUgMTAuMzYgMjAuNDJMMTAuMjUgMjAuNjFDOS43OCAyMS40IDguNzYgMjEuNjggNy45NyAyMS4yMUw2LjI0IDIwLjIyQzUuODA0MSAxOS45NjkgNS40ODU1OCAxOS41NTUzIDUuMzU0MzUgMTkuMDY5OEM1LjIyMzExIDE4LjU4NDIgNS4yODk4OCAxOC4wNjY0IDUuNTQgMTcuNjNDNi40NSAxNi4wNiA1LjcxIDE0Ljc4IDMuOSAxNC43OEMyLjg1IDE0Ljc4IDIgMTMuOTIgMiAxMi44OFoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo='/></div>
                       </div>
                     </div>
                 </div>
             </div>
             <div class="profile-page-info-bar">
-              <div class="calendar-info"><img style="padding-bottom: 0.8%" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuNjY2NjcgMS4xNjY2OVYyLjkxNjY5TTkuMzMzMzMgMS4xNjY2OVYyLjkxNjY5TTIuMDQxNjcgNS4zMDI1MkgxMS45NTgzTTEyLjI1IDQuOTU4MzVWOS45MTY2OUMxMi4yNSAxMS42NjY3IDExLjM3NSAxMi44MzM0IDkuMzMzMzMgMTIuODMzNEg0LjY2NjY3QzIuNjI1IDEyLjgzMzQgMS43NSAxMS42NjY3IDEuNzUgOS45MTY2OVY0Ljk1ODM1QzEuNzUgMy4yMDgzNSAyLjYyNSAyLjA0MTY5IDQuNjY2NjcgMi4wNDE2OUg5LjMzMzMzQzExLjM3NSAyLjA0MTY5IDEyLjI1IDMuMjA4MzUgMTIuMjUgNC45NTgzNVoiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuMTU1MTQgNy45OTE2NEg5LjE2MDM5TTkuMTU1MTQgOS43NDE2NEg5LjE2MDM5TTYuOTk2ODEgNy45OTE2NEg3LjAwMjY0TTYuOTk2ODEgOS43NDE2NEg3LjAwMjY0TTQuODM3ODkgNy45OTE2NEg0Ljg0MzcyTTQuODM3ODkgOS43NDE2NEg0Ljg0MzcyIiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
-                Joined {{account?.joinDate}}</div>
+              <div class="calendar-info"><img *ngIf="userCurrent?.account?.id === user?.id" style="padding-bottom: 0.8%" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuNjY2NjcgMS4xNjY2OVYyLjkxNjY5TTkuMzMzMzMgMS4xNjY2OVYyLjkxNjY5TTIuMDQxNjcgNS4zMDI1MkgxMS45NTgzTTEyLjI1IDQuOTU4MzVWOS45MTY2OUMxMi4yNSAxMS42NjY3IDExLjM3NSAxMi44MzM0IDkuMzMzMzMgMTIuODMzNEg0LjY2NjY3QzIuNjI1IDEyLjgzMzQgMS43NSAxMS42NjY3IDEuNzUgOS45MTY2OVY0Ljk1ODM1QzEuNzUgMy4yMDgzNSAyLjYyNSAyLjA0MTY5IDQuNjY2NjcgMi4wNDE2OUg5LjMzMzMzQzExLjM3NSAyLjA0MTY5IDEyLjI1IDMuMjA4MzUgMTIuMjUgNC45NTgzNVoiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuMTU1MTQgNy45OTE2NEg5LjE2MDM5TTkuMTU1MTQgOS43NDE2NEg5LjE2MDM5TTYuOTk2ODEgNy45OTE2NEg3LjAwMjY0TTYuOTk2ODEgOS43NDE2NEg3LjAwMjY0TTQuODM3ODkgNy45OTE2NEg0Ljg0MzcyTTQuODM3ODkgOS43NDE2NEg0Ljg0MzcyIiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
+                Joined {{formatDate()}}</div>
               <div class="profile-bio">{{account?.bio}}</div>
             </div>
             <div class="profile-page-options-bar">
-                <div>Toasts</div>
-                <div>Replies</div>
+                <div (click)="fetchUSersToasts()" [ngStyle]="{'color': toastsSelected ? '#5B66CA' : ''}" >Toasts</div>
+                <div (click)="fetchUsersReplies()" [ngStyle]="{'color': repliesSelected ? '#5B66CA' : ''}">Replies</div>
                 <div>Media</div>
                 <div>Likes</div>
             </div>
         </div>
       </div>
       <div class="tostContainer"  *ngFor="let toast of toastResponse?.items">
-        <app-post [toast]="toast" (onReToast)="addToast($event)"></app-post>
-        <!-- <app-post [toast]="toast.type == 'retoast' ? toast.reToast : toast" [style]="toast.thread.length > 0 ? 'no-corners' : 'post'" [reToast]="toast.type == 'retoast'"></app-post>
-        <app-post *ngFor="let threadToast of toast.thread; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="threadToast"></app-post> -->
+        <app-post [toast]="toast" (onReToast)="addToast($event)" (onToastCreation)="addToast($event)" (onDelete)="onDelete($event)"></app-post>
       </div>
     </div>
     

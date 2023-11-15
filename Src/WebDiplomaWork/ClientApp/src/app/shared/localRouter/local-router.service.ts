@@ -30,6 +30,7 @@ import { AppConfig } from '../config';
 
     goToToastPage(id: string) {
         this.router?.navigate([AppConfig.toastEndpoint + id]);
+        // window.location.reload();
     }
 
     goToProfilePage(id: string) {

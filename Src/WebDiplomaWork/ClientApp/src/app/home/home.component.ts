@@ -11,7 +11,7 @@ import { UserResponse } from '../identification/signIn/signIn.component';
 })
 export class HomeComponent implements OnInit{
   constructor(private router: LocalRouter, private httpClient: HttpClient) {}
-  posts?: ToastResponse;
+  posts: ToastResponse = {} as ToastResponse;
   public user: UserResponse | undefined;
 
   ngOnInit(): void {
@@ -20,12 +20,16 @@ export class HomeComponent implements OnInit{
   }
 
   fetchUSersToasts() {
-    this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.user?.account.id).subscribe((response) => {
+    this.httpClient.get<ToastResponse>("api/v1/toast/all").subscribe((response) => {
       this.posts = response;
     });
   }
 
   Reload() {
     window.location.reload();
+  }
+
+  onDelete(id : number) {
+    this.posts.items = this.posts?.items.filter(item => item.id !== id);
   }
 }

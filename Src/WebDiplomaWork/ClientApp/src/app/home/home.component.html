@@ -27,7 +27,7 @@
     <app-toast-creator></app-toast-creator>
   </div>
   <div class="tostContainer"  *ngFor="let post of posts?.items">
-    <app-post [toast]="post"></app-post>
+    <app-post [toast]="post" (onDelete)="onDelete($event)"></app-post>
   </div>
 </div>
 

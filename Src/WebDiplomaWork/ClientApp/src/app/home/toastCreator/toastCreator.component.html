@@ -5,9 +5,9 @@
       <img *ngIf="!user?.account?.avatar" class="postAvatar" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
     </div>
 
-    <textarea id="text-area" class="postTextZone" contenteditable="true" (input)="autoGrow()" placeholder="Enter your text here"></textarea>
+    <textarea id="text-area" class="postTextZone" contenteditable="true" (input)="autoGrow()" placeholder="Enter your text here" [(ngModel)]="input"></textarea>
   </div>
 </div>
-<div style="margin-bottom: 20px;">
-<button class="toast-btn">TOAST</button>
+<div style="margin-bottom: 20px;" *ngIf="input != ''">
+<button class="toast-btn" (click)="PostContent()">TOAST</button>
 </div>

@@ -24,7 +24,14 @@ const PROXY_CONFIG = [
       "/api/v1/quote",
       "/api/v1/ReToast",
       "/api/v1/BaseToast/withContent/by/id",
-      "/api/v1/reply/by/toast"
+      "/api/v1/reply/by/toast",
+      "/api/v1/notification/by/current/account",
+      "/api/v1/notification/by/time",
+      "/api/v1/BaseToast/replies/by/account",
+      "/api/v1/Reaction",
+      "/api/v1/retoast/by/toast",
+      "/api/v1/BaseToast",
+      "/api/v1/MediaItem"
    ],
     target: target,
     secure: false,

@@ -19,6 +19,7 @@ export class ToastBtn {
     }
 
     addToast($event : ToastItem): void {
+        console.log($event);
         this.onToastCreation.emit($event);
     }
 }

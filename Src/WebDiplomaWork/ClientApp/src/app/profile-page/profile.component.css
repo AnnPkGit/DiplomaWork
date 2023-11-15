@@ -114,3 +114,7 @@
 #editProfile:hover {
     cursor: pointer;
 }
+
+.selectedOption1 {
+    color: #5B66CA;;
+}

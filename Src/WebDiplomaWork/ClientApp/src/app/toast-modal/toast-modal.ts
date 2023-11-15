@@ -22,21 +22,63 @@ export class ToastModalComponent {
 
   content: string = '';
 
+  ImageItems: ImageItem[] = [];
+
   constructor(private http: HttpClient) {}
 
   Close() {
       this.booleanEmitter.emit(false);
   }
 
+  selectedFiles: File[] = [];
+
+  onFileChange(event: any): void {
+    const files: FileList = event.target.files;
+    
+    this.selectedFiles = [];
+
+    for (let i = 0; i < Math.min(files.length, 4); i++) {
+      this.selectedFiles.push(files[i]);
+    }
+    this.handleFiles();
+  }
+
+  handleFiles(): void {
+    const files = this.selectedFiles;
+
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.uploadFile(file);
+      }
+    }
+  }
+
+  uploadFile(file: File): void {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this.http.post<ImageItem>('/api/v1/MediaItem', formData).subscribe(
+      (response) => {
+        console.log('File uploaded successfully:', response);
+        this.ImageItems.push(response);
+      },
+      (error) => {
+        console.error('Error uploading file:', error);
+      }
+    );
+  }
+
   PostContent() {
     var body = null;
     var url = '';
+    var idsOnly: number[] = this.ImageItems.map(item => item.id)
 
     if(this.toast && !this.reply) {
       body = {
         QuotedToastId: this.toast.id,
         Content: this.content,
-        MediaItemIds: []
+        MediaItemIds: idsOnly
       };
       url = "/api/v1/quote";
     }
@@ -44,15 +86,15 @@ export class ToastModalComponent {
       body = {
         ReplyToToastId: this.toast.id,
         Content: this.content,
-        MediaItemIds: []
+        MediaItemIds: idsOnly
       };
       url = "/api/v1/reply";
       this.replyEmitter.emit();
     }
-    else {
+    if(!this.toast && !this.reply) {
       body = {
         Context: this.content,
-        MediaItemIds: []
+        MediaItemIds: idsOnly
       };
       url = "/api/v1/toast";
     }
@@ -72,4 +114,9 @@ export class ToastModalComponent {
       }
     );
   }
+}
+
+export interface ImageItem {
+  id: number;
+  url: string;
 }

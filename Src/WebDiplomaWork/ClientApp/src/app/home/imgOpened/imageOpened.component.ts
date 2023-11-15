@@ -1,4 +1,5 @@
    import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ImageItem } from 'src/app/toast-modal/toast-modal';
 
 @Component({
   selector: 'app-img-opened',

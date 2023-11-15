@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { ToastItem, ToastResponse } from 'src/app/profile-page/profile.component';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
+import { ImageItem } from 'src/app/toast-modal/toast-modal';
 
 @Component({
   selector: 'app-post',
@@ -12,13 +13,18 @@ export class PostComponent {
   currentImg: string = '';
   currentUrl: string;
   reToastOptionsOpen = false;
+  optionsOptionsOpen = false;
   makeQuoteOpen = false;
 
   constructor(private localRouter: LocalRouter, private http: HttpClient) {
     this.currentUrl = window.location.href;
   }
 
+  @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
+
   @Output() onReToast: EventEmitter<ToastItem> = new EventEmitter();
+
+  @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
   @Input()
   style: string = "post";
@@ -31,10 +37,15 @@ export class PostComponent {
 
   isReply = false;
 
+  onToastCreationAction($event: ToastItem) {
+    this.onToastCreation.emit($event);
+  }
+
   @HostListener('document:click', ['$event'])
   handlePageClick(event: MouseEvent): void {
-    if(this.reToastOptionsOpen) {
+    if(this.reToastOptionsOpen || this.optionsOptionsOpen) {
       this.reToastOptionsOpen = false;
+      this.optionsOptionsOpen = false;
       event.stopPropagation();
     }
   }
@@ -50,6 +61,10 @@ export class PostComponent {
     this.makeQuoteOpen = true;
   }
 
+  reToastToastRemove(id: number) {
+
+  }
+
   reToastToast(id: number) {
     const body = {
       ToastWithContentId: id
@@ -62,6 +77,7 @@ export class PostComponent {
     this.http.post<ToastResponse>("/api/v1/ReToast", body, { headers }).subscribe(
       () => {
         this.toast.reToastsCount += 1;
+        this.toast.youReToasted = true;
         var newReToast: ToastItem = {
           toastWithContent: this.toast,
           id: 0,
@@ -76,7 +92,7 @@ export class PostComponent {
           reToastCount: 0,
           replyCount: 0, 
           isReToast: false, 
-          mediaItems: [], 
+          mediaItems: this.toast.MediaItem, 
           thread: []
         }
         this.onReToast.emit(newReToast);
@@ -84,6 +100,21 @@ export class PostComponent {
       (error) => {
       }
     );
+  }
+
+  mediaAny(): boolean {
+    if(this.toast?.mediaItems?.length == 0 && this.toast?.toastWithContent?.mediaItems == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  getMedia(): ImageItem[]  {
+    return this.toast?.mediaItems?.length > 0 ? this.toast?.mediaItems : this.toast?.toastWithContent?.mediaItems;
+  }
+
+  getMediaUrls(): string[] {
+    return this.getMedia().map((item: { url: any; }) => item.url);
   }
 
   addRepliesCount() {
@@ -97,17 +128,19 @@ export class PostComponent {
   openReToastOptions(event: Event) {
     event.stopPropagation();
     this.reToastOptionsOpen = true;
+    this.optionsOptionsOpen = false;
   }
 
-  goToPostPage(event: Event) : void {
-    if(this.reToastOptionsOpen) {
+  goToPostPage(event: Event, id: string) : void {
+    if(this.reToastOptionsOpen || this.optionsOptionsOpen) {
       this.reToastOptionsOpen = false;
+      this.optionsOptionsOpen = false;
       event.stopPropagation();
       return;
     }
 
     event.stopPropagation();
-    this.localRouter.goToToastPage(this.toast.toastWithContent?.id == null ? this.toast.id : this.toast.toastWithContent?.id );
+    this.localRouter.goToToastPage(id);
     console.log(this.toast);
     console.log('go to post page');
   }
@@ -115,23 +148,89 @@ export class PostComponent {
   goToProfilePage(event: Event) : void {
     event.stopPropagation();
     console.log('go to profile');
+    this.localRouter.goToProfilePage(this.toast.toastWithContent?.author?.id ?? this.toast.author?.id);
+  }
+
+  youReacted() {
+    if(this.toast.toastWithContent) {
+      return this.toast.toastWithContent.youReacted;
+    }
+    return this.toast.youReacted;
+  }
+
+  youRetoasted() {
+    if(this.toast.toastWithContent) {
+      return this.toast.toastWithContent.youReToasted;
+    }
+    return this.toast.youReToasted;
   }
 
   openImg(event: Event, currentImg: string) : void {
     event.stopPropagation();
     this.currentImg = currentImg;
     this.closeImg = false;
-    console.log('seeImg');
   }
 
   seeOptions(event: Event) {
     event.stopPropagation();
-    console.log('options');
+    this.optionsOptionsOpen = true;
+    this.reToastOptionsOpen = false;
   }
 
-  like(event: Event) {
+  like(event: Event, id: string) {
     event.stopPropagation();
-    console.log('like');
+    const body = {
+      ToastWithContentId: id
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+    this.http.post("/api/v1/Reaction", body, { headers }).subscribe(
+      () => {}
+      ,
+      (error) => {
+      }
+      );
+      
+    var toast = this.toast.toastWithContent ?? this.toast;
+    toast.reactionsCount += 1;
+    toast.youReacted = true;
+  }
+
+  undoLike(event: Event, id: string) {
+    event.stopPropagation();
+    this.http.delete("/api/v1/Reaction?ToastWithContentId=" + id).subscribe(
+      () => {}
+      ,
+      (error) => {
+      }
+      );
+      
+    var toast = this.toast.toastWithContent ?? this.toast;
+    toast.reactionsCount -= 1;
+    toast.youReacted = false;
+  }
+
+  deleteToast(event: Event) {
+    this.optionsOptionsOpen = false;
+    
+    event.stopPropagation();
+    const body = {
+      BaseToastId: this.toast.id
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+    
+
+    this.http.delete("/api/v1/BaseToast", { body: body, headers }).subscribe(
+      () => {
+        this.onDelete.emit(this.toast.id);
+      }
+      ,
+      (error) => {
+      }
+      );
   }
 
   updateCloseImg($event: any) {
