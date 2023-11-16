@@ -20,6 +20,5 @@ public class ReplyDto : BaseToastWithContentDto, IMapFrom<Reply>
         base.Mapping(profile);
     }
 
-
     public ReplyDto(ICurrentUserService userService) : base(userService) {}
 }

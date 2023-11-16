@@ -36,23 +36,23 @@ public class GetToastWithContentByIdQueryHandler : IRequestHandler<GetToastWithC
         {
             throw new NotFoundException(nameof(BaseToastWithContent), toastWithContentId);
         }
+
+        var toastWithContent = _context.BaseToastsWithContent
+            .Include(t => t.Replies)
+            .Include(t => t.Reactions)
+            .Include(t => t.ReToasts)
+            .Include(t => t.Quotes);
         
         switch (type)
         {
             case nameof(Toast): 
-                var toast = await _context.Toasts
-                    .Include(t => t.Replies)
-                    .Include(t => t.Reactions)
-                    .Include(t => t.ReToasts)
-                    .Include(t => t.Quotes)
+                var toast = await toastWithContent
+                    .OfType<Toast>()
                     .SingleAsync(t => t.Id == toastWithContentId, cancellationToken);
-                return _mapper.Map<ToastBriefDto>(toast);
+                return _mapper.Map<ToastDto>(toast);
             case nameof(Reply):
-                var reply = await _context.Replies
-                    .Include(r => r.Replies)
-                    .Include(r => r.Reactions)
-                    .Include(r => r.ReToasts)
-                    .Include(r => r.Quotes)
+                var reply = await toastWithContent
+                    .OfType<Reply>()
                     .Include(r => r.ReplyToToast).ThenInclude(t => t.Replies)
                     .Include(r => r.ReplyToToast).ThenInclude(t => t.Reactions)
                     .Include(r => r.ReplyToToast).ThenInclude(t => t.Quotes)
@@ -60,11 +60,8 @@ public class GetToastWithContentByIdQueryHandler : IRequestHandler<GetToastWithC
                     .SingleAsync(r => r.Id == toastWithContentId, cancellationToken);
                 return _mapper.Map<ReplyDto>(reply);
             case nameof(Quote):
-                var quote = await _context.Quotes
-                    .Include(q => q.Replies)
-                    .Include(q => q.Reactions)
-                    .Include(q => q.ReToasts)
-                    .Include(q => q.Quotes)
+                var quote = await toastWithContent
+                    .OfType<Quote>()
                     .Include(q => q.QuotedToast)
                     .SingleAsync(q => q.Id == toastWithContentId, cancellationToken);
                 return _mapper.Map<QuoteDto>(quote);

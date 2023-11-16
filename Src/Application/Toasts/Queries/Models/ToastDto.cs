@@ -6,19 +6,16 @@ using Domain.Entities;
 
 namespace Application.Toasts.Queries.Models;
 
-public class ToastBriefDto : BaseToastWithContentBriefDto, IMapFrom<Toast>
+public class ToastDto : BaseToastWithContentDto, IMapFrom<Toast>
 {
-    public ToastBriefDto()
+    public ToastDto()
     {
     }
 
-    public ToastBriefDto(ICurrentUserService userService) : base(userService)
-    {
-    }
-
+    public ToastDto(ICurrentUserService userService) : base(userService) {}
     public override void Mapping(Profile profile)
     {
-        profile.CreateMap<Toast, ToastBriefDto>();
+        profile.CreateMap<Toast, ToastDto>();
         base.Mapping(profile);
     }
 }

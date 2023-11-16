@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.BaseToasts.Queries.GetRepliesByAccount;
 
-public class GetRepliesByAccountQuery : IRequest<PaginatedList<object>>
+public class GetRepliesByAccountQuery : IRequest<PaginatedList<BaseToastDto>>
 {
     public int AccountId { get; set; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccountQuery, PaginatedList<object>>
+public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccountQuery, PaginatedList<BaseToastDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccou
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<object>> Handle(GetRepliesByAccountQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<BaseToastDto>> Handle(GetRepliesByAccountQuery request, CancellationToken cancellationToken)
     {
         if (!await _context.Accounts.AnyAsync(a => a.Id == request.AccountId, cancellationToken))
         {
@@ -85,14 +85,12 @@ public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccou
             objects.AddRange(toasts);
         }
         
-        var destinationType = typeof(BaseToastDto);
-        
         var selectedBaseToasts = objects
             .OrderByDescending(bt => bt.Created)
-            .Select(bt => _mapper.Map(bt, bt.GetType(), destinationType))
+            .Select(bt => _mapper.Map<BaseToastDto>(bt))
             .ToArray();
 
-        return new PaginatedList<object>(selectedBaseToasts, totalCount, request.PageNumber, request.PageSize);
+        return new PaginatedList<BaseToastDto>(selectedBaseToasts, totalCount, request.PageNumber, request.PageSize);
     }
 }
 
