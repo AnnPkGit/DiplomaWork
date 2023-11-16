@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Infrastructure.Configurations;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebDiplomaWork.OptionsSetup;
@@ -13,6 +14,7 @@ public static class ConfigureServices
     {
         services.ConfigureOptions<JwtOptionsSetup>();
         services.ConfigureOptions<EmailOptionsSetup>();
+        services.ConfigureOptions<SmsVerifyOptionsSetup>();
         
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         

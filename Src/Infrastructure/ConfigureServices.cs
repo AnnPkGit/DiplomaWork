@@ -20,15 +20,15 @@ public static class ConfigureServices
         {
             throw new NotImplementedException();
         }
-        else if(configuration.GetValue<bool>("UseTestDatabase"))
-        {
-            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-            {
-                var connectionString = configuration.GetConnectionString("TestDbConnection");
-                var serverVersion = new MariaDbServerVersion("10.11.4");
-                options.UseMySql(connectionString, serverVersion);
-            });
-        }
+        // else if(configuration.GetValue<bool>("UseTestDatabase"))
+        // {
+        //     services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+        //     {
+        //         var connectionString = configuration.GetConnectionString("TestDbConnection");
+        //         var serverVersion = new MariaDbServerVersion("10.11.4");
+        //         options.UseMySql(connectionString, serverVersion);
+        //     });
+        // }
         else
         {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
@@ -48,5 +48,10 @@ public static class ConfigureServices
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<ISmsVerify, SmsVerify>();
+        services.AddScoped<IFourDigitCodeGenerator, FourDigitCodeGeneratorService>();
+        services.AddTransient<IConfirmPhoneService, ConfirmPhoneService>();
+        
+    
     }
 }
