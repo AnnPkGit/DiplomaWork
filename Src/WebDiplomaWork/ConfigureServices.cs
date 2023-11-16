@@ -1,5 +1,8 @@
 using System.Text.Json.Serialization;
 using Application.Common.Interfaces;
+using Infrastructure.Configurations;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebDiplomaWork.OptionsSetup;
 using WebDiplomaWork.Services;
 
@@ -12,6 +15,7 @@ public static class ConfigureServices
     {
         services.ConfigureOptions<JwtOptionsSetup>();
         services.ConfigureOptions<EmailOptionsSetup>();
+        services.ConfigureOptions<SmsVerifyOptionsSetup>();
         services.ConfigureOptions<AzureStorageConfigSetup>();
         
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
