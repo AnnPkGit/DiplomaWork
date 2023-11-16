@@ -1,4 +1,3 @@
-using Application.Accounts.Commands.CreateAccount;
 using Application.Accounts.Commands.UpdateAccount;
 using Application.Accounts.Commands.UpdateAccountDetail;
 using Application.Accounts.Queries.GetAccountById;
@@ -14,12 +13,6 @@ namespace WebDiplomaWork.Controller;
 
 public class AccountController : ApiV1ControllerBase
 {
-    [HttpPost]
-    public async Task<ActionResult<int>> Post(CreateAccountCommand command)
-    {
-        return await Mediator.Send(command);
-    }
-
     [HttpGet("by/id")]
     public async Task<Account> GetById(int id)
     {

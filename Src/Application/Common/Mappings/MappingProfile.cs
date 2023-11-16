@@ -1,12 +1,21 @@
 using System.Reflection;
+using Application.BaseToasts.Queries.Models;
 using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Common.Mappings;
 
 public class MappingProfile : Profile
 {
+    private readonly IServiceProvider? _serviceProvider;
+
     public MappingProfile()
     {
+    }
+
+    public MappingProfile(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
@@ -22,9 +31,18 @@ public class MappingProfile : Profile
         
         var argumentTypes = new Type[] { typeof(Profile) };
 
+        var baseToastWithContentDto = typeof(BaseToastWithContentDto);
         foreach (var type in types)
         {
-            var instance = Activator.CreateInstance(type);
+            object? instance;
+            if (_serviceProvider != null && type.BaseType == baseToastWithContentDto)
+            {
+                instance = ActivatorUtilities.CreateInstance(_serviceProvider, type);
+            }
+            else
+            {
+                instance = Activator.CreateInstance(type);
+            }
             
             var methodInfo = type.GetMethod(mappingMethodName);
 

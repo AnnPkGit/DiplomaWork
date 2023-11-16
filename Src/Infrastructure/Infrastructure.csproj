@@ -21,4 +21,9 @@
     <PackageReference Include="Twilio" Version="7.0.0-rc.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Persistence\MIgrations\20230924163601_Initial.cs" />
+    <Compile Remove="Persistence\MIgrations\20230924163601_Initial.Designer.cs" />
+  </ItemGroup>
+
 </Project>

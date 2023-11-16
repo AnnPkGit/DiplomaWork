@@ -1,16 +1,16 @@
 using Application.Common.Constants;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Accounts.Commands.CreateAccount;
 
-public record CreateAccountCommand : IRequest<int>
+[Authorize]
+public class CreateAccountCommand : BaseCreateAccountModel, IRequest<int>
 {
-    public string Login { get; init; } = string.Empty;
-    public string? Name { get; init; }
-    public string? Avatar { get; init; } // TODO: Replace the folder type
+    public int UserId { get; set; }
 }
 
 public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, int>
@@ -36,8 +36,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
         {
             Id = userId,
             Login = request.Login,
-            Name = request.Name,
-            Avatar = request.Avatar
+            Name = request.Name
         };
 
         await _context.Accounts.AddAsync(entity, token);

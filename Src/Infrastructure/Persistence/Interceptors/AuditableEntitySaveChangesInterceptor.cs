@@ -34,14 +34,15 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
+            var time = _dateTime.Now;
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.Created = _dateTime.Now;
+                entry.Entity.Created = time;
             } 
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.LastModified = _dateTime.Now;
+                entry.Entity.LastModified = time;
             }
         }
         

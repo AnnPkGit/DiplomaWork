@@ -1,5 +1,4 @@
-using Domain.Entities;
-using Infrastructure.Persistence.Constants;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,9 +8,7 @@ public class ReactionConfiguration : IEntityTypeConfiguration<Reaction>
 {
     public void Configure(EntityTypeBuilder<Reaction> builder)
     {
-        builder.ToTable(TableNames.Reactions);
-        builder.HasOne(r => r.MediaItem)
-            .WithOne()
-            .IsRequired();
+        builder.Navigation(r => r.Author).AutoInclude();
+        builder.HasQueryFilter(bn => bn.Author.Deactivated != null);
     }
 }

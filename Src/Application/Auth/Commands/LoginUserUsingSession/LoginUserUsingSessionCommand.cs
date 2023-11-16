@@ -45,10 +45,13 @@ public class LoginUserUsingSessionCommandHandler : IRequestHandler<LoginUserUsin
             throw err;
         }
 
-        await _currentUserService.SetIdAsync(user.Id, cancellationToken: token);
-        await _currentUserService.SetRolesAsync(user.Roles, cancellationToken: token);
-        await _currentUserService.SetEmailAsync(user.Email, cancellationToken: token);
-        await _currentUserService.SetEmailVerifiedAsync(user.EmailVerified, cancellationToken: token);
+        await _currentUserService.SetAllPropertiesAsync(
+            user.Id,
+            user.Email,
+            user.EmailVerified,
+            user.Roles,
+            Array.Empty<Permission>(),
+            token);
         return _mapper.Map<UserBriefDto>(user);
     }
 }

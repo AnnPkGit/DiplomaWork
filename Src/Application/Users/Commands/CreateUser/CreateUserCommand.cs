@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand(string Email, string Password) : IRequest;
+public record CreateUserCommand(string Email, string Password) : BaseCreateUserModel(Email, Password), IRequest<int>;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 {
     private readonly IHasher _hasher;
     private readonly IApplicationDbContext _context;
@@ -22,7 +22,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
         _emailSender = emailSender;
     }
 
-    public async Task Handle(CreateUserCommand request, CancellationToken token)
+    public async Task<int> Handle(CreateUserCommand request, CancellationToken token)
     {
         var newPassSalt = _hasher.GenerateSalt();
         var hashPassword = _hasher.HashPassword(request.Password, newPassSalt);
@@ -32,5 +32,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
         await _context.Users.AddAsync(entity, token);
         await _context.SaveChangesAsync(token);
         await _emailSender.SendAsync(new EmailConfirmRequest(entity.Id, entity.Email), token);
+        return entity.Id;
     }
 }

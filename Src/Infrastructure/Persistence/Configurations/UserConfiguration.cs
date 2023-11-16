@@ -11,16 +11,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(TableNames.Users)
-            .HasOne(e => e.Account)
-            .WithOne(e => e.Owner)
-            .HasForeignKey<Account>(e => e.Id)
+            .HasOne(u => u.Account)
+            .WithOne(a => a.Owner)
+            .HasForeignKey<Account>(a => a.Id)
             .IsRequired();
         
-        builder.HasMany(e => e.Roles)
+        builder.HasMany(u => u.Roles)
             .WithMany()
             .UsingEntity<RoleUser>();
+
+        builder.HasMany(u => u.DeactivatedToasts)
+            .WithOne(t => t.DeactivatedBy)
+            .HasForeignKey(t => t.DeactivatedById);
         
-        builder.Navigation(e => e.Roles).AutoInclude();
-        builder.Navigation(e => e.Account).AutoInclude();
+        builder.Navigation(u => u.Roles).AutoInclude();
+        builder.Navigation(u => u.Account).AutoInclude();
     }
 }

@@ -1,7 +1,9 @@
 using System.Reflection;
 using Application.Common.Behaviours;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Common.Notification;
+using Application.Common.Services;
 using FluentValidation;
 using MediatR;
 
@@ -12,7 +14,10 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper((provider, expression) =>
+            expression.AddProfile(new MappingProfile(provider)),
+            Assembly.GetExecutingAssembly());
+        
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -22,6 +27,7 @@ public static class ConfigureServices
         });
         
         services.AddScoped<IEmailConfirmationSender, EmailConfirmationSender>();
+        services.AddScoped<IMediaService, MediaService>();
         
         return services;
     }

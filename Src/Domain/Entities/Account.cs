@@ -5,10 +5,11 @@ public class Account : BaseAuditableEntity
     public string Login { get; set; } = string.Empty;
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
-    public string? Avatar { get; set; }
+    public int? AvatarId { get; set; }
+    public AvatarMediaItem? Avatar { get; set; }
     public string? Bio { get; set; }
     public User Owner { get; set; } = null!;
-    public ICollection<Toast>? Toasts { get; set; }
-    public ICollection<Toast>? ReToasts { get; set; }
-    public ICollection<Reaction>? MyReactions { get; set; }
+    public ICollection<BaseToast> AllToasts { get; set; } = new List<BaseToast>();
+    public ICollection<Reaction> Reactions { get; set; } = new List<Reaction>();
+    public ICollection<BaseMediaItem> MediaItems { get; set; } = new List<BaseMediaItem>();
 }
