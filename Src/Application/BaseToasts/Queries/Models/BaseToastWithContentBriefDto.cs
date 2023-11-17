@@ -10,19 +10,19 @@ using Domain.Entities;
 
 namespace Application.BaseToasts.Queries.Models;
 
-public class BaseToastWithContentDto : BaseToastDto, IMapFrom<BaseToastWithContent>
+public class BaseToastWithContentBriefDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
 {
     private readonly ICurrentUserService? _userService;
 
-    public BaseToastWithContentDto()
+    public BaseToastWithContentBriefDto()
     {
     }
 
-    public BaseToastWithContentDto(ICurrentUserService userService)
+    public BaseToastWithContentBriefDto(ICurrentUserService userService)
     {
         _userService = userService;
     }
-
+    
     public string Content { get; set; } = string.Empty;
     public bool YouReacted { get; set; }
     public bool YouReToasted { get; set; }
@@ -31,13 +31,13 @@ public class BaseToastWithContentDto : BaseToastDto, IMapFrom<BaseToastWithConte
     public int ReToastsCount { get; set; }
     public int QuotesCount { get; set; }
     public IEnumerable<BaseMediaItemDto> MediaItems { get; set; } = new List<BaseMediaItemDto>();
-
+    
     public virtual void Mapping(Profile profile)
     {
-        profile.CreateMap<BaseToastWithContent, BaseToastWithContentDto>()
-            .Include<Toast, ToastDto>()
-            .Include<Reply, ReplyDto>()
-            .Include<Quote, QuoteDto>()
+        profile.CreateMap<BaseToastWithContent, BaseToastWithContentBriefDto>()
+            .Include<Toast, ToastBriefDto>()
+            .Include<Reply, ReplyBriefDto>()
+            .Include<Quote, QuoteBriefDto>()
             .ForMember(dto => dto.YouReacted, expression => expression
                 .MapFrom(content => content.Reactions
                     .Any(reaction => _userService != null && reaction.AuthorId == _userService.Id)))

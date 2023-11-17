@@ -10,13 +10,13 @@ namespace WebDiplomaWork.Controller;
 public class ToastController : ApiV1ControllerBase
 {
     [HttpPost, Authorize]
-    public async Task<ToastBriefDto> CreateToast(CreateToastCommand command)
+    public async Task<ToastDto> CreateToast(CreateToastCommand command)
     {
         return await Mediator.Send(command);
     }
     
     [HttpGet("all")]
-    public async Task<PaginatedList<ToastBriefDto>> GetAllToasts
+    public async Task<PaginatedList<ToastDto>> GetAllToasts
         ([FromQuery] GetAllToastsQuery command)
     {
         return await Mediator.Send(command);

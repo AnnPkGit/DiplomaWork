@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Application.Common.Interfaces;
 using Infrastructure.Configurations;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -25,10 +24,6 @@ public static class ConfigureServices
                 "SessionTokens",
                 _ => {}
             );
-        
-        services.AddControllers()
-            .AddJsonOptions(x => x.JsonSerializerOptions.MaxDepth = 20)
-            .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         
         return services;
     }

@@ -12,14 +12,13 @@ namespace WebDiplomaWork.Controller;
 public class ReToastController : ApiV1ControllerBase
 {
     [HttpPost, Authorize]
-    public async Task<IActionResult> CreateReToast(CreateReToastCommand command)
+    public async Task<ReToastDto> CreateReToast(CreateReToastCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
     
     [HttpGet("all")]
-    public async Task<PaginatedList<ReToastBriefDto>> GetAllReToasts
+    public async Task<PaginatedList<ReToastDto>> GetAllReToasts
         ([FromQuery] GetAllReToastsQuery command)
     {
         return await Mediator.Send(command);

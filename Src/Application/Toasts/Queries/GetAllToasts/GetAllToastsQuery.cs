@@ -8,13 +8,13 @@ using MediatR;
 
 namespace Application.Toasts.Queries.GetAllToasts;
 
-public class GetAllToastsQuery : IRequest<PaginatedList<ToastBriefDto>>
+public class GetAllToastsQuery : IRequest<PaginatedList<ToastDto>>
 {
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetAllToastsQueryHandler : IRequestHandler<GetAllToastsQuery, PaginatedList<ToastBriefDto>>
+public class GetAllToastsQueryHandler : IRequestHandler<GetAllToastsQuery, PaginatedList<ToastDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -27,12 +27,12 @@ public class GetAllToastsQueryHandler : IRequestHandler<GetAllToastsQuery, Pagin
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<ToastBriefDto>> Handle(GetAllToastsQuery request, CancellationToken token)
+    public async Task<PaginatedList<ToastDto>> Handle(GetAllToastsQuery request, CancellationToken token)
     {
         var toasts = _context.Toasts.ToList();
         return await _context.Toasts
             .OrderByDescending(t => t.Created)
-            .ProjectTo<ToastBriefDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ToastDto>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }

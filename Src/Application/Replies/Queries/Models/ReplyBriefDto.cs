@@ -6,9 +6,9 @@ using Domain.Entities;
 
 namespace Application.Replies.Queries.Models;
 
-public class ReplyBriefDto : BaseToastWithContentDto, IMapFrom<Reply>
+public class ReplyBriefDto : BaseToastWithContentBriefDto, IMapFrom<Reply>
 {
-    public BaseToastWithContentDto ReplyToToast { get; set; } = null!;
+    public ReplyToastDto ReplyToToast { get; set; } = null!;
 
     public ReplyBriefDto()
     {
@@ -16,10 +16,13 @@ public class ReplyBriefDto : BaseToastWithContentDto, IMapFrom<Reply>
 
     public ReplyBriefDto(ICurrentUserService userService) : base(userService) {}
     
-    
     public override void Mapping(Profile profile)
     {
         profile.CreateMap<Reply, ReplyBriefDto>();
         base.Mapping(profile);
     }
 }
+
+public class ReplyToastDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
+{
+} 

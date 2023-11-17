@@ -10,7 +10,6 @@ namespace Application.Accounts.Commands.UpdateAccountDetail;
 [Authorize]
 public record UpdateAccountDetailCommand : IRequest
 {
-    public int Id { get; set; }
     public string? Login { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
@@ -33,15 +32,11 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
 
     public async Task Handle(UpdateAccountDetailCommand request, CancellationToken token)
     {
-        var userId = _currentUserService.Id;
+        var accountId = _currentUserService.Id;
         var entity = await _context.Accounts.FindAsync(
-            new object?[] { request.Id }, token);
+            new object?[] { accountId }, token);
         if (entity == null)
-            throw new NotFoundException(nameof(Account), request.Id);
-        
-        // Checking whether the account being deleted belongs to the user deleting it
-        if (entity.Id != userId)
-            throw new ForbiddenAccessException($"User ({userId}) tried to update account ({request.Id}).");
+            throw new NotFoundException(nameof(Account), accountId);
 
         var newLogin = request.Login;
         if (!string.IsNullOrEmpty(newLogin))
@@ -62,11 +57,18 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
         var newAvatar = request.AvatarId;
         if (newAvatar != null)
         {
-            if (!await _context.AvatarMediaItems.AnyAsync(item => item.Id == newAvatar, token))
+            if (newAvatar == 0)
             {
-                throw new NotFoundException(nameof(AvatarMediaItem), newAvatar);
+                entity.AvatarId = null;
             }
-            entity.AvatarId = newAvatar;
+            else
+            {
+                if (!await _context.AvatarMediaItems.AnyAsync(item => item.Id == newAvatar, token))
+                {
+                    throw new NotFoundException(nameof(AvatarMediaItem), newAvatar);
+                }
+                entity.AvatarId = newAvatar;
+            }
         }
         
         await _context.SaveChangesAsync(token);

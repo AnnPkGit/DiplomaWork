@@ -33,9 +33,10 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
 
     public async Task<PaginatedList<BaseToastDto>> Handle(GetAccountBaseToastsQuery request, CancellationToken cancellationToken)
     {
-        if (!await _context.Accounts.AnyAsync(a => a.Id == request.AccountId, cancellationToken))
+        var accountId = request.AccountId;
+        if (!await _context.Accounts.AnyAsync(a => a.Id == accountId, cancellationToken))
         {
-            throw new NotFoundException(nameof(Account), request.AccountId);
+            throw new NotFoundException(nameof(Account), accountId);
         }
 
         var accountBaseToasts = await _context.BaseToasts
@@ -63,7 +64,7 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
                 .Include(t => t.Reactions)
                 .Include(t => t.ReToasts)
                 .Include(t => t.Quotes);
-            var toastsDto = toasts.Select(t => _mapper.Map<ToastBriefDto>(t));
+            var toastsDto = toasts.Select(t => _mapper.Map<ToastDto>(t));
             objectsDto.AddRange(toastsDto);
         }
         if (accountQuoteIds.Any())
@@ -86,7 +87,7 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Reactions)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t.ReToasts)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Quotes);
-            var reToastsDto = reToasts.Select(t => _mapper.Map<ReToastBriefDto>(t));
+            var reToastsDto = reToasts.Select(t => _mapper.Map<ReToastDto>(t));
             objectsDto.AddRange(reToastsDto);
         }
         
