@@ -16,6 +16,6 @@ public class Reply : BaseToastWithContent
         ReplyToToastId = replyToToastId;
     }
 
-    public int ReplyToToastId;
-    public BaseToastWithContent ReplyToToast { get; set; } = null!;
+    public int? ReplyToToastId;
+    public BaseToastWithContent? ReplyToToast { get; set; } = null!;
 }

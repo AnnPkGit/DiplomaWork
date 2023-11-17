@@ -6,11 +6,11 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services;
 
-public class MediaService : IMediaStorage
+public class MediaStorage : IMediaStorage
 {
     private readonly AzureStorageConfig _storageConfig;
 
-    public MediaService(IOptions<AzureStorageConfig> options)
+    public MediaStorage(IOptions<AzureStorageConfig> options)
     {
         _storageConfig = options.Value;
     }
