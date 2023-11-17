@@ -16,9 +16,9 @@ export class NotificationService {
     
       private update(): void {
         // Perform a GET request and emit the received data
-        this.http.get<any>('/your-api-endpoint').subscribe((data) => {
-          this.updateSubject.next(data);
-        });
+        // this.http.get<any>('/your-api-endpoint').subscribe((data) => {
+        //   this.updateSubject.next(data);
+        // });
       }
     
       get onUpdate(): Observable<any> {

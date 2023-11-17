@@ -58,7 +58,7 @@ export class ToastModalComponent {
     const formData = new FormData();
     formData.append('file', file);
 
-    this.http.post<ImageItem>('/api/v1/MediaItem', formData).subscribe(
+    this.http.post<ImageItem>('/api/v1/MediaItem/toast', formData).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
         this.ImageItems.push(response);
@@ -78,7 +78,7 @@ export class ToastModalComponent {
       body = {
         QuotedToastId: this.toast.id,
         Content: this.content,
-        MediaItemIds: idsOnly
+        ToastMediaItemIds: idsOnly
       };
       url = "/api/v1/quote";
     }
@@ -86,7 +86,7 @@ export class ToastModalComponent {
       body = {
         ReplyToToastId: this.toast.id,
         Content: this.content,
-        MediaItemIds: idsOnly
+        ToastMediaItemIds: idsOnly
       };
       url = "/api/v1/reply";
       this.replyEmitter.emit();
@@ -94,7 +94,7 @@ export class ToastModalComponent {
     if(!this.toast && !this.reply) {
       body = {
         Context: this.content,
-        MediaItemIds: idsOnly
+        ToastMediaItemIds: idsOnly
       };
       url = "/api/v1/toast";
     }

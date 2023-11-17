@@ -11,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class PostPAgeComponent implements OnInit {
   toast: ToastItem | any;
+  notFound = false;
   replies: ToastResponse = {} as ToastResponse;
 
   input: string = '';
@@ -27,6 +28,9 @@ export class PostPAgeComponent implements OnInit {
     this.replies.items = this.replies?.items.filter(item => item.id !== id);
   }
 
+  onDeleteMainToast(id : number) {
+    this.ngOnInit();
+  }
 
   ngOnInit(): void {
     const urlSegments = this.route.snapshot.url;
@@ -34,6 +38,11 @@ export class PostPAgeComponent implements OnInit {
 
     this.httpClient.get<ToastItem>("api/v1/BaseToast/withContent/by/id?ToastWithContentId=" +  lastSegment).subscribe((response) => {
       this.toast = response;
+    }      ,
+    (error) => {
+      this.notFound = true;
+      this.toast = null;
+      return;
     });
     
     this.httpClient.get<ToastResponse>("/api/v1/reply/by/toast?ToastWithContentId=" +  lastSegment).subscribe((response) => {
@@ -45,11 +54,15 @@ export class PostPAgeComponent implements OnInit {
     this.replies?.items.unshift($event);
   }
 
+  goBack() {
+    window.history.back();
+  }
+
   toastReply() {
     const body = {
       ReplyToToastId: this.toast.id,
       Content: this.input,
-      MediaItemIds: []
+      ToastMediaItemIds: []
     };
 
     const headers = new HttpHeaders({

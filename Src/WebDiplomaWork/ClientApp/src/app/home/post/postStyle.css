@@ -176,7 +176,7 @@
   flex-direction: column;
   border: 1px solid #e2e7ee;
   border-radius: 10px;
-  box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4);
+  /* box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4); */
   font-weight: 600;
   font-size: 13px;
   color: #5C6778;
@@ -208,7 +208,7 @@
   flex-direction: column;
   border: 1px solid #e2e7ee;
   border-radius: 10px;
-  box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4);
+  /* box-shadow: -4px 0 4px rgba(238, 243, 246, 0.4), 4px 0 4px rgba(238, 243, 246, 0.4); */
   font-weight: 600;
   font-size: 13px;
   color: #5C6778;

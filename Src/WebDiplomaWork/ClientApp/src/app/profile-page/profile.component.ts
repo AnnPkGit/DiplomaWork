@@ -18,6 +18,7 @@ export class ProfilePageComponent implements OnInit{
   currentUserId: string = '';
   toastsSelected: boolean = true;
   repliesSelected: boolean = false;
+  pageEndWasReached = false;
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.router.events.subscribe((event) => {
@@ -57,6 +58,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    window.addEventListener('scroll', this.checkScroll.bind(this));
     const urlSegments = this.route.snapshot.url;
     const lastSegment = urlSegments[urlSegments.length - 1].path;
     this.currentUserId = lastSegment;
@@ -66,6 +68,35 @@ export class ProfilePageComponent implements OnInit{
     this.fetchUSersToasts(); 
     this.fetchAccountInfo(); 
   }
+
+  checkScroll() {
+    var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+    var totalHeight = document.documentElement.scrollHeight;
+
+    var windowHeight = window.innerHeight;
+
+    if (totalHeight - scrollPosition <= windowHeight + 10 && !this.pageEndWasReached) {
+        this.pageEndWasReached = true;
+        console.log("Reached the end of the page!");
+
+        this.fetchNewToasts();
+    }
+  }
+
+  fetchNewToasts() {
+    if(this.toastResponse.hasNextPage && this.toastsSelected) {
+      this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
+      .subscribe((response) => {
+        var newToastResponse = response;
+        newToastResponse.items = this.toastResponse.items.concat(newToastResponse.items);
+        this.toastResponse = newToastResponse;
+      });
+
+      setTimeout(() => {this.pageEndWasReached = false}, 2000);
+    }
+  }
+
 
   onBooleanEmitted(value: boolean) {
     this.modalOpened = value;

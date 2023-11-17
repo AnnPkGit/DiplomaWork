@@ -33,7 +33,7 @@ export class ToastCreatorComponent implements OnInit{
   PostContent() {
     var body = {
         Context: this.input,
-        MediaItemIds: []
+        ToastMediaItemIds: []
       };
     var url = "/api/v1/toast";
 
