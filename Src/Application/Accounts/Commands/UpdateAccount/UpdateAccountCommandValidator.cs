@@ -11,6 +11,7 @@ public class UpdateAccountCommandValidator : AbstractValidator<UpdateAccountComm
     private const int MinimumNameLenght = CommonAccountValidationRules.MinimumNameLenght;
     private const int MaximumNameLenght = CommonAccountValidationRules.MaximumNameLenght;
 
+    private const int MinimalAvatarIdValue = -1;
     public UpdateAccountCommandValidator(IApplicationDbContext context)
     {
         RuleFor(v => v.Login)
@@ -32,5 +33,10 @@ public class UpdateAccountCommandValidator : AbstractValidator<UpdateAccountComm
         RuleFor(v => v.Bio)
             .MaximumLength(CommonAccountValidationRules.MaximumBioLenght)
             .When(command => !string.IsNullOrEmpty(command.Bio));
+        
+        
+        RuleFor(command => command.AvatarId)
+            .GreaterThan(MinimalAvatarIdValue)
+            .When(command => command.AvatarId != null);
     }
 }

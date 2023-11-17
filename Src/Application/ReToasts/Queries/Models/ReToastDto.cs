@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.ReToasts.Queries.Models;
 
-public class ReToastBriefDto : BaseToastDto, IMapFrom<ReToast>
+public class ReToastDto : BaseToastDto, IMapFrom<ReToast>
 {
-    public BaseToastWithContentDto ToastWithContent { get; set; } = null!;
+    public BaseToastWithContentBriefDto ToastWithContent { get; set; } = null!;
 }

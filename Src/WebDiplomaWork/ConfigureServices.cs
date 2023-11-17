@@ -1,5 +1,7 @@
-using System.Text.Json.Serialization;
 using Application.Common.Interfaces;
+using Infrastructure.Configurations;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebDiplomaWork.OptionsSetup;
 using WebDiplomaWork.Services;
 
@@ -12,6 +14,7 @@ public static class ConfigureServices
     {
         services.ConfigureOptions<JwtOptionsSetup>();
         services.ConfigureOptions<EmailOptionsSetup>();
+        services.ConfigureOptions<SmsVerifyOptionsSetup>();
         services.ConfigureOptions<AzureStorageConfigSetup>();
         
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
@@ -21,10 +24,6 @@ public static class ConfigureServices
                 "SessionTokens",
                 _ => {}
             );
-        
-        services.AddControllers()
-            .AddJsonOptions(x => x.JsonSerializerOptions.MaxDepth = 20)
-            .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         
         return services;
     }

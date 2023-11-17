@@ -6,5 +6,5 @@ namespace Application.BaseNotifications.Queries.Models;
 
 public class ReToastNotificationDto : BaseNotificationDto, IMapFrom<ReToastNotification>
 {
-    public ReToastBriefDto ReToast { get; set; } = null!;
+    public ReToastDto ReToast { get; set; } = null!;
 }

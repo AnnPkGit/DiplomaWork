@@ -1,8 +1,12 @@
+using Application.Auth.Commands.ConfirmPhoneCommand;
 using Application.Auth.Commands.LoginUserUsingSession;
 using Application.Auth.Commands.LogoutUser;
 using Application.Auth.Commands.SendVerifyMsgByEmail;
+using Application.Auth.Commands.SendVerifyMsgBySms;
 using Application.Auth.Commands.UserEmailConfirm;
+using Application.Common.Interfaces;
 using Application.Users.Queries.GetCurrentUser;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +31,23 @@ public class AuthController : ApiV1ControllerBase
     {
         await Mediator.Send(new SendVerifyMsgByEmailCommand());
         return NoContent();
+    }
+    
+    [HttpPost("send/sms/"), Authorize] 
+    public async Task<IActionResult> SendSmsVerifyMessage()
+    {
+        var smsCommand = new SendSmsCommand();
+        await Mediator.Send(smsCommand);
+        return NoContent();
+
+    }
+
+    [HttpPost("confirm/phone"), Authorize] 
+    public async Task<IActionResult> ConfirmPhone([FromBody] ConfirmPhoneCommand command)
+    {
+        var isSuccess = await Mediator.Send(command);
+        return isSuccess ? Ok("Phone verification successful") : Unauthorized("Invalid code");
+
     }
     
     [HttpGet("logout")]
