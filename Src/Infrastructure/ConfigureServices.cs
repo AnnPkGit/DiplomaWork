@@ -47,10 +47,9 @@ public static class ConfigureServices
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddScoped<IMediaService, MediaService>();
         services.AddScoped<ISmsVerify, SmsVerify>();
         services.AddScoped<IFourDigitCodeGenerator, FourDigitCodeGeneratorService>();
         services.AddTransient<IConfirmPhoneService, ConfirmPhoneService>();
-        services.AddScoped<IMediaStorage, MediaService>();
+        services.AddScoped<IMediaStorage, MediaStorage>();
     }
 }

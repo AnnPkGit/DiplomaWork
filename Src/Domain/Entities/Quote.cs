@@ -2,6 +2,8 @@
 
 public class Quote : BaseToastWithContent
 {
+    public Quote() {}
+
     public Quote(int authorId, string content, int quotedToastId)
         : base(authorId, content, typeof(Quote))
     {
@@ -14,6 +16,6 @@ public class Quote : BaseToastWithContent
         QuotedToastId = quotedToastId;
     }
 
-    public int QuotedToastId;
-    public BaseToastWithContent QuotedToast { get; set; } = null!;
+    public int? QuotedToastId;
+    public BaseToastWithContent? QuotedToast { get; set; } = null!;
 }
