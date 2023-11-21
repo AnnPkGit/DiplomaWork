@@ -53,7 +53,7 @@ public class UpdateUserPasswordCommandValidation : AbstractValidator<UpdateUserP
             throw new NotFoundException(nameof(User), userId);
         }
         
-        var oldPassHash = _hasher.HashPassword(userHashes.Password, userHashes.PasswordSalt);
+        var oldPassHash = _hasher.HashPassword(oldPassword, userHashes.PasswordSalt);
         return oldPassHash == userHashes.Password;
     }
 }

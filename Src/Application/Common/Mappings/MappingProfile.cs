@@ -1,5 +1,5 @@
 using System.Reflection;
-using Application.BaseToasts.Queries.Models;
+using Application.Common.Interfaces;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,11 +31,11 @@ public class MappingProfile : Profile
         
         var argumentTypes = new Type[] { typeof(Profile) };
 
-        var baseToastWithContentDto = typeof(BaseToastWithContentDto);
+        var iIncludeCurrentUserService = typeof(IIncludeCurrentUserService);
         foreach (var type in types)
         {
             object? instance;
-            if (_serviceProvider != null && type.BaseType == baseToastWithContentDto)
+            if (_serviceProvider != null && type.IsAssignableTo(iIncludeCurrentUserService))
             {
                 instance = ActivatorUtilities.CreateInstance(_serviceProvider, type);
             }
