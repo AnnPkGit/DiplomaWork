@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Application.Common.Services;
 using Infrastructure.Authentication;
 using Infrastructure.Common;
 using Infrastructure.Persistence;
@@ -20,7 +21,7 @@ public static class ConfigureServices
         {
             throw new NotImplementedException();
         }
-        else if(configuration.GetValue<bool>("UseTestDatabase"))
+        else if (configuration.GetValue<bool>("UseTestDatabase"))
         {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
@@ -38,7 +39,7 @@ public static class ConfigureServices
                 options.UseMySql(connectionString, serverVersion);
             });
         }
-        
+
         // Other
         services.AddScoped<IHasher, Hasher>();
         services.AddScoped<ITokenProvider, TokenProvider>();
@@ -47,10 +48,9 @@ public static class ConfigureServices
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddScoped<IMediaService, MediaService>();
         services.AddScoped<ISmsVerify, SmsVerify>();
         services.AddScoped<IFourDigitCodeGenerator, FourDigitCodeGeneratorService>();
         services.AddTransient<IConfirmPhoneService, ConfirmPhoneService>();
-        services.AddScoped<IMediaStorage, MediaService>();
+        services.AddScoped<IMediaStorage, MediaStorage>();
     }
 }

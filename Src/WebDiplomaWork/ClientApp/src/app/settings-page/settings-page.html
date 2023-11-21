@@ -67,13 +67,13 @@
                       <div class="option-center-content">
                         <div>
                           <label class="note-setting">Current Password</label>
-                          <input class="bio-textarea">
+                          <input class="bio-textarea" [(ngModel)]="password">
                         </div>
 
                         <div>
                           <div>
                             <label class="note-setting">New Password</label>
-                            <input class="bio-textarea">
+                            <input class="bio-textarea" [(ngModel)]="newPassword">
                           </div>
                           <div>
                             <label class="note-setting">Repeat Password</label>
@@ -82,7 +82,7 @@
                         </div> 
 
                         <div>
-                          <button type="button" class="colorBtn-not-mini">
+                          <button type="button" class="colorBtn-not-mini" (click)="updatePassword()">
                             Update Password</button>
                         </div> 
                       </div>

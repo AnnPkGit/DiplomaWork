@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="banner">
-                  <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-255379.jpg&fm=jpg">
+                  <!-- <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-255379.jpg&fm=jpg"> -->
                 </div>
                 <div class="profile-page-bar">
                     <div class="profileNameHolderMain">
@@ -60,7 +60,7 @@
             <div class="profile-page-info-bar">
               <div class="calendar-info"><img *ngIf="userCurrent?.account?.id === user?.id" style="padding-bottom: 0.8%" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuNjY2NjcgMS4xNjY2OVYyLjkxNjY5TTkuMzMzMzMgMS4xNjY2OVYyLjkxNjY5TTIuMDQxNjcgNS4zMDI1MkgxMS45NTgzTTEyLjI1IDQuOTU4MzVWOS45MTY2OUMxMi4yNSAxMS42NjY3IDExLjM3NSAxMi44MzM0IDkuMzMzMzMgMTIuODMzNEg0LjY2NjY3QzIuNjI1IDEyLjgzMzQgMS43NSAxMS42NjY3IDEuNzUgOS45MTY2OVY0Ljk1ODM1QzEuNzUgMy4yMDgzNSAyLjYyNSAyLjA0MTY5IDQuNjY2NjcgMi4wNDE2OUg5LjMzMzMzQzExLjM3NSAyLjA0MTY5IDEyLjI1IDMuMjA4MzUgMTIuMjUgNC45NTgzNVoiIHN0cm9rZT0iI0ExQjNCRCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuMTU1MTQgNy45OTE2NEg5LjE2MDM5TTkuMTU1MTQgOS43NDE2NEg5LjE2MDM5TTYuOTk2ODEgNy45OTE2NEg3LjAwMjY0TTYuOTk2ODEgOS43NDE2NEg3LjAwMjY0TTQuODM3ODkgNy45OTE2NEg0Ljg0MzcyTTQuODM3ODkgOS43NDE2NEg0Ljg0MzcyIiBzdHJva2U9IiNBMUIzQkQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
                 Joined {{formatDate()}}</div>
-              <div class="profile-bio">{{account?.bio}}</div>
+              <div class="profile-bio">{{user?.bio}}</div>
             </div>
             <div class="profile-page-options-bar">
                 <div (click)="fetchUSersToasts()" [ngStyle]="{'color': toastsSelected ? '#5B66CA' : ''}" >Toasts</div>

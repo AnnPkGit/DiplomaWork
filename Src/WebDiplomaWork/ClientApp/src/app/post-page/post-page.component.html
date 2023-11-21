@@ -49,7 +49,8 @@
           </div>
         </div>
 
-        <app-post *ngFor="let reply of replies?.items; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="reply" (onDelete)="onDelete($event)"></app-post> 
+        <app-post *ngFor="let reply of replies?.items; let last = last" [style]="last ? 'no-corners-end' : 'comment'" [toast]="reply" (onDelete)="onDelete($event)" 
+        [toastPage]="true"></app-post> 
       </div>
 
       <div class="tostContainer" *ngIf="this.notFound">

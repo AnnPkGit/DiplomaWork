@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastItem, ToastResponse } from 'src/app/profile-page/profile.component';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { ImageItem } from 'src/app/toast-modal/toast-modal';
@@ -15,9 +16,14 @@ export class PostComponent {
   reToastOptionsOpen = false;
   optionsOptionsOpen = false;
   makeQuoteOpen = false;
+  currentUserId: string;
 
-  constructor(private localRouter: LocalRouter, private http: HttpClient) {
+  constructor(private localRouter: LocalRouter, private http: HttpClient, private route: ActivatedRoute) {
     this.currentUrl = window.location.href;
+
+    const urlSegments = this.route.snapshot.url;
+    const lastSegment = urlSegments[urlSegments.length - 1].path;
+    this.currentUserId = lastSegment;
   }
 
   @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
@@ -28,6 +34,9 @@ export class PostComponent {
 
   @Input()
   style: string = "post";
+
+  @Input()
+  toastPage: boolean = false;
 
   @Input()
   toast: ToastItem | any;
@@ -102,6 +111,18 @@ export class PostComponent {
     );
   }
 
+  getReplyToAuthorName(): string {
+    if(this.toast.replyToToast) {
+      if(this.toast.replyToToast.quotedToast) {
+        return this.toast.replyToToast.quotedToast.author.name;
+      }
+      if(this.toast.replyToToast.author) {
+        return this.toast.replyToToast.author.name;
+      }
+    }
+    return '';
+  }
+
   mediaAny(): boolean {
     if(this.toast?.mediaItems?.length == 0 && this.toast?.toastWithContent?.mediaItems == 0) {
       return false;
@@ -140,6 +161,10 @@ export class PostComponent {
     }
 
     event.stopPropagation();
+    if(this.toast?.replyToToast?.id && !this.toastPage) {
+      id = this.toast?.replyToToast?.id;
+    }
+
     this.localRouter.goToToastPage(id);
     console.log(this.toast);
     console.log('go to post page');
@@ -199,7 +224,15 @@ export class PostComponent {
 
   undoLike(event: Event, id: string) {
     event.stopPropagation();
-    this.http.delete("/api/v1/Reaction?ToastWithContentId=" + id).subscribe(
+
+    const body = {
+      ToastWithContentId: id
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+
+    this.http.delete("/api/v1/Reaction", { body: body, headers }).subscribe(
       () => {}
       ,
       (error) => {

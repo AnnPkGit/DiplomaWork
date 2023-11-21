@@ -95,11 +95,23 @@ export class ProfilePageComponent implements OnInit{
 
       setTimeout(() => {this.pageEndWasReached = false}, 2000);
     }
+    console.log(this.toastResponse.hasNextPage && this.repliesSelected)
+    if(this.toastResponse.hasNextPage && this.repliesSelected) {
+      this.httpClient.get<ToastResponse>("api/v1/BaseToast/replies/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
+      .subscribe((response) => {
+        var newToastResponse = response;
+        newToastResponse.items = this.toastResponse.items.concat(newToastResponse.items);
+        this.toastResponse = newToastResponse;
+      });
+
+      setTimeout(() => {this.pageEndWasReached = false}, 2000);
+    }
   }
 
 
   onBooleanEmitted(value: boolean) {
     this.modalOpened = value;
+    this.ngOnInit();
   }
 
   Reload() {

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServerEndpoint } from 'src/app/shared/config';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ImageItem } from 'src/app/toast-modal/toast-modal';
 
 const errorKey: string = 'error';
 
@@ -88,7 +89,7 @@ export interface UserResponse {
     login: string;
     birthDate: Date | null;
     name: string;
-    avatar: string | null;
+    avatar: ImageItem | null;
     bio: string | null;
   };
 }

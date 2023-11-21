@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LocalRouter } from "../shared/localRouter/local-router.service";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { UserResponse } from "../identification/signIn/signIn.component";
+import { ImageItem } from "../toast-modal/toast-modal";
 
 @Component({
   selector: 'app-profile-edit-modal',
@@ -20,8 +23,9 @@ export class ProfileEditModal {
     }
 
     myForm: FormGroup;
+    public userCurrent: UserResponse = {} as UserResponse;
 
-    constructor(private fb: FormBuilder, private localRouter: LocalRouter) {
+    constructor(private fb: FormBuilder, private localRouter: LocalRouter, private http: HttpClient) {
       this.myForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(10)]],
         bio: ['', [Validators.maxLength(50)]],
@@ -32,9 +36,62 @@ export class ProfileEditModal {
         this.years.push(i);
       }
       this.UpdateDaysByMounth(28);
+
+      this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
+
+      this.myForm.patchValue({
+        name: this.userCurrent?.account.name,
+        bio: this.userCurrent?.account.bio
+      });
     }
   
     onSubmit() {
+      const formValues = this.myForm.value;
+
+      const body = {
+        Name: formValues.name,
+        Bio: formValues.bio
+      };
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json' 
+      });
+      this.http.patch("/api/v1/account", body, { headers }).subscribe(
+        () => {
+          this.booleanEmitter.emit(false);
+
+          this.userCurrent.account.bio = formValues.bio ?? this.userCurrent.account.bio;
+          this.userCurrent.account.name= formValues.name ?? this.userCurrent.account.name;
+
+          localStorage.setItem("userInfo", JSON.stringify(this.userCurrent));
+        }
+        ,
+        (error) => {
+        }
+        );
+    }
+
+    selectedFile: File = {} as File;
+
+    onFileChange(event: any): void {
+      console.log("avatarUpload")
+      this.selectedFile = FileList = event.target.files[0];
+      this.uploadFile();
+    }
+
+  
+    uploadFile(): void {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+  
+      this.http.post<ImageItem>('/api/v1/MediaItem/avatar', formData).subscribe(
+        (response) => {
+          console.log('File uploaded successfully:', response);
+          this.userCurrent.account.avatar = response;
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
     }
     
 
