@@ -25,4 +25,4 @@ public class ReplyBriefDto : BaseToastWithContentBriefDto, IMapFrom<Reply>
 
 public class ReplyToastDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
 {
-} 
+}

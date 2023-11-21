@@ -50,7 +50,7 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
         if (newBirthDate != default)
             entity.BirthDate = newBirthDate;
         
-        var newBio = entity.Bio;
+        var newBio = request.Bio;
         if (newName != null)
             entity.Bio = newBio;
 
