@@ -26,7 +26,8 @@
 
     <div class="div2">
       <div class="tostContainer">
-        <div class="post hidden-overflow">
+        
+        <div class="post hidden-overflow" *ngIf="user">
             <div style="position: relative;">
                 <div class="pic-relative-container">
                     <div class="profile-picture-container">
@@ -35,7 +36,6 @@
                     </div>
                 </div>
                 <div class="banner">
-                  <!-- <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-255379.jpg&fm=jpg"> -->
                 </div>
                 <div class="profile-page-bar">
                     <div class="profileNameHolderMain">
@@ -66,13 +66,24 @@
                 <div (click)="fetchUSersToasts()" [ngStyle]="{'color': toastsSelected ? '#5B66CA' : ''}" >Toasts</div>
                 <div (click)="fetchUsersReplies()" [ngStyle]="{'color': repliesSelected ? '#5B66CA' : ''}">Replies</div>
                 <div>Media</div>
-                <div>Likes</div>
+                <div (click)="fetchUsersReactions()" [ngStyle]="{'color': likesSelected ? '#5B66CA' : ''}">Likes</div>
             </div>
         </div>
+
       </div>
+
       <div class="tostContainer"  *ngFor="let toast of toastResponse?.items">
         <app-post [toast]="toast" (onReToast)="addToast($event)" (onToastCreation)="addToast($event)" (onDelete)="onDelete($event)"></app-post>
       </div>
+
+      <div *ngIf="!user || !toastResponse.pageNumber">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status" style="color: #A1B3BD;">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+
     </div>
     
     <div class="div3">

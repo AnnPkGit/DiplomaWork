@@ -102,7 +102,9 @@ export class PostComponent {
           replyCount: 0, 
           isReToast: false, 
           mediaItems: this.toast.MediaItem, 
-          thread: []
+          thread: [],
+          youReacted: this.toast.youReacted,
+          youReToasted: true
         }
         this.onReToast.emit(newReToast);
       },
@@ -187,7 +189,7 @@ export class PostComponent {
     if(this.toast.toastWithContent) {
       return this.toast.toastWithContent.youReToasted;
     }
-    return this.toast.youReToasted;
+    return this.toast?.youReToasted ?? false;
   }
 
   openImg(event: Event, currentImg: string) : void {

@@ -18,6 +18,7 @@ export class ProfilePageComponent implements OnInit{
   currentUserId: string = '';
   toastsSelected: boolean = true;
   repliesSelected: boolean = false;
+  likesSelected: boolean = false;
   pageEndWasReached = false;
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router) {
@@ -50,10 +51,18 @@ export class ProfilePageComponent implements OnInit{
   selectReplies() {
     this.repliesSelected = true;
     this.toastsSelected = false;
+    this.likesSelected = false;
   }
 
   selectToasts() {
     this.toastsSelected = true;
+    this.repliesSelected = false
+    this.likesSelected = false;
+  }
+
+  selectLikes() {
+    this.likesSelected = true;
+    this.toastsSelected = false;
     this.repliesSelected = false
   }
 
@@ -95,9 +104,20 @@ export class ProfilePageComponent implements OnInit{
 
       setTimeout(() => {this.pageEndWasReached = false}, 2000);
     }
-    console.log(this.toastResponse.hasNextPage && this.repliesSelected)
+
     if(this.toastResponse.hasNextPage && this.repliesSelected) {
       this.httpClient.get<ToastResponse>("api/v1/BaseToast/replies/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
+      .subscribe((response) => {
+        var newToastResponse = response;
+        newToastResponse.items = this.toastResponse.items.concat(newToastResponse.items);
+        this.toastResponse = newToastResponse;
+      });
+
+      setTimeout(() => {this.pageEndWasReached = false}, 2000);
+    }
+
+    if(this.toastResponse.hasNextPage && this.likesSelected) {
+      this.httpClient.get<ToastResponse>("api/v1/BaseToast/marked/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
       .subscribe((response) => {
         var newToastResponse = response;
         newToastResponse.items = this.toastResponse.items.concat(newToastResponse.items);
@@ -123,8 +143,10 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchUSersToasts() {
+    this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
       this.toastResponse = response;
+      console.log(response)
     });
     this.selectToasts();
   }
@@ -140,10 +162,19 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchUsersReplies() {
+    this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/BaseToast/replies/by/account?AccountId=" +  this.user?.id).subscribe((response) => {
       this.toastResponse = response;
     });
     this.selectReplies();
+  }
+
+  fetchUsersReactions() {
+    this.toastResponse = {} as ToastResponse;
+    this.httpClient.get<ToastResponse>("api/v1/BaseToast/marked/by/account?AccountId=" +  this.user?.id).subscribe((response) => {
+      this.toastResponse = response;
+    });
+    this.selectLikes();
   }
 
   addToast($event : ToastItem): void {
@@ -190,6 +221,8 @@ export interface ToastItem {
   type: string;
   reply: string | null;
   quotedToast: ToastResponse | null;
+  youReToasted: boolean;
+  youReacted: boolean;
   reactionCount: number;
   reToastCount: number;
   replyCount: number;

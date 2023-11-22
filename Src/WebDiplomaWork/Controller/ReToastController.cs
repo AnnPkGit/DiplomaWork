@@ -14,7 +14,7 @@ public class ReToastController : ApiV1ControllerBase
     [HttpPost, Authorize]
     public async Task<ReToastDto> CreateReToast(CreateReToastCommand command)
     {
-        return await Mediator.Send(command);
+           return await Mediator.Send(command);
     }
     
     [HttpGet("all")]
