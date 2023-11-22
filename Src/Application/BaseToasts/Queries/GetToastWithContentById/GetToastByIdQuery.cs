@@ -58,6 +58,7 @@ public class GetToastWithContentByIdQueryHandler : IRequestHandler<GetToastWithC
                     .Include(r => r.ReplyToToast).ThenInclude(t => t.Quotes)
                     .Include(r => r.ReplyToToast).ThenInclude(t => t.ReToasts)
                     .SingleAsync(r => r.Id == toastWithContentId, cancellationToken);
+                ExpandUpperRepliesThread(reply);
                 return _mapper.Map<ReplyDto>(reply);
             case nameof(Quote):
                 var quote = await toastWithContent
@@ -67,6 +68,25 @@ public class GetToastWithContentByIdQueryHandler : IRequestHandler<GetToastWithC
                 return _mapper.Map<QuoteDto>(quote);
             default:
                 return null!;
+        }
+    }
+
+    public void ExpandUpperRepliesThread(Reply entity)
+    {
+        if (entity.ReplyToToast is { Type: nameof(Reply) } and Reply innerReply)
+        {
+            _context.Replies.Entry(innerReply)
+                .Reference(r => r.ReplyToToast)
+                .Query()
+                .IgnoreAutoIncludes()
+                .Include(r => r.Author)
+                .Include(r => r.MediaItems)
+                .Include(r => r.Replies)
+                .Include(r => r.Reactions)
+                .Include(r => r.Quotes)
+                .Include(r => r.ReToasts)
+                .Load();
+            ExpandUpperRepliesThread(innerReply);
         }
     }
 }

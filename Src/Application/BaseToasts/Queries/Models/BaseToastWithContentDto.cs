@@ -10,7 +10,7 @@ using Domain.Entities;
 
 namespace Application.BaseToasts.Queries.Models;
 
-public class BaseToastWithContentDto : BaseToastDto, IMapFrom<BaseToastWithContent>
+public class BaseToastWithContentDto : BaseToastDto, IMapFrom<BaseToastWithContent>, IIncludeCurrentUserService
 {
     private readonly ICurrentUserService? _userService;
 

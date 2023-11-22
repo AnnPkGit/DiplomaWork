@@ -1,6 +1,7 @@
 ﻿using Application.Accounts.Queries.Models;
 using Application.Common.Models;
 using Application.ReToasts.Commands.CreateReToast;
+using Application.ReToasts.Commands.DeleteReToastByToastId;
 using Application.ReToasts.Queries.GetAllReToasts;
 using Application.ReToasts.Queries.GetReToastsByToast;
 using Application.ReToasts.Queries.Models;
@@ -15,6 +16,13 @@ public class ReToastController : ApiV1ControllerBase
     public async Task<ReToastDto> CreateReToast(CreateReToastCommand command)
     {
            return await Mediator.Send(command);
+    }
+
+    [HttpDelete, Authorize]
+    public async Task<IActionResult> DeleteReToastByToastId(DeleteReToastByToastIdCommand command)
+    {
+        await Mediator.Send(command);
+        return NoContent();
     }
     
     [HttpGet("all")]

@@ -4,7 +4,6 @@ using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Replies.Queries.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +39,21 @@ public class GetRepliesByToastQueryHandler : IRequestHandler<GetRepliesByToastQu
             throw new NotFoundException(nameof(BaseToastWithContent), toastWithContentId);
         }
         
-        return await _context.Replies
+        var toastReplies = await _context.Replies
             .Where(r => r.ReplyToToastId == request.ToastWithContentId)
+            .IgnoreAutoIncludes()
+            .Include(r => r.Author)
+            .Include(r => r.Replies)
+            .Include(r => r.Reactions)
+            .Include(r => r.Quotes)
+            .Include(r => r.ReToasts)
+            .Include(r => r.MediaItems)
             .OrderByDescending(r => r.Created)
-            .ProjectTo<ReplyBriefDto>(_mapper.ConfigurationProvider)
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+            .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
+            .ToArrayAsync(cancellationToken);
+
+        var toastRepliesDtos = toastReplies.Select(reply => _mapper.Map<ReplyBriefDto>(reply)).ToArray();
+        
+        return new PaginatedList<ReplyBriefDto>(toastRepliesDtos, totalCount, request.PageNumber, request.PageSize);
     }
 }
