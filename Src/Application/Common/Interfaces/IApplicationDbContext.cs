@@ -24,7 +24,10 @@ public interface IApplicationDbContext
     DbSet<Reply> Replies { get; }
     
     DbSet<Quote> Quotes { get; }
-    
+
+    DbSet<Follow> Follows { get; }
+
+
     DbSet<BaseNotification> BaseNotifications { get; }
     DbSet<ReactionNotification> ReactionNotifications { get; }
     DbSet<ReToastNotification> ReToastNotifications { get; }

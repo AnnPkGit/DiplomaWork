@@ -1,9 +1,13 @@
 using Application.Common.Interfaces;
+using Application.Common.Services;
+using Application.Follows.Commands;
+using Application.Follows.Queries.Models;
 using Infrastructure.Authentication;
 using Infrastructure.Common;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -51,6 +55,8 @@ public static class ConfigureServices
         services.AddScoped<ISmsVerify, SmsVerify>();
         services.AddScoped<IFourDigitCodeGenerator, FourDigitCodeGeneratorService>();
         services.AddTransient<IConfirmPhoneService, ConfirmPhoneService>();
-        services.AddScoped<IMediaStorage, MediaService>();
+        services.AddScoped<IMediaStorage, MediaStorage>();
+        services.AddTransient<IRequestHandler<CreateFollowCommand, FollowDto>, CreateFollowCommandHandler>();//?
+
     }
 }

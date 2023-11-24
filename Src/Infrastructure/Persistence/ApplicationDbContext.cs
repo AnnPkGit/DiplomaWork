@@ -33,6 +33,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ReToast> ReToasts => Set<ReToast>();
     public DbSet<Reply> Replies => Set<Reply>();
     public DbSet<Quote> Quotes => Set<Quote>();
+    public DbSet<Follow> Follows => Set<Follow>();
+
     public DbSet<BaseNotification> BaseNotifications => Set<BaseNotification>();
     public DbSet<ReactionNotification> ReactionNotifications => Set<ReactionNotification>();
     public DbSet<ReToastNotification> ReToastNotifications => Set<ReToastNotification>();
@@ -40,6 +42,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ReplyNotification> ReplyNotifications => Set<ReplyNotification>();
     public DbSet<ToastMediaItem> ToastMediaItems => Set<ToastMediaItem>();
     public DbSet<AvatarMediaItem> AvatarMediaItems => Set<AvatarMediaItem>();
+    
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

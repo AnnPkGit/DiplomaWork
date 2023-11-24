@@ -29,6 +29,14 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasMany<BaseNotification>()
             .WithOne(bn => bn.ToAccount)
             .HasForeignKey(bn => bn.ToAccountId);
+        
+        builder.HasMany<Follow>(a => a.Followers)
+            .WithOne(f => f.ToAccount)
+            .HasForeignKey(f => f.ToAccountId);
+        
+        builder.HasMany<Follow>(a => a.MyFollows)
+            .WithOne(f => f.Account)
+            .HasForeignKey(f => f.AccountId);
 
         builder.Navigation(a => a.Avatar).AutoInclude();
     }
