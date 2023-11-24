@@ -29,6 +29,9 @@ import { NotifactionsPageComponent } from './notification-page/notification-page
 import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { ToastModalComponent } from './toast-modal/toast-modal';
 import { ToastBtn } from './toast-button/toast-button';
+import { ExploreComponent } from './Explore/explore-component';
+import { FollowExplorerComponent } from './follow-explorer/follow-explorer';
+import { ExploreProfComponent } from './explore-prof-component/explore-prof-component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,10 @@ import { ToastBtn } from './toast-button/toast-button';
     NotifactionsPageComponent,
     SettingsPageComponent,
     ToastModalComponent,
-    ToastBtn
+    ExploreComponent,
+    ToastBtn,
+    FollowExplorerComponent,
+    ExploreProfComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,12 +76,12 @@ import { ToastBtn } from './toast-button/toast-button';
       { path: 'sign-in', component: SignInComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
-      { path: 'messages', component: MessagesComponent },
+      { path: 'messages', component: ExploreComponent },
       { path: 'toast/:id', component: PostPAgeComponent },
       { path: 'profile/:id', component: ProfilePageComponent },
       { path: 'notifications', component: NotifactionsPageComponent },
       { path: 'settings', component: SettingsPageComponent },
-
+      { path: 'follow/:follow-type',component:  FollowExplorerComponent },
     ])
   ],
   providers: [AuthGuard],

@@ -118,3 +118,9 @@
 .selectedOption1 {
     color: #5B66CA;;
 }
+
+.link-hint:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #5B66CA;
+}

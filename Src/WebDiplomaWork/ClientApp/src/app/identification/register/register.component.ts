@@ -104,11 +104,7 @@ export class RegisterComponent {
     }
   }
 
-  public getNextStep() {
-    if(!this.userSuccessfulyCreated) {
-      return;
-    }
-    
+  public getNextStep() { 
     this.step = 2;
   }
 
@@ -117,47 +113,50 @@ export class RegisterComponent {
   }
 
   public CreateUserRequest() {
-    const createUserBody = {
-      Email: this.emailInput,
-      Password: this.passwordInput
-    };
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json' 
-    });
-
-    this.http.post<number>('api/v1/user', createUserBody, { headers }).subscribe(
-      (result: number) => {
-        console.log(result);
-        this.userSuccessfulyCreated = true;
-        this.createdUserId = result;
-        this.getNextStep();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getNextStep();
   }
 
   public Register() {
     // const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
 
+    var user = new User(this.emailInput,  this.passwordInput);
+    var account = new Account(this.loginInput, this.nameInput);
+
     const createAccountBody = {
-      UserId: this.createdUserId,
-      Login: this.loginInput,
-      Name:  this.nameInput
+      User: user,
+      Account: account
     };
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' 
     });
 
-    this.http.post('api/v1/account', createAccountBody, { headers }).subscribe(
+    this.http.post('api/v1/user/registration', createAccountBody, { headers }).subscribe(
       () => {
         this.router.goToSignIn();
       },
       (error) => {
       }
     );
+  }
+}
+
+class User {
+  Email: string | undefined;
+  Password: string | undefined;
+
+  constructor(Email : string, Password: string) {
+    this.Email = Email ;
+    this.Password = Password;
+  }
+}
+
+class Account {
+  Login: string | undefined;
+  Name: string | undefined;
+
+  constructor(Login: string, Name: string) {
+    this.Login = Login;
+    this.Name = Name;
   }
 }

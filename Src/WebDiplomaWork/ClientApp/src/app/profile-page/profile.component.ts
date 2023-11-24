@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserResponse } from '../identification/signIn/signIn.component';
 import { ImageItem } from '../toast-modal/toast-modal';
+import { LocalRouter } from '../shared/localRouter/local-router.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,12 +22,16 @@ export class ProfilePageComponent implements OnInit{
   likesSelected: boolean = false;
   pageEndWasReached = false;
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router) {
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router, private localRouter: LocalRouter) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.ngOnInit();
       }
     });
+  }
+
+  goToFollowExplorer(type: string) {
+    this.localRouter.goToFollowExplorer(type);
   }
 
   formatDate(): string {

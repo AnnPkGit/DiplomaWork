@@ -1,0 +1,47 @@
+.rec-prof-wrapper {
+    z-index: 0;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    display: flex;
+    min-width: 500px;
+    margin-bottom: 10px;
+}
+
+.rec-prof-wrapper:hover {
+    cursor: pointer;
+}
+
+.icon-holder {
+    padding: 20px;
+}
+
+.info-holder {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.info-bio-holder {
+    padding: 20px;
+    word-break: break-all;
+}
+
+.info-bio-text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    color: #5C6778;
+    overflow-wrap: break-word;
+  }
+
+.info-follow-button {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding: 20px;
+}
+
+.profile-picture-container-rec {
+    overflow: hidden;
+    border-radius: 15px;
+}

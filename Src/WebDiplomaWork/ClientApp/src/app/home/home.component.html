@@ -29,6 +29,14 @@
   <div class="tostContainer"  *ngFor="let post of posts?.items">
     <app-post [toast]="post" (onDelete)="onDelete($event)"></app-post>
   </div>
+
+  <div *ngIf="!posts?.items">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status" style="color: #A1B3BD;">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="div3">

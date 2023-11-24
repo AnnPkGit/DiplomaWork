@@ -7,6 +7,7 @@ export const AppConfig = {
     profileEndpoint: '/profile/',
     settingsEndpoint: '/settings',
     notificationsEndpoint: '/notifications',
+    followExplorerEndpoint: '/follow/',
     authEndpoint: '',
 };
 

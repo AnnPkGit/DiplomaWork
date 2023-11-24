@@ -19,6 +19,8 @@ export class SignInComponent implements OnInit {
   passwordError: string = '';
   loginError: string | null = '';
 
+  requestInProcess: boolean = false;
+
   constructor(private router: LocalRouter, private auth: AuthService, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -56,6 +58,8 @@ export class SignInComponent implements OnInit {
       return;
     }
 
+    this.requestInProcess = true;
+
     const body = {
       Password: this.password,
       Email: this.email
@@ -69,6 +73,7 @@ export class SignInComponent implements OnInit {
       (user: UserResponse) => {
         localStorage.setItem(errorKey, '');
         localStorage.setItem("userInfo", JSON.stringify(user));
+        this.requestInProcess = false;
         this.router.goToHome();
       },
       (error) => {

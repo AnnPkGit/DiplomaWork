@@ -43,7 +43,13 @@
 
     <div style="height: 10%">
       <div class="separationDiv">
-        <button class="colorBtn" (click)="Authorize()">Continue</button>
+        <button class="colorBtn" (click)="Authorize()">
+          <span *ngIf="!requestInProcess">Continue</span>
+          <div *ngIf="requestInProcess">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only" style="margin-left: 5px;">Authorizing...</span>
+          </div>
+        </button>
       </div>
     </div>
 

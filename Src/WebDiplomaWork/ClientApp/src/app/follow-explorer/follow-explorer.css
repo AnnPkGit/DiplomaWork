@@ -1,0 +1,16 @@
+.option-follow-head {
+    background-color: rgb(255, 255, 255);
+    width: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #5C6778;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.option-follow-head:hover {
+    background-color: rgba(102, 104, 120, 0.07);
+    cursor: pointer;
+  }
