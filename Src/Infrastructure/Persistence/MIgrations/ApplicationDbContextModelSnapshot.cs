@@ -184,20 +184,20 @@ namespace Infrastructure.Persistence.MIgrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateOfFollow")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ToAccountId")
+                    b.Property<int>("FollowFromId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FollowToId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("FollowFromId");
 
-                    b.HasIndex("ToAccountId");
+                    b.HasIndex("FollowToId");
 
                     b.ToTable("Follows");
                 });
@@ -407,6 +407,18 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasDiscriminator().HasValue("ToastMediaItem");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notifications.FollowerNotification", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseNotification");
+
+                    b.Property<int>("FollowerId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasDiscriminator().HasValue("FollowerNotification");
+                });
+
             modelBuilder.Entity("Domain.Entities.Notifications.QuoteNotification", b =>
                 {
                     b.HasBaseType("Domain.Common.BaseNotification");
@@ -589,21 +601,21 @@ namespace Infrastructure.Persistence.MIgrations
 
             modelBuilder.Entity("Domain.Entities.Follow", b =>
                 {
-                    b.HasOne("Domain.Entities.Account", "Account")
-                        .WithMany("MyFollows")
-                        .HasForeignKey("AccountId")
+                    b.HasOne("Domain.Entities.Account", "FollowFrom")
+                        .WithMany("Follows")
+                        .HasForeignKey("FollowFromId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Account", "ToAccount")
+                    b.HasOne("Domain.Entities.Account", "FollowTo")
                         .WithMany("Followers")
-                        .HasForeignKey("ToAccountId")
+                        .HasForeignKey("FollowToId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("FollowFrom");
 
-                    b.Navigation("ToAccount");
+                    b.Navigation("FollowTo");
                 });
 
             modelBuilder.Entity("Domain.Entities.Reaction", b =>
@@ -662,6 +674,17 @@ namespace Infrastructure.Persistence.MIgrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Notifications.FollowerNotification", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("Domain.Entities.Notifications.QuoteNotification", b =>
@@ -774,9 +797,9 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.Navigation("Followers");
 
-                    b.Navigation("MediaItems");
+                    b.Navigation("Follows");
 
-                    b.Navigation("MyFollows");
+                    b.Navigation("MediaItems");
 
                     b.Navigation("Reactions");
                 });

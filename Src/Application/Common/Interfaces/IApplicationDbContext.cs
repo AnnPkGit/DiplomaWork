@@ -27,12 +27,12 @@ public interface IApplicationDbContext
 
     DbSet<Follow> Follows { get; }
 
-
     DbSet<BaseNotification> BaseNotifications { get; }
     DbSet<ReactionNotification> ReactionNotifications { get; }
     DbSet<ReToastNotification> ReToastNotifications { get; }
     DbSet<QuoteNotification> QuoteNotifications { get; }
     DbSet<ReplyNotification> ReplyNotifications { get; }
+    DbSet<FollowerNotification> FollowerNotifications { get; }
     DbSet<ToastMediaItem> ToastMediaItems { get; }
     DbSet<AvatarMediaItem> AvatarMediaItems { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

@@ -10,5 +10,5 @@ public class UserBriefDto : IMapFrom<User>
     public string? Phone { get; set; }
     public bool EmailVerified { get; set; }
     public bool PhoneVerified { get; set; }
-    public AccountBriefDto? Account { get; set; }
+    public AccountDto? Account { get; set; }
 }

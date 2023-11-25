@@ -30,6 +30,9 @@ public class BaseNotificationDto : IMapFrom<BaseNotification>
         var reToastNotifyIds = baseNotifications
             .Where(bn => bn.Type == nameof(ReToastNotification))
             .Select(rtn => rtn.Id).ToArray();
+        var followerNotifyIds = baseNotifications
+            .Where(bn => bn.Type == nameof(FollowerNotification))
+            .Select(rtn => rtn.Id).ToArray();
         
         var objectsDto = new List<BaseNotificationDto>(baseNotifications.Length);
         if (reactionNotifyIds.Any())
@@ -65,6 +68,13 @@ public class BaseNotificationDto : IMapFrom<BaseNotification>
                 .Include(rn => rn.ReToast).ThenInclude(rt => rt.ToastWithContent)
                 .Where(rn => reToastNotifyIds.Contains(rn.Id));
             objectsDto.AddRange(reToastNotifications.Select(rn => mapper.Map<ReToastNotificationDto>(rn)));
+        }
+        if (followerNotifyIds.Any())
+        {
+            var followerNotifications = context.FollowerNotifications
+                .Include(fn => fn.Follower)
+                .Where(fn => followerNotifyIds.Contains(fn.Id));
+            objectsDto.AddRange(followerNotifications.Select(rn => mapper.Map<FollowerNotificationDto>(rn)));
         }
 
         return objectsDto;

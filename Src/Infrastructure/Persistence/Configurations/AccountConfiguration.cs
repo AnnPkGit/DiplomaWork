@@ -1,5 +1,6 @@
 using Domain.Common;
 using Domain.Entities;
+using Domain.Entities.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,15 +30,11 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasMany<BaseNotification>()
             .WithOne(bn => bn.ToAccount)
             .HasForeignKey(bn => bn.ToAccountId);
-        
-        builder.HasMany<Follow>(a => a.Followers)
-            .WithOne(f => f.ToAccount)
-            .HasForeignKey(f => f.ToAccountId);
-        
-        builder.HasMany<Follow>(a => a.MyFollows)
-            .WithOne(f => f.Account)
-            .HasForeignKey(f => f.AccountId);
 
+        builder.HasMany<FollowerNotification>()
+            .WithOne(fn => fn.Follower)
+            .HasForeignKey(fn => fn.FollowerId);
+        
         builder.Navigation(a => a.Avatar).AutoInclude();
     }
 }

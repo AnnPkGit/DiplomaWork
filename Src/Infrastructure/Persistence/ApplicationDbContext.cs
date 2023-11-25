@@ -40,6 +40,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ReToastNotification> ReToastNotifications => Set<ReToastNotification>();
     public DbSet<QuoteNotification> QuoteNotifications => Set<QuoteNotification>();
     public DbSet<ReplyNotification> ReplyNotifications => Set<ReplyNotification>();
+    public DbSet<FollowerNotification> FollowerNotifications => Set<FollowerNotification>();
     public DbSet<ToastMediaItem> ToastMediaItems => Set<ToastMediaItem>();
     public DbSet<AvatarMediaItem> AvatarMediaItems => Set<AvatarMediaItem>();
     

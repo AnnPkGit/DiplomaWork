@@ -31,7 +31,10 @@ public class LoginUserUsingSessionCommandHandler : IRequestHandler<LoginUserUsin
     public async Task<UserBriefDto> Handle(LoginUserUsingSessionCommand request, CancellationToken token)
     {
         var user = await _context.Users
+            .Include(u => u.Account).ThenInclude(a => a!.Follows)
+            .Include(u => u.Account).ThenInclude(a => a!.Followers)
             .FirstOrDefaultAsync(user => user.Email == request.Email, token);
+        
         if (user is null)
         {
             throw new NotFoundException(nameof(User), request.Email);
