@@ -45,6 +45,7 @@
       <Link>Domain\Result.cs</Link>
     </Compile>
     <Compile Remove="ClientApp\.angular\**" />
+    <Compile Remove="Controller\FollowsController.cs" />
   </ItemGroup>
 
   <ItemGroup>

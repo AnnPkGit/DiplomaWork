@@ -15,7 +15,7 @@ namespace WebDiplomaWork.Controller;
 public class AccountController : ApiV1ControllerBase
 {
     [HttpGet("by/id")]
-    public async Task<Account> GetById(int id)
+    public async Task<AccountDto> GetById(int id)
     {
         return await Mediator.Send(new GetAccountByIdQuery(id));
     }

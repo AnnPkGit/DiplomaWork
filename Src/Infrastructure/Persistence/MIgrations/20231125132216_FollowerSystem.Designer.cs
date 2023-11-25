@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.MIgrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125132216_FollowerSystem")]
+    partial class FollowerSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +34,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("MediaItemsId");
 
-                    b.ToTable("BaseToastWithContentToastMediaItem", (string)null);
+                    b.ToTable("BaseToastWithContentToastMediaItem");
                 });
 
             modelBuilder.Entity("Domain.Common.BaseMediaItem", b =>
@@ -63,7 +66,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BaseMediaItem", (string)null);
+                    b.ToTable("BaseMediaItem");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("BaseMediaItem");
 
@@ -93,7 +96,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("ToAccountId");
 
-                    b.ToTable("BaseNotifications", (string)null);
+                    b.ToTable("BaseNotifications");
 
                     b.HasDiscriminator<string>("Type").HasValue("BaseNotification");
 
@@ -129,7 +132,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BaseToasts", (string)null);
+                    b.ToTable("BaseToasts");
 
                     b.HasDiscriminator<string>("Type").HasValue("BaseToast");
 
@@ -175,7 +178,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("DeactivatedById");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Domain.Entities.Follow", b =>
@@ -259,7 +262,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("ToastWithContentId");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -363,7 +366,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolePermission", (string)null);
+                    b.ToTable("RolePermission");
 
                     b.HasData(
                         new
@@ -390,7 +393,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleUser", (string)null);
+                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("Domain.Entities.AvatarMediaItem", b =>
