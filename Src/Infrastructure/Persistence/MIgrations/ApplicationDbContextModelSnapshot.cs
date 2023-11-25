@@ -31,7 +31,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("MediaItemsId");
 
-                    b.ToTable("BaseToastWithContentToastMediaItem");
+                    b.ToTable("BaseToastWithContentToastMediaItem", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Common.BaseMediaItem", b =>
@@ -63,7 +63,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BaseMediaItem");
+                    b.ToTable("BaseMediaItem", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("BaseMediaItem");
 
@@ -93,7 +93,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("ToAccountId");
 
-                    b.ToTable("BaseNotifications");
+                    b.ToTable("BaseNotifications", (string)null);
 
                     b.HasDiscriminator<string>("Type").HasValue("BaseNotification");
 
@@ -129,7 +129,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BaseToasts");
+                    b.ToTable("BaseToasts", (string)null);
 
                     b.HasDiscriminator<string>("Type").HasValue("BaseToast");
 
@@ -175,7 +175,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("DeactivatedById");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -235,7 +235,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("ToastWithContentId");
 
-                    b.ToTable("Reactions");
+                    b.ToTable("Reactions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -339,7 +339,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolePermission");
+                    b.ToTable("RolePermission", (string)null);
 
                     b.HasData(
                         new
@@ -366,7 +366,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AvatarMediaItem", b =>
