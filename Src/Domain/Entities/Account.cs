@@ -12,4 +12,6 @@ public class Account : BaseAuditableEntity
     public ICollection<BaseToast> AllToasts { get; set; } = new List<BaseToast>();
     public ICollection<Reaction> Reactions { get; set; } = new List<Reaction>();
     public ICollection<BaseMediaItem> MediaItems { get; set; } = new List<BaseMediaItem>();
+    public ICollection<Follow> Followers { get; set; } = new List<Follow>();
+    public ICollection<Follow> Follows { get; set; } = new List<Follow>();
 }
