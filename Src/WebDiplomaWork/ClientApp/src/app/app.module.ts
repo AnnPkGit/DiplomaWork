@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -32,6 +32,7 @@ import { ToastBtn } from './toast-button/toast-button';
 import { ExploreComponent } from './Explore/explore-component';
 import { FollowExplorerComponent } from './follow-explorer/follow-explorer';
 import { ExploreProfComponent } from './explore-prof-component/explore-prof-component';
+import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,14 @@ import { ExploreProfComponent } from './explore-prof-component/explore-prof-comp
       { path: 'follow/:follow-type',component:  FollowExplorerComponent },
     ])
   ],
-  providers: [AuthGuard],
+  providers: [
+      AuthGuard, 
+      {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastItem, ToastResponse } from 'src/app/profile-page/profile.component';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
@@ -9,7 +9,7 @@ import { ImageItem } from 'src/app/toast-modal/toast-modal';
   selector: 'app-post',
   templateUrl: './post.component.html',
 })
-export class PostComponent {
+export class PostComponent implements OnInit {
   closeImg: boolean = true;
   currentImg: string = '';
   currentUrl: string;
@@ -32,6 +32,12 @@ export class PostComponent {
 
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
+  @Output() onReToastRemoved: EventEmitter<number> = new EventEmitter();
+
+  @Output() toastWasRemovedByOrig: EventEmitter<number> = new EventEmitter();
+
+  @Input() reToastNumberNeedToBeReduced: EventEmitter<number> | undefined;
+
   @Input()
   style: string = "post";
 
@@ -45,6 +51,15 @@ export class PostComponent {
   reToast: boolean = false;
 
   isReply = false;
+
+  ngOnInit(): void {
+    this.reToastNumberNeedToBeReduced?.subscribe((id) => {
+      if(this.toast.id == id) {
+        this.toast.youReToasted = false;
+        this.toast.reToastsCount -= 1;
+      }
+    });
+  }
 
   onToastCreationAction($event: ToastItem) {
     this.onToastCreation.emit($event);
@@ -70,8 +85,21 @@ export class PostComponent {
     this.makeQuoteOpen = true;
   }
 
-  reToastToastRemove(id: number) {
+  removeReToast(event: Event, id : number) {
+    event.stopPropagation();
 
+    if(this.toast.type == 'ReToast')
+    {
+      this.deleteToast(event);
+      return;
+    }
+
+    this.http.delete("/api/v1/ReToast?ToastWithContentId=" + id).subscribe(
+      () => {
+        this.toast.youReToasted = false;
+        this.toast.reToastsCount -=  1;
+        this.toastWasRemovedByOrig.emit(id);
+    });
   }
 
   reToastToast(id: number) {
@@ -83,30 +111,11 @@ export class PostComponent {
       'Content-Type': 'application/json' 
     });
 
-    this.http.post<ToastResponse>("/api/v1/ReToast", body, { headers }).subscribe(
-      () => {
-        this.toast.reToastsCount += 1;
+    this.http.post<ToastItem>("/api/v1/ReToast", body, { headers }).subscribe(
+      (toast) => {
+        this.toast.reToastsCount +=  1;
         this.toast.youReToasted = true;
-        var newReToast: ToastItem = {
-          toastWithContent: this.toast,
-          id: 0,
-          author: this.toast.author,
-          lastModified: '', 
-          created: '', 
-          content: '', 
-          type: '',
-          reply: '', 
-          quotedToast: null, 
-          reactionCount: 0, 
-          reToastCount: 0,
-          replyCount: 0, 
-          isReToast: false, 
-          mediaItems: this.toast.MediaItem, 
-          thread: [],
-          youReacted: this.toast.youReacted,
-          youReToasted: true
-        }
-        this.onReToast.emit(newReToast);
+        this.onReToast.emit(toast);
       },
       (error) => {
       }
@@ -168,7 +177,6 @@ export class PostComponent {
     }
 
     this.localRouter.goToToastPage(id);
-    console.log(this.toast);
     console.log('go to post page');
   }
 
@@ -261,6 +269,7 @@ export class PostComponent {
     this.http.delete("/api/v1/BaseToast", { body: body, headers }).subscribe(
       () => {
         this.onDelete.emit(this.toast.id);
+        this.onReToastRemoved.emit(this.toast.toastWithContent.id);
       }
       ,
       (error) => {

@@ -14,9 +14,6 @@ export class SettingsPageComponent {
   }
 
   updatePassword() {
-    console.log(this.password);
-    console.log(this.newPassword);
-
     const body = {
       OldPassword: this.password,
       NewPassword: this.newPassword,

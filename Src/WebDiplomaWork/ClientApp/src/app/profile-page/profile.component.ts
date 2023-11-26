@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AccountModel } from '../shared/models/accountModel';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -22,12 +22,19 @@ export class ProfilePageComponent implements OnInit{
   likesSelected: boolean = false;
   pageEndWasReached = false;
 
+  @Output() reToastWasRemoved = new EventEmitter<number>();
+
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router, private localRouter: LocalRouter) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.ngOnInit();
       }
     });
+  }
+
+  ReToastRemoved(id: number) {
+    console.log("ReToastRemoved")
+    this.reToastWasRemoved.emit(id);
   }
 
   goToFollowExplorer(type: string) {
@@ -151,7 +158,6 @@ export class ProfilePageComponent implements OnInit{
     this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
       this.toastResponse = response;
-      console.log(response)
     });
     this.selectToasts();
   }
@@ -164,6 +170,12 @@ export class ProfilePageComponent implements OnInit{
 
   onDelete(id : number) {
     this.toastResponse.items = this.toastResponse?.items.filter(item => item.id !== id);
+  }
+
+  toastWasRemovedByOrigReaction(id : number) {
+    this.toastResponse.items = this.toastResponse.items.filter(item => {
+      return item.toastWithContent?.id !== id;
+    });
   }
 
   fetchUsersReplies() {
@@ -232,7 +244,7 @@ export interface ToastItem {
   reToastCount: number;
   replyCount: number;
   isReToast: boolean;
-  toastWithContent: ToastResponse;
+  toastWithContent: ToastItem;
   mediaItems: ImageItem[];
   thread: ToastResponse[];
 }

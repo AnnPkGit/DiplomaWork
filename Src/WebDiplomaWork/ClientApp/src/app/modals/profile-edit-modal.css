@@ -31,6 +31,13 @@
     height: 90%;
 }
 
+.img-size {
+    min-height: 100px; 
+    min-width: 100;
+    max-height: 100px; 
+    max-width: 100;
+}
+
 .scroll-content {
     overflow-y: scroll; 
     height: 100%;
