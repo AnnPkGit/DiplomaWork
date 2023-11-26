@@ -19,7 +19,7 @@ public class ReToastController : ApiV1ControllerBase
     }
 
     [HttpDelete, Authorize]
-    public async Task<IActionResult> DeleteReToastByToastId(DeleteReToastByToastIdCommand command)
+    public async Task<IActionResult> DeleteReToastByToastId([FromQuery] DeleteReToastByToastIdCommand command)
     {
         await Mediator.Send(command);
         return NoContent();
