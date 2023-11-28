@@ -2,6 +2,7 @@
 using Application.BaseToasts.Queries.GetAccountBaseToasts;
 using Application.BaseToasts.Queries.GetRepliesByAccount;
 using Application.BaseToasts.Queries.GetToastsMarkedByAccount;
+using Application.BaseToasts.Queries.GetToastsWithMediaItemsByAccount;
 using Application.BaseToasts.Queries.GetToastWithContentById;
 using Application.BaseToasts.Queries.Models;
 using Application.Common.Models;
@@ -42,6 +43,13 @@ public class BaseToastController : ApiV1ControllerBase
     [HttpGet("withContent/by/id")]
     public async Task<BaseToastWithContentDto> GetToastWithContentById
         ([FromQuery] GetToastWithContentByIdQuery command)
+    {
+        return await Mediator.Send(command);
+    }
+    
+    [HttpGet("withMediaItems/by/account")]
+    public async Task<PaginatedList<BaseToastWithContentDto>> GetToastWithMediaItemsByAccount
+        ([FromQuery] GetToastsWithMediaItemsByAccountQuery command)
     {
         return await Mediator.Send(command);
     }
