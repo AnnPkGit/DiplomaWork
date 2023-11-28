@@ -33,6 +33,7 @@ public class LoginUserUsingSessionCommandHandler : IRequestHandler<LoginUserUsin
         var user = await _context.Users
             .Include(u => u.Account).ThenInclude(a => a!.Follows)
             .Include(u => u.Account).ThenInclude(a => a!.Followers)
+            .AsSingleQuery()
             .FirstOrDefaultAsync(user => user.Email == request.Email, token);
         
         if (user is null)
