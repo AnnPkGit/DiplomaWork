@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserResponse } from 'src/app/identification/signIn/signIn.component';
-import { NotificationService } from 'src/app/service/notifications.service';
+import { NotificationService, ReactionNotification } from 'src/app/service/notifications.service';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 
 @Component({
@@ -10,8 +10,9 @@ import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 export class NavBarComponent {
 
   lastUpdated: string | undefined;
-  receivedData: any;
+  receivedData: ReactionNotification | any;
   userCurrent: UserResponse;
+  newNotification: boolean = false;
 
   constructor(private router: LocalRouter, private notService: NotificationService) {
     this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
@@ -21,8 +22,9 @@ export class NavBarComponent {
     // Subscribe to the onUpdate observable in the TimerService
     this.notService.onUpdate.subscribe((data) => {
       // Update your component's state
-      this.lastUpdated = new Date().toLocaleTimeString();
       this.receivedData = data;
+      this.newNotification = true;
+      // console.log('NOTIFICATION')
     });
   }
 
