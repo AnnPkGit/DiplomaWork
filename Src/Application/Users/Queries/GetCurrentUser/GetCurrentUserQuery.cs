@@ -33,6 +33,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, U
         var user = await _context.Users
             .Include(u => u.Account).ThenInclude(a => a!.Follows)
             .Include(u => u.Account).ThenInclude(a => a!.Followers)
+            .AsSingleQuery()
             .SingleOrDefaultAsync(u => u.Id == userId, token);
         
         if (user == null)
