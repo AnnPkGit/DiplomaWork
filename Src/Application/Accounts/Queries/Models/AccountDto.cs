@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappings;
+using Application.Common.Mappings.Actions;
 using Application.MediaItems.Queries.Models;
 using AutoMapper;
 using Domain.Entities;
@@ -15,4 +16,10 @@ public class AccountDto : IMapFrom<Account>
     public string? Bio { get; set; }
     public int FollowersCount { get; set; }
     public int FollowsCount { get; set; }
+    public bool YouFollow { get; set; }
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Account, AccountDto>()
+            .AfterMap<SetAccountDtoAction>();
+    }
 }

@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Mappings;
+﻿using Application.Common.Mappings;
+using Application.Common.Mappings.Actions;
 using Application.MediaItems.Queries.Models;
 using Application.Quotes.Queries.Models;
 using Application.Replies.Queries.Models;
@@ -10,19 +10,8 @@ using Domain.Entities;
 
 namespace Application.BaseToasts.Queries.Models;
 
-public class BaseToastWithContentBriefDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>, IIncludeCurrentUserService
+public class BaseToastWithContentBriefDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
 {
-    private readonly ICurrentUserService? _userService;
-
-    public BaseToastWithContentBriefDto()
-    {
-    }
-
-    public BaseToastWithContentBriefDto(ICurrentUserService userService)
-    {
-        _userService = userService;
-    }
-    
     public string Content { get; set; } = string.Empty;
     public bool YouReacted { get; set; }
     public bool YouReToasted { get; set; }
@@ -38,11 +27,6 @@ public class BaseToastWithContentBriefDto : BaseToastBriefDto, IMapFrom<BaseToas
             .Include<Toast, ToastBriefDto>()
             .Include<Reply, ReplyBriefDto>()
             .Include<Quote, QuoteBriefDto>()
-            .ForMember(dto => dto.YouReacted, expression => expression
-                .MapFrom(content => content.Reactions
-                    .Any(reaction => _userService != null && reaction.AuthorId == _userService.Id)))
-            .ForMember(dto => dto.YouReToasted, expression => expression
-                .MapFrom(content => content.ReToasts
-                    .Any(reToast => _userService != null && reToast.AuthorId == _userService.Id)));
+            .AfterMap<SetBaseToastWithContentDtoAction>();
     }
 }
