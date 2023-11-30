@@ -1,7 +1,6 @@
 using Application.Accounts.Commands.UpdateAccount;
 using Application.Accounts.Commands.UpdateAccountDetail;
 using Application.Accounts.Queries.GetAccountById;
-using Application.Accounts.Queries.GetAccountByLogin;
 using Application.Accounts.Queries.GetAccountsByLoginOrName;
 using Application.Accounts.Queries.GetAccountsWithPaginationQuery;
 using Application.Accounts.Queries.Models;
@@ -18,12 +17,6 @@ public class AccountController : ApiV1ControllerBase
     public async Task<AccountDto> GetById(int id)
     {
         return await Mediator.Send(new GetAccountByIdQuery(id));
-    }
-    
-    [HttpGet("by/login")]
-    public async Task<Account> GetByLogin([FromQuery] string login)
-    {
-        return await Mediator.Send(new GetAccountByLoginQuery(login));
     }
 
     [HttpGet("pagination")]
