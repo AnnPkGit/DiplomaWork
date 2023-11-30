@@ -11,12 +11,6 @@ namespace Application.Quotes.Queries.Models;
 public class QuoteDto : BaseToastWithContentDto, IMapFrom<Quote>
 {
     public QuotedToastDto QuotedToast { get; set; } = null!;
-
-    public QuoteDto()
-    {
-    }
-
-    public QuoteDto(ICurrentUserService userService) : base(userService) {}
     
     public override void Mapping(Profile profile)
     {

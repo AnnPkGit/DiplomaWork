@@ -1,7 +1,6 @@
 using System.Reflection;
 using Application.Common.Behaviours;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
 using Application.Common.Notification;
 using Application.Common.Services;
 using FluentValidation;
@@ -14,9 +13,7 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection services)
     {
-        services.AddAutoMapper((provider, expression) =>
-            expression.AddProfile(new MappingProfile(provider)),
-            Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => {

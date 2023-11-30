@@ -8,11 +8,6 @@ namespace Application.Toasts.Queries.Models;
 
 public class ToastDto : BaseToastWithContentDto, IMapFrom<Toast>
 {
-    public ToastDto()
-    {
-    }
-
-    public ToastDto(ICurrentUserService userService) : base(userService) {}
     public override void Mapping(Profile profile)
     {
         profile.CreateMap<Toast, ToastDto>();

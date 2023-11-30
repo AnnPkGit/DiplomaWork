@@ -5,7 +5,6 @@ using Application.Accounts.Queries.GetAccountsByLoginOrName;
 using Application.Accounts.Queries.GetAccountsWithPaginationQuery;
 using Application.Accounts.Queries.Models;
 using Application.Common.Models;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
