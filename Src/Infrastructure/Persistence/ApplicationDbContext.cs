@@ -5,6 +5,7 @@ using Domain.Common;
 using Domain.Entities;
 using Domain.Entities.Notifications;
 using Infrastructure.Persistence.Interceptors;
+using Infrastructure.Persistence.RelationshipTables;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -43,7 +44,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<FollowerNotification> FollowerNotifications => Set<FollowerNotification>();
     public DbSet<ToastMediaItem> ToastMediaItems => Set<ToastMediaItem>();
     public DbSet<AvatarMediaItem> AvatarMediaItems => Set<AvatarMediaItem>();
-    
+    public DbSet<MuteNotificationOptionUser> MuteNotificationOptionUsers => Set<MuteNotificationOptionUser>();
+    public DbSet<MuteNotificationOption> MuteNotificationOptions => Set<MuteNotificationOption>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

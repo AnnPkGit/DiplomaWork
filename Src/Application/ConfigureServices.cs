@@ -25,6 +25,7 @@ public static class ConfigureServices
         
         services.AddScoped<IEmailConfirmationSender, EmailConfirmationSender>();
         services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IMuteNotificationOptionsChecker, MuteNotificationOptionsChecker>();
         
         return services;
     }

@@ -2,10 +2,13 @@ using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.RegistrateUserWithAccount;
 using Application.Users.Commands.UpdateUserEmail;
+using Application.Users.Commands.UpdateUserMuteNotificationOptions;
 using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Commands.UpdateUserPhone;
 using Application.Users.Queries.GetCurrentUser;
+using Application.Users.Queries.GetCurrentUserMuteNotificationOptions;
 using Application.Users.Queries.GetUsersWithPagination;
+using Application.Users.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,5 +61,18 @@ public class UserController : ApiV1ControllerBase
     {
         await Mediator.Send(new DeleteUserCommand());
         return NoContent();
+    }
+    
+    [HttpPatch("notifications/options"), Authorize]
+    public async Task<IActionResult> UpdateMuteNotificationOptions(UpdateUserMuteNotificationOptionsCommand command)
+    {
+        await Mediator.Send(command);
+        return NoContent();
+    }
+    
+    [HttpGet("notifications/options"), Authorize]
+    public async Task<IEnumerable<MuteNotificationOptionDto>> GetCurrentUserMuteNotificationOptions()
+    {
+        return await Mediator.Send(new GetCurrentUserMuteNotificationOptionsQuery());
     }
 }

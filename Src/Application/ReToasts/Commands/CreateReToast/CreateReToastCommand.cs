@@ -20,22 +20,24 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
     private readonly ICurrentUserService _userService;
     private readonly IDateTime _dateTime;
     private readonly IMapper _mapper;
+    private readonly IMuteNotificationOptionsChecker _optionsChecker;
 
     public CreateReToastCommandHandler(
         IApplicationDbContext context,
         ICurrentUserService userService,
         IDateTime dateTime,
-        IMapper mapper)
+        IMapper mapper,
+        IMuteNotificationOptionsChecker optionsChecker)
     {
         _context = context;
         _userService = userService;
         _dateTime = dateTime;
         _mapper = mapper;
+        _optionsChecker = optionsChecker;
     }
 
     public async Task<ReToastDto> Handle(CreateReToastCommand request, CancellationToken cancellationToken)
     {
-        var accountId = _userService.Id;
         var toastWithContentId = request.ToastWithContentId;
         var toastWithContent = await _context
             .BaseToastsWithContent
@@ -48,6 +50,16 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         if (toastWithContent == null)
         {
             throw new NotFoundException(nameof(BaseToastWithContent), toastWithContentId);
+        }
+        
+        var fromAccountId = _userService.Id;
+        var toAccountId = toastWithContent.AuthorId;
+        
+        if (await _context.ReToasts.AnyAsync(r =>
+                r.ToastWithContentId == toastWithContentId &&
+                r.AuthorId == fromAccountId, cancellationToken))
+        {
+            throw new ForbiddenAccessException();
         }
         
         switch (toastWithContent)
@@ -65,22 +77,17 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
                     .LoadAsync(cancellationToken);
                 break;
         }
-        
-        if (await _context.ReToasts.AnyAsync(r =>
-                r.ToastWithContentId == toastWithContentId &&
-                r.AuthorId == accountId, cancellationToken))
-        {
-            throw new ForbiddenAccessException();
-        }
 
         var createDate = _dateTime.Now;
-        var newReToast = new ReToast(accountId, toastWithContentId);
+        var newReToast = new ReToast(fromAccountId, toastWithContentId);
         
         await _context.ReToasts.AddAsync(newReToast, cancellationToken);
         var res = await _context.SaveChangesAsync(cancellationToken);
-        if (res != 0 && toastWithContent.AuthorId != accountId)
+        
+        if (res != 0 && toAccountId != fromAccountId &&
+            await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newReToastNotification = new ReToastNotification(toastWithContent.AuthorId, newReToast.Id, createDate);
+            var newReToastNotification = new ReToastNotification(toAccountId, newReToast.Id, createDate);
             await _context.BaseNotifications.AddAsync(newReToastNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

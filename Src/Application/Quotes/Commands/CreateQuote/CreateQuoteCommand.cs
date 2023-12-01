@@ -22,24 +22,26 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
     private readonly IMapper _mapper;
     private readonly IMediaService _mediaService;
     private readonly IDateTime _dateTime;
+    private readonly IMuteNotificationOptionsChecker _optionsChecker;
 
     public CreateQuoteCommandHandler(
         IApplicationDbContext context,
         ICurrentUserService userService,
         IMapper mapper,
         IMediaService mediaService,
-        IDateTime dateTime)
+        IDateTime dateTime,
+        IMuteNotificationOptionsChecker optionsChecker)
     {
         _context = context;
         _userService = userService;
         _mapper = mapper;
         _mediaService = mediaService;
         _dateTime = dateTime;
+        _optionsChecker = optionsChecker;
     }
 
     public async Task<QuoteDto> Handle(CreateQuoteCommand request, CancellationToken cancellationToken)
     {
-        var accountId = _userService.Id;
         var quotedToastId = request.QuotedToastId;
         var quotedToast = await _context.BaseToastsWithContent.FindAsync(new object?[] { quotedToastId }, cancellationToken);
         
@@ -48,21 +50,25 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
             throw new NotFoundException(nameof(BaseToastWithContent), quotedToastId);
         }
         
-        if (await _context.Quotes.AnyAsync(q => q.QuotedToastId == quotedToastId && q.AuthorId == accountId, cancellationToken))
+        var fromAccountId = _userService.Id;
+        var toAccountId = quotedToast.AuthorId;
+        
+        if (await _context.Quotes.AnyAsync(q => q.QuotedToastId == quotedToastId && q.AuthorId == fromAccountId, cancellationToken))
         {
             throw new ForbiddenAccessException();
         }
         
         var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
 
-        var newQuote = new Quote(accountId, request.Content, quotedToastId, await mediaItems);
+        var newQuote = new Quote(fromAccountId, request.Content, quotedToastId, await mediaItems);
         var createDate = _dateTime.Now;
         
         await _context.Quotes.AddAsync(newQuote, cancellationToken);
         var res = await _context.SaveChangesAsync(cancellationToken);
-        if (res != 0 && quotedToast.AuthorId != accountId)
+        if (res != 0 && toAccountId != fromAccountId &&
+            await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newQuoteNotification = new QuoteNotification(quotedToast.AuthorId, newQuote.Id, createDate);
+            var newQuoteNotification = new QuoteNotification(toAccountId, newQuote.Id, createDate);
             await _context.BaseNotifications.AddAsync(newQuoteNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
