@@ -18,7 +18,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .WithMany()
             .UsingEntity<RolePermission>();
 
-        builder.HasMany(r => r.Users)
+        builder.HasMany<User>()
             .WithMany()
             .UsingEntity<RoleUser>();
 
