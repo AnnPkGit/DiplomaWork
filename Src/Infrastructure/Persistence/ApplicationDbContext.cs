@@ -5,7 +5,6 @@ using Domain.Common;
 using Domain.Entities;
 using Domain.Entities.Notifications;
 using Infrastructure.Persistence.Interceptors;
-using Infrastructure.Persistence.RelationshipTables;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
