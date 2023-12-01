@@ -26,6 +26,10 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasOne(a => a.Avatar)
             .WithMany()
             .HasForeignKey(a => a.AvatarId);
+        
+        builder.HasOne(a => a.Banner)
+            .WithMany()
+            .HasForeignKey(a => a.BannerId);
 
         builder.HasMany<BaseNotification>()
             .WithOne(bn => bn.ToAccount)

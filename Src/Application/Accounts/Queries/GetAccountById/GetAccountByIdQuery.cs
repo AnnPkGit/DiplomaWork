@@ -26,6 +26,7 @@ public class GetAccountByIdQueryHandler : IRequestHandler<GetAccountByIdQuery, A
         var account = await _context.Accounts
             .Include(a => a.Follows)
             .Include(a => a.Followers)
+            .Include(a => a.Banner)
             .AsSingleQuery()
             .SingleOrDefaultAsync(a => a.Id == request.Id, token);
         

@@ -2,11 +2,9 @@ using Application.Auth.Commands.ConfirmPhoneCommand;
 using Application.Auth.Commands.LoginUserUsingSession;
 using Application.Auth.Commands.LogoutUser;
 using Application.Auth.Commands.SendVerifyMsgByEmail;
-using Application.Auth.Commands.SendVerifyMsgBySms;
 using Application.Auth.Commands.UserEmailConfirm;
 using Application.Common.Interfaces;
-using Application.Users.Queries.GetCurrentUser;
-using MediatR;
+using Application.Users.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

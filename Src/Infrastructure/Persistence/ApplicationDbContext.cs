@@ -44,8 +44,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<FollowerNotification> FollowerNotifications => Set<FollowerNotification>();
     public DbSet<ToastMediaItem> ToastMediaItems => Set<ToastMediaItem>();
     public DbSet<AvatarMediaItem> AvatarMediaItems => Set<AvatarMediaItem>();
-    public DbSet<MuteNotificationOptionUser> MuteNotificationOptionUsers => Set<MuteNotificationOptionUser>();
-    public DbSet<MuteNotificationOption> MuteNotificationOptions => Set<MuteNotificationOption>();
+    public DbSet<BannerMediaItem> BannerMediaItems => Set<BannerMediaItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

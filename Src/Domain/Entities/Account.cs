@@ -7,6 +7,8 @@ public class Account : BaseAuditableEntity
     public string? Name { get; set; }
     public int? AvatarId { get; set; }
     public AvatarMediaItem? Avatar { get; set; }
+    public int? BannerId { get; set; }
+    public BannerMediaItem? Banner { get; set; }
     public string? Bio { get; set; }
     public User Owner { get; set; } = null!;
     public ICollection<Follow> Followers { get; set; } = new List<Follow>();

@@ -1,6 +1,6 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Users.Queries.GetCurrentUser;
+using Application.Users.Queries.Models;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -33,6 +33,7 @@ public class LoginUserUsingSessionCommandHandler : IRequestHandler<LoginUserUsin
         var user = await _context.Users
             .Include(u => u.Account).ThenInclude(a => a!.Follows)
             .Include(u => u.Account).ThenInclude(a => a!.Followers)
+            .Include(u => u.Account).ThenInclude(a => a!.Banner)
             .AsSingleQuery()
             .FirstOrDefaultAsync(user => user.Email == request.Email, token);
         
