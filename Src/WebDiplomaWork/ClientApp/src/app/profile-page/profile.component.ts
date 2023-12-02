@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AccountModel } from '../shared/models/accountModel';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserResponse } from '../identification/signIn/signIn.component';
 import { ImageItem } from '../toast-modal/toast-modal';
@@ -21,6 +21,9 @@ export class ProfilePageComponent implements OnInit{
   repliesSelected: boolean = false;
   likesSelected: boolean = false;
   pageEndWasReached = false;
+  youFollow: boolean = false;
+  openFollowExplorer: boolean = false;
+  openFollowExplorerType: string = '';
 
   @Output() reToastWasRemoved = new EventEmitter<number>();
 
@@ -32,13 +35,29 @@ export class ProfilePageComponent implements OnInit{
     });
   }
 
+  goBack() {
+    this.openFollowExplorer = false;
+    this.openFollowExplorerType = '';
+  }
+
   ReToastRemoved(id: number) {
     console.log("ReToastRemoved")
     this.reToastWasRemoved.emit(id);
   }
 
   goToFollowExplorer(type: string) {
-    this.localRouter.goToFollowExplorer(type);
+    if(type == 'Following') {
+      this.openFollowExplorerType = 'FOLLOWING'
+    }
+    if(type == 'Followers') {
+      this.openFollowExplorerType = 'FOLLOWERS'
+    }
+    if(this.openFollowExplorerType == '') {
+      return;
+    }
+
+    this.openFollowExplorer = true;
+    // this.localRouter.goToFollowExplorer(type);
   }
 
   formatDate(): string {
@@ -103,6 +122,44 @@ export class ProfilePageComponent implements OnInit{
 
         this.fetchNewToasts();
     }
+  }
+
+  Follow(id: string) {
+    console.log(id)
+    const body = {
+      AccountId: id
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+
+    this.httpClient.post("/api/v1/follow", body, { headers }).subscribe(
+      () => {
+        this.youFollow = true;
+      }
+      ,
+      (error) => {
+      }
+      );
+  }
+
+  UnFollow(id: string) {
+    console.log(id)
+    const body = {
+      FollowingId: id
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' 
+    });
+
+    this.httpClient.delete("/api/v1/follow", { body: body, headers }).subscribe(
+      () => {
+        this.youFollow = false;
+      }
+      ,
+      (error) => {
+      }
+      );
   }
 
   fetchNewToasts() {
@@ -217,6 +274,8 @@ export interface UserObject {
   lastModified: string;
   id: number;
   domainEvents: any[]; 
+  followersCount: number;
+  followsCount: number;
 }
 
 

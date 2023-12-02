@@ -39,7 +39,7 @@
     justify-content: center;
     align-items: center;
     color: #5C6778;
-    font-size: 0.9vw;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -70,7 +70,7 @@
     width: fill;
     padding-top: 2%;
     color: #5C6778;
-    font-size: 0.9vw;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -86,7 +86,7 @@
     padding-right: 3%;
     padding-bottom: 2%;
     color: #5C6778;
-    font-size: 0.8vw;
+    font-size: 10vw;
 }
 
 .profile-page-options-bar div:hover {
@@ -95,12 +95,12 @@
   }
 
 .profile-bio {
-    font-size: 0.9vw;
+    font-size: 13px;
     font-weight: 600;
 }
 
 .calendar-info {
-    font-size: 0.9vw;
+    font-size: 13px;
     color: #A1B3BD;
 }
 
@@ -124,3 +124,43 @@
     cursor: pointer;
     color: #5B66CA;
 }
+
+.follow-btn {
+    background-color: #5B66CA;
+    border: 1px solid #5B66CA;
+    font-size: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #ffffff;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.followed-btn {
+    background-color: #ffffff;
+    border: 1px solid #5B66CA;
+    font-size: 10px;
+    padding: 10px;
+    color: #5B66CA;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.option-follow-head {
+    background-color: rgb(255, 255, 255);
+    width: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #5C6778;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.option-follow-head:hover {
+    background-color: rgba(102, 104, 120, 0.07);
+    cursor: pointer;
+  }

@@ -34,7 +34,10 @@ const PROXY_CONFIG = [
       "/api/v1/MediaItem/toast",
       "/api/v1/BaseToast/marked/by/account",
       "/api/v1/MediaItem/avatar",
-      "/api/v1/user/password"
+      "/api/v1/user/password",
+      "/api/v1/follow",
+      "/api/v1/follow/followers",
+      "/api/v1/follow/follows"
    ],
     target: target,
     secure: false,

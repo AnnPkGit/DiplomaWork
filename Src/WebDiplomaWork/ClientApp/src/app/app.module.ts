@@ -82,7 +82,7 @@ import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
       { path: 'profile/:id', component: ProfilePageComponent },
       { path: 'notifications', component: NotifactionsPageComponent },
       { path: 'settings', component: SettingsPageComponent },
-      { path: 'follow/:follow-type',component:  FollowExplorerComponent },
+      // { path: 'follow/:follow-type',component:  FollowExplorerComponent },
     ])
   ],
   providers: [
