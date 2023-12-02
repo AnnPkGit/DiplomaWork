@@ -16,20 +16,23 @@ public class FollowAccountCommandHandler : IRequestHandler<FollowAccountCommand>
     private readonly ICurrentUserService _userService;
     private readonly IApplicationDbContext _context;
     private readonly IDateTime _dateTime;
+    private readonly IMuteNotificationOptionsChecker _optionsChecker;
 
     public FollowAccountCommandHandler(
         ICurrentUserService userService,
         IApplicationDbContext context,
-        IDateTime dateTime)
+        IDateTime dateTime,
+        IMuteNotificationOptionsChecker optionsChecker)
     {
         _userService = userService;
         _context = context;
         _dateTime = dateTime;
+        _optionsChecker = optionsChecker;
     }
 
     public async Task Handle(FollowAccountCommand request, CancellationToken cancellationToken)
     {
-        var accountId = _userService.Id;
+        var fromAccountId = _userService.Id;
         var followToId = request.AccountId;
         
         if (!await _context.Accounts.AnyAsync(a => a.Id == followToId, cancellationToken))
@@ -37,7 +40,7 @@ public class FollowAccountCommandHandler : IRequestHandler<FollowAccountCommand>
             throw new NotFoundException(nameof(Account), followToId);
         }
         
-        if (await _context.Follows.AnyAsync(f => f.FollowFromId == accountId && f.FollowToId == followToId, cancellationToken))
+        if (await _context.Follows.AnyAsync(f => f.FollowFromId == fromAccountId && f.FollowToId == followToId, cancellationToken))
         {
             throw new ForbiddenAccessException();
         }
@@ -45,16 +48,16 @@ public class FollowAccountCommandHandler : IRequestHandler<FollowAccountCommand>
         var followTime = _dateTime.Now;
         var newFollow = new Follow
         {
-            FollowFromId = accountId,
+            FollowFromId = fromAccountId,
             FollowToId = followToId,
             DateOfFollow = followTime
         };
 
         await _context.Follows.AddAsync(newFollow, cancellationToken);
         var res = await _context.SaveChangesAsync(cancellationToken);
-        if (res != 0)
+        if (res != 0 && await _optionsChecker.CheckMuteOptions(fromAccountId, followToId, cancellationToken))
         {
-            var newFollowerNotification = new FollowerNotification(followToId, accountId, followTime);
+            var newFollowerNotification = new FollowerNotification(followToId, fromAccountId, followTime);
             await _context.BaseNotifications.AddAsync(newFollowerNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

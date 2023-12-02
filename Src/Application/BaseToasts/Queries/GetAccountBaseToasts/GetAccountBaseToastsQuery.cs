@@ -63,7 +63,8 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
                 .Include(t => t.Replies)
                 .Include(t => t.Reactions)
                 .Include(t => t.ReToasts)
-                .Include(t => t.Quotes);
+                .Include(t => t.Quotes)
+                .AsSingleQuery();
             var toastsDto = toasts.Select(t => _mapper.Map<ToastDto>(t));
             objectsDto.AddRange(toastsDto);
         }
@@ -75,7 +76,8 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
                 .Include(q => q.Reactions)
                 .Include(q => q.ReToasts)
                 .Include(q => q.Quotes)
-                .Include(q => q.QuotedToast);
+                .Include(q => q.QuotedToast)
+                .AsSingleQuery();
             var quotesDto = quotes.Select(t => _mapper.Map<QuoteDto>(t));
             objectsDto.AddRange(quotesDto);
         }
@@ -83,10 +85,11 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         {
             var reToasts = _context.ReToasts
                 .Where(rt => accountReToastIds.Contains(rt.Id))
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Replies)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Reactions)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.ReToasts)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Quotes);
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Replies)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Reactions)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.ReToasts)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Quotes)
+                .AsSingleQuery();
             var reToastsDto = reToasts.Select(t => _mapper.Map<ReToastDto>(t));
             objectsDto.AddRange(reToastsDto);
         }

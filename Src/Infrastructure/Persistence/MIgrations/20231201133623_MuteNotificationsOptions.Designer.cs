@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.MIgrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231201133623_MuteNotificationsOptions")]
+    partial class MuteNotificationsOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,9 +149,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("AvatarId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BannerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Bio")
                         .HasColumnType("longtext");
 
@@ -177,8 +177,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasKey("Id");
 
                     b.HasIndex("AvatarId");
-
-                    b.HasIndex("BannerId");
 
                     b.HasIndex("DeactivatedById");
 
@@ -221,7 +219,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuteNotificationOption");
+                    b.ToTable("MuteNotificationOptions");
 
                     b.HasData(
                         new
@@ -417,7 +415,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MuteNotificationOptionUser");
+                    b.ToTable("MuteNotificationOptionUsers");
                 });
 
             modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
@@ -467,13 +465,6 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasBaseType("Domain.Common.BaseMediaItem");
 
                     b.HasDiscriminator().HasValue("AvatarMediaItem");
-                });
-
-            modelBuilder.Entity("Domain.Entities.BannerMediaItem", b =>
-                {
-                    b.HasBaseType("Domain.Common.BaseMediaItem");
-
-                    b.HasDiscriminator().HasValue("BannerMediaItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.ToastMediaItem", b =>
@@ -656,10 +647,6 @@ namespace Infrastructure.Persistence.MIgrations
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("Domain.Entities.BannerMediaItem", "Banner")
-                        .WithMany()
-                        .HasForeignKey("BannerId");
-
                     b.HasOne("Domain.Entities.User", "DeactivatedBy")
                         .WithMany()
                         .HasForeignKey("DeactivatedById");
@@ -671,8 +658,6 @@ namespace Infrastructure.Persistence.MIgrations
                         .IsRequired();
 
                     b.Navigation("Avatar");
-
-                    b.Navigation("Banner");
 
                     b.Navigation("DeactivatedBy");
 

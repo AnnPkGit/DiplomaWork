@@ -20,7 +20,7 @@ public class CreateAvatarMediaItemCommand : CreateBaseMediaItemModel, IRequest<C
 
 public class CreateAvatarMediaItemCommandHandler : IRequestHandler<CreateAvatarMediaItemCommand, CreateBaseMediaItemDto>
 {
-    private readonly IMediaStorage _mediaService;
+    private readonly IMediaStorage _mediaStorage;
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _userService;
 
@@ -29,7 +29,7 @@ public class CreateAvatarMediaItemCommandHandler : IRequestHandler<CreateAvatarM
         IApplicationDbContext context,
         ICurrentUserService userService)
     {
-        _mediaService = mediaService;
+        _mediaStorage = mediaService;
         _context = context;
         _userService = userService;
     }
@@ -38,7 +38,7 @@ public class CreateAvatarMediaItemCommandHandler : IRequestHandler<CreateAvatarM
     {
         var userId = _userService.Id;
         var newName = Guid.NewGuid() + "." + request.Type[(request.Type.LastIndexOf("/", StringComparison.Ordinal) + 1)..];
-        var url = await _mediaService.UploadMediaAsync(request.File, newName, cancellationToken);
+        var url = await _mediaStorage.UploadMediaAsync(request.File, newName, cancellationToken);
         var mediaItem = new AvatarMediaItem(url, newName, request.Type, userId);
         
         await _context.AvatarMediaItems.AddAsync(mediaItem, cancellationToken);

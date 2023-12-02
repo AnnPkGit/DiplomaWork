@@ -56,5 +56,6 @@ public class User : BaseAuditableEntity
     private bool _emailVerified;
 
     private DateTime? _deactivated;
-    public ICollection<Toast>? DeactivatedToasts { get; set; }
+    
+    public ICollection<MuteNotificationOption> MuteNotificationOptions { get; set; } = new List<MuteNotificationOption>();
 }

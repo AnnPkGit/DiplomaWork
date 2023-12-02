@@ -1,5 +1,6 @@
 using Application.MediaItems.Commands.Common;
 using Application.MediaItems.Commands.CreateAvatarMediaItem;
+using Application.MediaItems.Commands.CreateBannerMediaItem;
 using Application.MediaItems.Commands.CreateToastMediaItem;
 using Application.MediaItems.Queries.GetAllMediaItems;
 using Application.MediaItems.Queries.Models;
@@ -20,6 +21,12 @@ public class MediaItemController : ApiV1ControllerBase
     public async Task<CreateBaseMediaItemDto> CreateAvatarMediaItem(IFormFile file)
     {
         return await Mediator.Send(new CreateAvatarMediaItemCommand(file.OpenReadStream(), file.FileName, file.ContentType));
+    }
+    
+    [HttpPost("banner"), Authorize]
+    public async Task<CreateBaseMediaItemDto> CreateBannerMediaItem(IFormFile file)
+    {
+        return await Mediator.Send(new CreateBannerMediaItemCommand(file.OpenReadStream(), file.FileName, file.ContentType));
     }
     
     [HttpGet("all")]

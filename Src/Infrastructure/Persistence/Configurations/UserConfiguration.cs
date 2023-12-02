@@ -20,7 +20,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithMany()
             .UsingEntity<RoleUser>();
 
-        builder.HasMany(u => u.DeactivatedToasts)
+        builder.HasMany<User>()
             .WithOne(t => t.DeactivatedBy)
             .HasForeignKey(t => t.DeactivatedById);
         

@@ -10,15 +10,15 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-        builder.HasMany(a => a.AllToasts)
+        builder.HasMany<BaseToast>()
             .WithOne(rt => rt.Author)
             .HasForeignKey(rt => rt.AuthorId);
 
-        builder.HasMany(a => a.Reactions)
+        builder.HasMany<Reaction>()
             .WithOne(r => r.Author)
             .HasForeignKey(r => r.AuthorId);
 
-        builder.HasMany(a => a.MediaItems)
+        builder.HasMany<BaseMediaItem>()
             .WithOne(r => r.Author)
             .HasForeignKey(r => r.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -26,6 +26,10 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasOne(a => a.Avatar)
             .WithMany()
             .HasForeignKey(a => a.AvatarId);
+        
+        builder.HasOne(a => a.Banner)
+            .WithMany()
+            .HasForeignKey(a => a.BannerId);
 
         builder.HasMany<BaseNotification>()
             .WithOne(bn => bn.ToAccount)

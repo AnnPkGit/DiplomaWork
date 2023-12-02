@@ -10,14 +10,6 @@ public class QuoteBriefDto : BaseToastWithContentBriefDto, IMapFrom<Quote>
 {
     public QuotedToastDto QuotedToast { get; set; } = null!;
 
-    public QuoteBriefDto()
-    {
-    }
-
-    public QuoteBriefDto(ICurrentUserService userService) : base(userService)
-    {
-    }
-
     public override void Mapping(Profile profile)
     {
         profile.CreateMap<Quote, QuoteBriefDto>();

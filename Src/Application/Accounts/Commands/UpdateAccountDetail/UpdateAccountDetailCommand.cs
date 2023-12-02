@@ -14,6 +14,7 @@ public record UpdateAccountDetailCommand : IRequest
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
     public int? AvatarId { get; set; }
+    public int? BannerId { get; set; }
     public string? Bio { get; set; }
 }
 
@@ -68,6 +69,23 @@ public class UpdateAccountDetailCommandHandler : IRequestHandler<UpdateAccountDe
                     throw new NotFoundException(nameof(AvatarMediaItem), newAvatar);
                 }
                 entity.AvatarId = newAvatar;
+            }
+        }
+        
+        var newBanner = request.BannerId;
+        if (newBanner != null)
+        {
+            if (newBanner == 0)
+            {
+                entity.BannerId = null;
+            }
+            else
+            {
+                if (!await _context.BannerMediaItems.AnyAsync(item => item.Id == newBanner, token))
+                {
+                    throw new NotFoundException(nameof(BannerMediaItem), newBanner);
+                }
+                entity.BannerId = newBanner;
             }
         }
         

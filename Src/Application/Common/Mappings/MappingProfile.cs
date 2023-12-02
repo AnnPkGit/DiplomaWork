@@ -1,29 +1,19 @@
 using System.Reflection;
-using Application.Common.Interfaces;
 using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Common.Mappings;
 
 public class MappingProfile : Profile
 {
-    private readonly IServiceProvider? _serviceProvider;
-
     public MappingProfile()
     {
-    }
-
-    public MappingProfile(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
     }
-
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
         var mapFromType = typeof(IMapFrom<>);
         
-        var mappingMethodName = nameof(IMapFrom<object>.Mapping);
+        const string mappingMethodName = nameof(IMapFrom<object>.Mapping);
 
         bool HasInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
         
@@ -31,18 +21,10 @@ public class MappingProfile : Profile
         
         var argumentTypes = new Type[] { typeof(Profile) };
 
-        var iIncludeCurrentUserService = typeof(IIncludeCurrentUserService);
+        
         foreach (var type in types)
         {
-            object? instance;
-            if (_serviceProvider != null && type.IsAssignableTo(iIncludeCurrentUserService))
-            {
-                instance = ActivatorUtilities.CreateInstance(_serviceProvider, type);
-            }
-            else
-            {
-                instance = Activator.CreateInstance(type);
-            }
+            var instance = Activator.CreateInstance(type);
             
             var methodInfo = type.GetMethod(mappingMethodName);
 
