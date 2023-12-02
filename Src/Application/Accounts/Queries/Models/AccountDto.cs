@@ -13,6 +13,7 @@ public class AccountDto : IMapFrom<Account>
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
     public AvatarMediaItemDto? Avatar { get; set; }
+    public BannerMediaItemDto? Banner { get; set; }
     public string? Bio { get; set; }
     public int FollowersCount { get; set; }
     public int FollowsCount { get; set; }

@@ -10,7 +10,7 @@ public class UpdateAccountDetailCommandValidator : AbstractValidator<UpdateAccou
     
     private const int MaximumNameLenght = CommonAccountValidationRules.MaximumNameLenght;
     
-    private const int MinimalAvatarIdValue = -1;
+    private const int MinimalMediaItemIdValue = -1;
     
     public UpdateAccountDetailCommandValidator(IApplicationDbContext context)
     {
@@ -32,7 +32,11 @@ public class UpdateAccountDetailCommandValidator : AbstractValidator<UpdateAccou
             .When(command => command.Bio != null);
         
         RuleFor(command => command.AvatarId)
-            .GreaterThan(MinimalAvatarIdValue)
+            .GreaterThan(MinimalMediaItemIdValue)
+            .When(command => command.AvatarId != null);
+        
+        RuleFor(command => command.AvatarId)
+            .GreaterThan(MinimalMediaItemIdValue)
             .When(command => command.AvatarId != null);
     }
 }

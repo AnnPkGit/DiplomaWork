@@ -35,5 +35,6 @@ public interface IApplicationDbContext
     DbSet<FollowerNotification> FollowerNotifications { get; }
     DbSet<ToastMediaItem> ToastMediaItems { get; }
     DbSet<AvatarMediaItem> AvatarMediaItems { get; }
+    DbSet<BannerMediaItem> BannerMediaItems { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

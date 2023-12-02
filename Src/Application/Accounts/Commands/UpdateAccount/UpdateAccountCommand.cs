@@ -14,6 +14,7 @@ public record UpdateAccountCommand : IRequest
     public DateTime? BirthDate { get; set; }
     public string? Name { get; set; }
     public int? AvatarId { get; set; }
+    public int? BannerId { get; set; }
     public string? Bio { get; set; }
 }
 
@@ -43,11 +44,17 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand>
             throw new NotFoundException(nameof(AvatarMediaItem), request.AvatarId);
         }
         
+        if (request.BannerId != null && !await _context.BannerMediaItems.AnyAsync(item => item.Id == request.BannerId, token))
+        {
+            throw new NotFoundException(nameof(BannerMediaItem), request.BannerId);
+        }
+        
         entity.Login = request.Login;
         entity.Name = request.Name;
         entity.BirthDate = request.BirthDate;
         entity.Bio = request.Bio;
         entity.AvatarId = request.AvatarId;
+        entity.BannerId = request.BannerId;
 
         await _context.SaveChangesAsync(token);
     }

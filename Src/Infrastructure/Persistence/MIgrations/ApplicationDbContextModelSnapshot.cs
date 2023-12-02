@@ -146,6 +146,9 @@ namespace Infrastructure.Persistence.MIgrations
                     b.Property<int?>("AvatarId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BannerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Bio")
                         .HasColumnType("longtext");
 
@@ -174,6 +177,8 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasKey("Id");
 
                     b.HasIndex("AvatarId");
+
+                    b.HasIndex("BannerId");
 
                     b.HasIndex("DeactivatedById");
 
@@ -216,7 +221,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuteNotificationOptions");
+                    b.ToTable("MuteNotificationOption");
 
                     b.HasData(
                         new
@@ -412,7 +417,7 @@ namespace Infrastructure.Persistence.MIgrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MuteNotificationOptionUsers");
+                    b.ToTable("MuteNotificationOptionUser");
                 });
 
             modelBuilder.Entity("Infrastructure.Persistence.RelationshipTables.RolePermission", b =>
@@ -462,6 +467,13 @@ namespace Infrastructure.Persistence.MIgrations
                     b.HasBaseType("Domain.Common.BaseMediaItem");
 
                     b.HasDiscriminator().HasValue("AvatarMediaItem");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BannerMediaItem", b =>
+                {
+                    b.HasBaseType("Domain.Common.BaseMediaItem");
+
+                    b.HasDiscriminator().HasValue("BannerMediaItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.ToastMediaItem", b =>
@@ -644,6 +656,10 @@ namespace Infrastructure.Persistence.MIgrations
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
+                    b.HasOne("Domain.Entities.BannerMediaItem", "Banner")
+                        .WithMany()
+                        .HasForeignKey("BannerId");
+
                     b.HasOne("Domain.Entities.User", "DeactivatedBy")
                         .WithMany()
                         .HasForeignKey("DeactivatedById");
@@ -655,6 +671,8 @@ namespace Infrastructure.Persistence.MIgrations
                         .IsRequired();
 
                     b.Navigation("Avatar");
+
+                    b.Navigation("Banner");
 
                     b.Navigation("DeactivatedBy");
 

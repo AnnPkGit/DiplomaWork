@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
-using Application.Users.Queries.GetCurrentUser;
+using Application.Users.Queries.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
