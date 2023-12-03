@@ -119,11 +119,15 @@
 }
 
 .imgCrop {
-  flex: 1 0 50%; 
+  flex: 1 0 50%;
   overflow: hidden;
   width: 100%;
   height: 200px;
   background-color: aliceblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
   .imgCrop img {
