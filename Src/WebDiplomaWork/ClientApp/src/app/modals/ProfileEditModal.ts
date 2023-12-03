@@ -87,6 +87,47 @@ export class ProfileEditModal {
         (response) => {
           console.log('File uploaded successfully:', response);
           this.userCurrent.account.avatar = response;
+
+          const body = {
+            AvatarId: response.id
+          };
+
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json' 
+          });
+
+          this.http.patch('/api/v1/account', body, {headers}).subscribe();
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    }
+
+    onFileChangeBanner(event: any): void {
+      console.log("avatarUpload")
+      this.selectedFile = FileList = event.target.files[0];
+      this.uploadBanner();
+    }
+
+    uploadBanner(): void {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+  
+      this.http.post<ImageItem>('/api/v1/MediaItem/banner', formData).subscribe(
+        (response) => {
+          console.log('File uploaded successfully:', response);
+          this.userCurrent.account.banner = response;
+
+          const body = {
+            BannerId: response.id
+          };
+
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json' 
+          });
+
+          this.http.patch('/api/v1/account', body, {headers}).subscribe();
         },
         (error) => {
           console.error('Error uploading file:', error);

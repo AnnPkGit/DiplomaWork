@@ -96,5 +96,6 @@ export interface UserResponse {
     name: string;
     avatar: ImageItem | null;
     bio: string | null;
+    banner: ImageItem;
   };
 }

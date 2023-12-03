@@ -39,11 +39,14 @@
             <div style="position: relative;">
                 <div class="pic-relative-container">
                     <div class="profile-picture-container">
+                      <div class="profile-picture-container-cropper">
                         <img *ngIf="!user?.avatar" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
-                        <img *ngIf="user?.avatar" src="user?.avatar">
+                        <img *ngIf="user?.avatar" [src]="user?.avatar?.url">
+                      </div>
                     </div>
                 </div>
                 <div class="banner">
+                  <img [src]="user?.banner?.url">
                 </div>
                 <div class="profile-page-bar" style="height: 100%;">
                     <div class="profileNameHolderMain">
@@ -77,7 +80,7 @@
             <div class="profile-page-options-bar">
                 <div (click)="fetchUSersToasts()" [ngStyle]="{'color': toastsSelected ? '#5B66CA' : ''}" >Toasts</div>
                 <div (click)="fetchUsersReplies()" [ngStyle]="{'color': repliesSelected ? '#5B66CA' : ''}">Replies</div>
-                <div>Media</div>
+                <div (click)="fetchUsersMedia()" [ngStyle]="{'color': mediaSelected ? '#5B66CA' : ''}">Media</div>
                 <div (click)="fetchUsersReactions()" [ngStyle]="{'color': likesSelected ? '#5B66CA' : ''}">Likes</div>
             </div>
         </div>
@@ -91,7 +94,9 @@
         (onDelete)="onDelete($event)" 
         (onReToastRemoved)="ReToastRemoved($event)"
         (toastWasRemovedByOrig)="toastWasRemovedByOrigReaction($event)"
-        [reToastNumberNeedToBeReduced]="reToastWasRemoved">
+        [reToastNumberNeedToBeReduced]="reToastWasRemoved"
+        [postBelongsToMe]="this.userCurrent?.account?.id == toast.author?.id"
+        >
       </app-post>
       </div>
 
@@ -106,7 +111,15 @@
     </div>
 
     <div class="div2" style="padding: 20px;" *ngIf="openFollowExplorer">
-      <explore-prof-component *ngFor="let a of [1,2,32,3,23,2,3,1,32,132,32,132,123,132,312,321,231,321,321,123,321,321,2]"></explore-prof-component>
+      <div *ngIf="!followsOrFollowers">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status" style="color: #A1B3BD;">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+      <explore-prof-component *ngFor="let user of followsOrFollowers?.items" [user]="user" [showFollowBtn]="false"></explore-prof-component>
+      <div *ngIf="followsOrFollowers && followsOrFollowers?.items.length < 1" class="messageStyle">you have no {{openFollowExplorerType}} yet...</div>
     </div>
     
     <div class="div3">

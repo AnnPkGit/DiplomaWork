@@ -53,11 +53,18 @@
     bottom: 0;
 }
 
-.profile-picture-container img {
-    max-height: 146px;
+.profile-picture-container-cropper {
+    height: 100px;
     border-radius: 15px;
-    width: 70%;
+    width: 100px;
+    box-shadow: #5C6778;
     z-index: 2;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+.profile-picture-container-cropper img {
+    height: 100%;
 }
 
 .bar-options-profile{
@@ -164,3 +171,13 @@
     background-color: rgba(102, 104, 120, 0.07);
     cursor: pointer;
   }
+
+.messageStyle {
+    color: #5B66CA;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3%;
+    font-weight: 700;
+}

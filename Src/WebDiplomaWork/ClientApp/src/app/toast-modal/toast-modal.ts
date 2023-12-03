@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastItem } from '../profile-page/profile.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserResponse } from '../identification/signIn/signIn.component';
 
 @Component({
   selector: 'toast-modal',
   templateUrl: './toast-modal.html',
 })
-export class ToastModalComponent {
+export class ToastModalComponent implements OnInit {
   @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
 
   @Output() booleanEmitter: EventEmitter<boolean> = new EventEmitter();
@@ -22,9 +23,17 @@ export class ToastModalComponent {
 
   content: string = '';
 
+  loading: boolean = false;
+
   ImageItems: ImageItem[] = [];
 
   constructor(private http: HttpClient) {}
+
+  user: UserResponse| undefined;
+  ngOnInit(): void { 
+    this.user = JSON.parse(localStorage.getItem("userInfo") ?? "");
+  }
+
 
   Close() {
       this.booleanEmitter.emit(false);
@@ -99,6 +108,8 @@ export class ToastModalComponent {
       url = "/api/v1/toast";
     }
 
+    this.loading = true;
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' 
     });
@@ -108,9 +119,11 @@ export class ToastModalComponent {
         if(res) {
           this.onToastCreation.emit(res);
         }
+        this.loading = false;
         this.Close();
       },
       (error) => {
+        this.loading = false;
       }
     );
   }

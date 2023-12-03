@@ -17,7 +17,7 @@ export class PostComponent implements OnInit {
   optionsOptionsOpen = false;
   makeQuoteOpen = false;
   currentUserId: string;
-
+  
   constructor(private localRouter: LocalRouter, private http: HttpClient, private route: ActivatedRoute) {
     this.currentUrl = window.location.href;
 
@@ -39,6 +39,9 @@ export class PostComponent implements OnInit {
   @Input() reToastNumberNeedToBeReduced: EventEmitter<number> | undefined;
 
   @Input()
+  postBelongsToMe: boolean = false;
+
+  @Input()
   style: string = "post";
 
   @Input()
@@ -51,6 +54,13 @@ export class PostComponent implements OnInit {
   reToast: boolean = false;
 
   isReply = false;
+
+  getAvatar() : string {
+    if(this.toast.toastWithContent) {
+      return this.toast.toastWithContent?.author?.avatar?.url;
+    }
+    return this.toast.author?.avatar?.url;
+  }
 
   ngOnInit(): void {
     this.reToastNumberNeedToBeReduced?.subscribe((id) => {
@@ -177,12 +187,10 @@ export class PostComponent implements OnInit {
     }
 
     this.localRouter.goToToastPage(id);
-    console.log('go to post page');
   }
 
   goToProfilePage(event: Event) : void {
     event.stopPropagation();
-    console.log('go to profile');
     this.localRouter.goToProfilePage(this.toast.toastWithContent?.author?.id ?? this.toast.author?.id);
   }
 

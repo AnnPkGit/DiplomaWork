@@ -8,7 +8,8 @@
       <div style="display: flex;">
           <div style="width: 10%;">
               <div class="postAvatar" style="margin: 0;">
-                  <img class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
+                  <img *ngIf="user?.account?.avatar" class="postImg" [src]='user?.account?.avatar?.url'/>
+                  <img  *ngIf="!user?.account?.avatar"  class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
               </div>
           </div>
           <div style="width: 90%;">
@@ -62,7 +63,10 @@
               <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1LjIyMjIgMUgyLjc3Nzc4QzEuNzk1OTQgMSAxIDEuNzk1OTQgMSAyLjc3Nzc4VjE1LjIyMjJDMSAxNi4yMDQxIDEuNzk1OTQgMTcgMi43Nzc3OCAxN0gxNS4yMjIyQzE2LjIwNDEgMTcgMTcgMTYuMjA0MSAxNyAxNS4yMjIyVjIuNzc3NzhDMTcgMS43OTU5NCAxNi4yMDQxIDEgMTUuMjIyMiAxWiIgc3Ryb2tlPSIjQUJCOUM5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNS44ODk5NyA3LjIyMTM1QzYuNjI2MzUgNy4yMjEzNSA3LjIyMzMgNi42MjQ0IDcuMjIzMyA1Ljg4ODAyQzcuMjIzMyA1LjE1MTY0IDYuNjI2MzUgNC41NTQ2OSA1Ljg4OTk3IDQuNTU0NjlDNS4xNTM1OSA0LjU1NDY5IDQuNTU2NjQgNS4xNTE2NCA0LjU1NjY0IDUuODg4MDJDNC41NTY2NCA2LjYyNDQgNS4xNTM1OSA3LjIyMTM1IDUuODg5OTcgNy4yMjEzNVoiIHN0cm9rZT0iI0FCQjlDOSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE2Ljk5OTYgMTEuNjY2NkwxMi41NTUxIDcuMjIyMTdMMi43NzczNCAxNi45OTk5IiBzdHJva2U9IiNBQkI5QzkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=' style="width: 18px; height: 18px;" />
             </div>
             
-            <button class="toast-btn" style="margin-left: auto; margin-left: 0;" (click)="PostContent()">TOAST</button>
+            <button class="toast-btn" style="margin-left: auto; margin-left: 0;" (click)="PostContent()">
+              TOAST
+              <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
   </div>  

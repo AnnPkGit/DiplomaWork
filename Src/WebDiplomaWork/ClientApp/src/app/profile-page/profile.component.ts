@@ -20,10 +20,13 @@ export class ProfilePageComponent implements OnInit{
   toastsSelected: boolean = true;
   repliesSelected: boolean = false;
   likesSelected: boolean = false;
+  mediaSelected: boolean = false;
   pageEndWasReached = false;
   youFollow: boolean = false;
   openFollowExplorer: boolean = false;
   openFollowExplorerType: string = '';
+
+  followsOrFollowers: UserFollowResponse | any;
 
   @Output() reToastWasRemoved = new EventEmitter<number>();
 
@@ -46,10 +49,13 @@ export class ProfilePageComponent implements OnInit{
   }
 
   goToFollowExplorer(type: string) {
+    this.followsOrFollowers = null; 
     if(type == 'Following') {
-      this.openFollowExplorerType = 'FOLLOWING'
+      this.fetchUsersFollows();
+      this.openFollowExplorerType = 'FOLLOWS'
     }
     if(type == 'Followers') {
+      this.fetchUsersFollowers();
       this.openFollowExplorerType = 'FOLLOWERS'
     }
     if(this.openFollowExplorerType == '') {
@@ -83,18 +89,28 @@ export class ProfilePageComponent implements OnInit{
     this.repliesSelected = true;
     this.toastsSelected = false;
     this.likesSelected = false;
+    this.mediaSelected = false;
+  }
+
+  selectMedia() {
+    this.mediaSelected = true;
+    this.likesSelected = false;
+    this.toastsSelected = false;
+    this.repliesSelected = false
   }
 
   selectToasts() {
     this.toastsSelected = true;
     this.repliesSelected = false
     this.likesSelected = false;
+    this.mediaSelected = false;
   }
 
   selectLikes() {
     this.likesSelected = true;
     this.toastsSelected = false;
     this.repliesSelected = false
+    this.mediaSelected = false;
   }
 
   ngOnInit(): void {
@@ -195,6 +211,17 @@ export class ProfilePageComponent implements OnInit{
 
       setTimeout(() => {this.pageEndWasReached = false}, 2000);
     }
+
+    if(this.toastResponse.hasNextPage && this.mediaSelected) {
+      this.httpClient.get<ToastResponse>("api/v1/BaseToast/withMediaItems/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
+      .subscribe((response) => {
+        var newToastResponse = response;
+        newToastResponse.items = this.toastResponse.items.concat(newToastResponse.items);
+        this.toastResponse = newToastResponse;
+      });
+
+      setTimeout(() => {this.pageEndWasReached = false}, 2000);
+    }
   }
 
 
@@ -211,6 +238,14 @@ export class ProfilePageComponent implements OnInit{
     this.modalOpened = true;
   }
 
+  fetchUSersfFollows() {
+    this.toastResponse = {} as ToastResponse;
+    this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.toastResponse = response;
+    });
+    this.selectToasts();
+  }
+
   fetchUSersToasts() {
     this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
@@ -222,7 +257,16 @@ export class ProfilePageComponent implements OnInit{
   fetchAccountInfo() {
     this.httpClient.get<UserObject>("api/v1/account/by/id?id=" +  this.currentUserId).subscribe((response) => {
       this.user = response;
+      this.youFollow = this?.user?.youFollow ?? false;
     });
+  }
+
+  fetchUsersMedia() {
+    this.toastResponse = {} as ToastResponse;
+    this.httpClient.get<ToastResponse>("api/v1/BaseToast/withMediaItems/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.toastResponse = response;
+    });
+    this.selectMedia();     
   }
 
   onDelete(id : number) {
@@ -252,8 +296,20 @@ export class ProfilePageComponent implements OnInit{
   }
 
   addToast($event : ToastItem): void {
-    $event.author = this.userCurrent?.account ?? null;
+    $event.author = this.userCurrent?.account as UserFollower ?? null;
     this.toastResponse?.items.unshift($event);
+  }
+
+  fetchUsersFollows() {
+    this.httpClient.get<UserFollowResponse>("api/v1/follow/follows?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.followsOrFollowers = response;
+    });
+  }
+
+  fetchUsersFollowers() {
+    this.httpClient.get<UserFollowResponse>("api/v1/follow/followers?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.followsOrFollowers = response;
+    });
   }
 }
 
@@ -261,7 +317,8 @@ export interface UserObject {
   login: string;
   birthDate: null | string;
   name: string;
-  avatar: null | string;
+  avatar: ImageItem;
+  banner: ImageItem;
   bio: null | string;
   owner: null | string;
   allToasts: null | string;
@@ -276,6 +333,7 @@ export interface UserObject {
   domainEvents: any[]; 
   followersCount: number;
   followsCount: number;
+  youFollow: boolean;
 }
 
 
@@ -292,7 +350,7 @@ export interface ToastItem {
   id: number;
   lastModified: string;
   created: string;
-  author: {} | null;
+  author: UserFollower | null;
   content: string;
   type: string;
   reply: string | null;
@@ -306,4 +364,24 @@ export interface ToastItem {
   toastWithContent: ToastItem;
   mediaItems: ImageItem[];
   thread: ToastResponse[];
+}
+
+
+
+interface UserFollowResponse {
+  items: UserFollower[];
+  pageNumber: number;
+  totalPages: number;
+  totalCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface UserFollower {
+  id: number;
+  login: string;
+  birthDate: string | null;
+  name: string;
+  avatar: ImageItem;
+  bio: string | null;
 }

@@ -28,6 +28,7 @@ const PROXY_CONFIG = [
       "/api/v1/notification/by/current/account",
       "/api/v1/notification/by/time",
       "/api/v1/BaseToast/replies/by/account",
+      "/api/v1/BaseToast/withMediaItems/by/account",
       "/api/v1/Reaction",
       "/api/v1/retoast/by/toast",
       "/api/v1/BaseToast",
@@ -37,7 +38,10 @@ const PROXY_CONFIG = [
       "/api/v1/user/password",
       "/api/v1/follow",
       "/api/v1/follow/followers",
-      "/api/v1/follow/follows"
+      "/api/v1/follow/follows",
+      "/api/v1/account/search",
+      "/api/v1/BaseToast/from/follows",
+      "/api/v1/MediaItem/banner"
    ],
     target: target,
     secure: false,
