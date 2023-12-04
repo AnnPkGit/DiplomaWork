@@ -42,7 +42,7 @@ public class GetRepliesByToastQueryHandler : IRequestHandler<GetRepliesByToastQu
         var toastReplies = await _context.Replies
             .Where(r => r.ReplyToToastId == request.ToastWithContentId)
             .IgnoreAutoIncludes()
-            .Include(r => r.Author)
+            .Include(r => r.Author).ThenInclude(a => a.Avatar)
             .Include(r => r.Replies)
             .Include(r => r.Reactions)
             .Include(r => r.Quotes)
@@ -50,6 +50,7 @@ public class GetRepliesByToastQueryHandler : IRequestHandler<GetRepliesByToastQu
             .Include(r => r.MediaItems)
             .OrderByDescending(r => r.Created)
             .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
+            .AsSingleQuery()
             .ToArrayAsync(cancellationToken);
 
         var toastRepliesDtos = toastReplies.Select(reply => _mapper.Map<ReplyBriefDto>(reply)).ToArray();
