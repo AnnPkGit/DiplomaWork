@@ -32,7 +32,7 @@ public class UnfollowCommandHandler : IRequestHandler<UnfollowAccountCommand>
         
         if (follow == null)
         {
-            throw new NotFoundException(nameof(Follow));
+            throw new NotFoundException(nameof(Follow), followingId);
         }
         
         _context.Follows.Remove(follow);

@@ -2,9 +2,7 @@ using Application.Accounts.Commands.UpdateAccount;
 using Application.Accounts.Commands.UpdateAccountDetail;
 using Application.Accounts.Queries.GetAccountById;
 using Application.Accounts.Queries.GetAccountsByLoginOrName;
-using Application.Accounts.Queries.GetAccountsWithPaginationQuery;
 using Application.Accounts.Queries.Models;
-using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +14,6 @@ public class AccountController : ApiV1ControllerBase
     public async Task<AccountDto> GetById(int id)
     {
         return await Mediator.Send(new GetAccountByIdQuery(id));
-    }
-
-    [HttpGet("pagination")]
-    public async Task<ActionResult<PaginatedList<AccountBriefDto>>> GetWithPagination([FromQuery] GetAccountsWithPaginationQuery command)
-    {
-        return await Mediator.Send(command);
     }
 
     [HttpPut, Authorize]

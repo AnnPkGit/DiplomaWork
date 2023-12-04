@@ -1,4 +1,4 @@
-using Application.Auth.Commands.ConfirmPhoneCommand;
+using Application.Auth.Commands.ConfirmPhone;
 using Application.Auth.Commands.LoginUserUsingSession;
 using Application.Auth.Commands.LogoutUser;
 using Application.Auth.Commands.SendVerifyMsgByEmail;
