@@ -1,4 +1,3 @@
-using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.RegistrateUserWithAccount;
 using Application.Users.Commands.UpdateUserEmail;
@@ -7,7 +6,6 @@ using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Commands.UpdateUserPhone;
 using Application.Users.Queries.GetCurrentUser;
 using Application.Users.Queries.GetCurrentUserMuteNotificationOptions;
-using Application.Users.Queries.GetUsersWithPagination;
 using Application.Users.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +19,6 @@ public class UserController : ApiV1ControllerBase
     {
         await Mediator.Send(command);
         return NoContent();
-    }
-
-    [HttpGet("pagination"), Authorize]
-    public async Task<ActionResult<PaginatedList<UserBriefDto>>> GetUsersWithPagination([FromQuery] GetUsersWithPaginationQuery command)
-    {
-        return await Mediator.Send(command);
     }
     
     [HttpGet, Authorize]

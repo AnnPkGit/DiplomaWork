@@ -40,6 +40,7 @@ public class GetAccountNotificationQueryHandler : IRequestHandler<GetCurrentAcco
             .Where(bn => bn.ToAccountId == accountId)
             .OrderByDescending(bn => bn.Created)
             .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
+            .AsSingleQuery()
             .ToArrayAsync(cancellationToken);
         
         var objectsDto = BaseNotificationDto

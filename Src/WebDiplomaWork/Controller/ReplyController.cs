@@ -1,6 +1,5 @@
 ﻿using Application.Common.Models;
 using Application.Replies.Commands.CreateReply;
-using Application.Replies.Queries.GetAllReplies;
 using Application.Replies.Queries.GetRepliesByToast;
 using Application.Replies.Queries.GetReplyById;
 using Application.Replies.Queries.Models;
@@ -14,13 +13,6 @@ public class ReplyController : ApiV1ControllerBase
     
     [HttpPost, Authorize]
     public async Task<ReplyBriefDto> CreateReply(CreateReplyCommand command)
-    {
-        return await Mediator.Send(command);
-    }
-    
-    [HttpGet("all")]
-    public async Task<PaginatedList<ReplyBriefDto>> GetAllReplies
-        ([FromQuery] GetAllRepliesQuery command)
     {
         return await Mediator.Send(command);
     }

@@ -50,6 +50,7 @@ public class GetToastsMarkedByAccountQueryHandler : IRequestHandler<GetToastsMar
             .Select(r => r.ToastWithContent)
             .Where(bt => bt.Type != nameof(ReToast))
             .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
+            .AsSingleQuery()
             .ToArrayAsync(cancellationToken);
 
         var toastWithContentDtos = new List<BaseToastWithContentBriefDto>(accountToastsWithContent.Length);
