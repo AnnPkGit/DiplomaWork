@@ -2,7 +2,6 @@
 using Application.Common.Models;
 using Application.ReToasts.Commands.CreateReToast;
 using Application.ReToasts.Commands.DeleteReToastByToastId;
-using Application.ReToasts.Queries.GetAllReToasts;
 using Application.ReToasts.Queries.GetReToastsByToast;
 using Application.ReToasts.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -23,13 +22,6 @@ public class ReToastController : ApiV1ControllerBase
     {
         await Mediator.Send(command);
         return NoContent();
-    }
-    
-    [HttpGet("all")]
-    public async Task<PaginatedList<ReToastDto>> GetAllReToasts
-        ([FromQuery] GetAllReToastsQuery command)
-    {
-        return await Mediator.Send(command);
     }
     
     [HttpGet("by/toast")]
