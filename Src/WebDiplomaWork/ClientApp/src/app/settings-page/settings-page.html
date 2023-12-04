@@ -41,12 +41,20 @@
             <div class="chat-listContainer">
                 <div class="chat-list">
                   <div class="scroll">
-                      <div class="chat">
+                      <div class="chat" (click)="chosePassword()">
                         <div class="chat-avatar">
                           <img class="setting-option-icon"  src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1Ljc1IDEuNUMxNC42OTU5IDEuNDk5NzYgMTMuNjU2NSAxLjc0NjQyIDEyLjcxNDkgMi4yMjAyM0MxMS43NzM0IDIuNjk0MDQgMTAuOTU1OSAzLjM4MTgxIDEwLjMyOCA0LjIyODQ0QzkuNzAwMSA1LjA3NTA2IDkuMjc5MjUgNi4wNTcgOS4wOTkxNyA3LjA5NTU1QzguOTE5MDkgOC4xMzQxMSA4Ljk4NDc5IDkuMjAwNDEgOS4yOTEgMTAuMjA5TDEuNSAxOFYyMi41SDZMMTMuNzkxIDE0LjcwOUMxNC43MTk0IDE0Ljk5MDggMTUuNjk3NyAxNS4wNjkyIDE2LjY1OTEgMTQuOTM4N0MxNy42MjA2IDE0LjgwODMgMTguNTQyNiAxNC40NzIxIDE5LjM2MjQgMTMuOTUzQzIwLjE4MjEgMTMuNDM0IDIwLjg4MDQgMTIuNzQ0NCAyMS40MDk1IDExLjkzMTFDMjEuOTM4NiAxMS4xMTc4IDIyLjI4NjIgMTAuMiAyMi40Mjg1IDkuMjQwMjVDMjIuNTcwOSA4LjI4MDQ5IDIyLjUwNDYgNy4zMDEzMiAyMi4yMzQzIDYuMzY5NDhDMjEuOTY0IDUuNDM3NjQgMjEuNDk2IDQuNTc1MDIgMjAuODYyMiAzLjg0MDQyQzIwLjIyODMgMy4xMDU4MiAxOS40NDM2IDIuNTE2NDkgMTguNTYxNCAyLjExMjYxQzE3LjY3OTIgMS43MDg3MiAxNi43MjAzIDEuNDk5NzggMTUuNzUgMS41Wk0xNS43NSAxMy41QzE1LjIzMzYgMTMuNDk5NyAxNC43MjAxIDEzLjQyMzQgMTQuMjI2IDEzLjI3MzVMMTMuMzY1NyAxMy4wMTI1TDEyLjczMDUgMTMuNjQ3OEwxMC4zNDQ4IDE2LjAzMzVMOS4zMTA1IDE1TDguMjUgMTYuMDYwNUw5LjI4NDI1IDE3LjA5NDdMOC4wOTQ3NSAxOC4yODQyTDcuMDYwNSAxNy4yNUw2IDE4LjMxMDVMNy4wMzQyNSAxOS4zNDQ3TDUuMzc5IDIxSDNWMTguNjIxTDEwLjM1MTUgMTEuMjY5NUwxMC45ODc1IDEwLjYzNDJMMTAuNzI2NSA5Ljc3NEMxMC40MDU5IDguNzE3MjQgMTAuNDI2OCA3LjU4NjMxIDEwLjc4NiA2LjU0MjA3QzExLjE0NTMgNS40OTc4NCAxMS44MjQ3IDQuNTkzNDcgMTIuNzI3NSAzLjk1NzYyQzEzLjYzMDQgMy4zMjE3NyAxNC43MTA4IDIuOTg2ODEgMTUuODE1IDMuMDAwNEMxNi45MTkyIDMuMDEzOTggMTcuOTkxMSAzLjM3NTQyIDE4Ljg3OCA0LjAzMzI5QzE5Ljc2NSA0LjY5MTE2IDIwLjQyMTkgNS42MTE5NyAyMC43NTU0IDYuNjY0NzNDMjEuMDg4OCA3LjcxNzQ5IDIxLjA4MTggOC44NDg1OSAyMC43MzU0IDkuODk3MTRDMjAuMzg4OSAxMC45NDU3IDE5LjcyMDYgMTEuODU4MyAxOC44MjU2IDEyLjUwNTFDMTcuOTMwNSAxMy4xNTIgMTYuODU0MyAxMy41MDAxIDE1Ljc1IDEzLjVaIiBmaWxsPSIjQUJCOUM5Ii8+CjxwYXRoIGQ9Ik0xNi41IDlDMTcuMzI4NCA5IDE4IDguMzI4NDMgMTggNy41QzE4IDYuNjcxNTcgMTcuMzI4NCA2IDE2LjUgNkMxNS42NzE2IDYgMTUgNi42NzE1NyAxNSA3LjVDMTUgOC4zMjg0MyAxNS42NzE2IDkgMTYuNSA5WiIgZmlsbD0iI0FCQjlDOSIvPgo8L3N2Zz4K'/>
                         </div>
                         <div class="setting-title">
                           Change password
+                        </div>
+                      </div>
+                      <div class="chat" (click)="choseEmail()">
+                        <div class="chat-avatar">
+                          <img class="setting-option-icon"  src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3IDIwLjVIN0M0IDIwLjUgMiAxOSAyIDE1LjVWOC41QzIgNSA0IDMuNSA3IDMuNUgxN0MyMCAzLjUgMjIgNSAyMiA4LjVWMTUuNUMyMiAxOSAyMCAyMC41IDE3IDIwLjVaIiBzdHJva2U9IiNBQkI5QzkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTcgOUwxMy44NyAxMS41QzEyLjg0IDEyLjMyIDExLjE1IDEyLjMyIDEwLjEyIDExLjVMNyA5IiBzdHJva2U9IiNBQkI5QzkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
+                        </div>
+                        <div class="setting-title">
+                          Email verification
                         </div>
                       </div>
                   </div>
@@ -64,7 +72,7 @@
                   <div  class="msg-scroll">
                     <div class="msg-scroll-sub">
 
-                      <div class="option-center-content">
+                      <div class="option-center-content" *ngIf="passwordTab">
                         <div>
                           <label class="note-setting">Current Password</label>
                           <input class="bio-textarea" [(ngModel)]="password">
@@ -85,6 +93,13 @@
                           <button type="button" class="colorBtn-not-mini" (click)="updatePassword()">
                             Update Password</button>
                         </div> 
+                      </div>
+
+                      <div class="option-center-content" *ngIf="emailTab">
+                        <div>
+                          <label class="note-setting">Current Email</label>
+                          <input class="bio-textarea" [(ngModel)]="password">
+                        </div>
                       </div>
 
                      </div>

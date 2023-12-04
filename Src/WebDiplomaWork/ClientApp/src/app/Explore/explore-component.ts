@@ -23,7 +23,6 @@ export class ExploreComponent implements OnInit {
     search() {
       this.httpClient.get<UserFollower[]>("api/v1/account/search?Text=" + this.input.trim()).subscribe((response) => {
         this.accounts = response;
-        console.log(this.accounts)
       });
     }
 }

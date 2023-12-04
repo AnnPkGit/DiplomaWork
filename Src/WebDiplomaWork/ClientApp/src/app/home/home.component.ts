@@ -43,8 +43,6 @@ export class HomeComponent implements OnInit{
 
     if (totalHeight - scrollPosition <= windowHeight + 10 && !this.pageEndWasReached) {
         this.pageEndWasReached = true;
-        console.log("Reached the end of the page!");
-
         this.fetchNewToasts();
     }
   }

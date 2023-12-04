@@ -4,6 +4,7 @@ import { LocalRouter } from "../shared/localRouter/local-router.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UserResponse } from "../identification/signIn/signIn.component";
 import { ImageItem } from "../toast-modal/toast-modal";
+import { Observable, concat } from "rxjs";
 
 @Component({
   selector: 'app-profile-edit-modal',
@@ -12,6 +13,9 @@ import { ImageItem } from "../toast-modal/toast-modal";
 export class ProfileEditModal {
     @Output() booleanEmitter: EventEmitter<boolean> = new EventEmitter();
     close!: () => void;
+
+    bannerLoading: boolean = false;
+    avatarLoading: boolean = false;
 
     Close(event: Event) {
         //this.close();
@@ -47,7 +51,7 @@ export class ProfileEditModal {
   
     onSubmit() {
       const formValues = this.myForm.value;
-
+    
       const body = {
         Name: formValues.name,
         Bio: formValues.bio
@@ -55,22 +59,35 @@ export class ProfileEditModal {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json' 
       });
-      this.http.patch("/api/v1/account", body, { headers }).subscribe(
+    
+      // Combine the observables using concat
+      const combinedObservable = concat(
+        this.updateUserBanner(),
+        this.http.patch("/api/v1/account", body, { headers })
+      );
+    
+      // Subscribe to the combined observable
+      combinedObservable.subscribe(
         () => {
+          // Code to execute after both HTTP requests complete
           this.booleanEmitter.emit(false);
-
+    
           this.userCurrent.account.bio = formValues.bio ?? this.userCurrent.account.bio;
-          this.userCurrent.account.name= formValues.name ?? this.userCurrent.account.name;
-
+          this.userCurrent.account.name = formValues.name ?? this.userCurrent.account.name;
+    
           localStorage.setItem("userInfo", JSON.stringify(this.userCurrent));
-        }
-        ,
+        },
         (error) => {
+          // Handle errors if needed
         }
-        );
+      );
     }
 
     selectedFile: File = {} as File;
+    selectedBanner: File = {} as File;
+
+    avatarItem: ImageItem | any;
+    bannerItem: ImageItem | any;
 
     onFileChange(event: any): void {
       console.log("avatarUpload")
@@ -86,10 +103,10 @@ export class ProfileEditModal {
       this.http.post<ImageItem>('/api/v1/MediaItem/avatar', formData).subscribe(
         (response) => {
           console.log('File uploaded successfully:', response);
-          this.userCurrent.account.avatar = response;
+          this.bannerItem = response;
 
           const body = {
-            AvatarId: response.id
+            AvatarId: this.bannerItem?.id
           };
 
           const headers = new HttpHeaders({
@@ -105,34 +122,39 @@ export class ProfileEditModal {
     }
 
     onFileChangeBanner(event: any): void {
-      console.log("avatarUpload")
-      this.selectedFile = FileList = event.target.files[0];
+      this.bannerLoading = true;
+      this.selectedBanner = FileList = event.target.files[0];
       this.uploadBanner();
     }
 
     uploadBanner(): void {
       const formData = new FormData();
-      formData.append('file', this.selectedFile);
+      formData.append('file', this.selectedBanner);
   
       this.http.post<ImageItem>('/api/v1/MediaItem/banner', formData).subscribe(
         (response) => {
           console.log('File uploaded successfully:', response);
-          this.userCurrent.account.banner = response;
-
-          const body = {
-            BannerId: response.id
-          };
-
-          const headers = new HttpHeaders({
-            'Content-Type': 'application/json' 
-          });
-
-          this.http.patch('/api/v1/account', body, {headers}).subscribe();
+          this.bannerItem = response;
+          this.bannerLoading = false
         },
         (error) => {
           console.error('Error uploading file:', error);
+          this.bannerLoading = false;
         }
       );
+    }
+
+    updateUserBanner(): Observable<any> {
+      const body = {
+        BannerId: this.bannerItem?.id
+      };
+    
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json' 
+      });
+    
+      // Return the observable directly
+      return this.http.patch('/api/v1/account', body, { headers });
     }
     
 

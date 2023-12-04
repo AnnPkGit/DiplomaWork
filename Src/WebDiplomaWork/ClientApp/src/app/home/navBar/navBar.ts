@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserResponse } from 'src/app/identification/signIn/signIn.component';
 import { NotificationService, ReactionNotification } from 'src/app/service/notifications.service';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navBar',
@@ -18,14 +19,15 @@ export class NavBarComponent {
     this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
   }
 
+  reactionNotification: ReactionNotification | undefined;
+  private reactionNotificationSubscription: Subscription | undefined;
+
   ngOnInit(): void {
-    // Subscribe to the onUpdate observable in the TimerService
-    this.notService.onUpdate.subscribe((data) => {
-      // Update your component's state
-      this.receivedData = data;
-      this.newNotification = true;
-      // console.log('NOTIFICATION')
-    });
+    // UNDO COMMENT TO START HUB CONNECTION
+
+    // this.reactionNotificationSubscription = this.notService.reactionNotification$.subscribe((data) => {
+    //   this.reactionNotification = data;
+    // });
   }
 
   goToMessages() {

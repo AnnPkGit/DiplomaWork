@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
+import * as signalR from '@microsoft/signalr';
+import { Subject } from 'rxjs';
 import { ToastItem } from '../profile-page/profile.component';
 
 @Injectable({
@@ -8,32 +8,35 @@ import { ToastItem } from '../profile-page/profile.component';
 })
 
 export class NotificationService {
-  private updateSubject: BehaviorSubject<ReactionNotification | undefined> = new BehaviorSubject<ReactionNotification | undefined>(undefined);
+  private hubConnection: signalR.HubConnection | undefined;
+  private reactionNotificationSubject: Subject<ReactionNotification> = new Subject<ReactionNotification>();
 
-  private reactionNotification: ReactionNotification | any;
+  reactionNotification$ = this.reactionNotificationSubject.asObservable();
 
-    constructor(private http: HttpClient) {
-        // Run the update function every minute (adjust as needed)
-        interval(3000).subscribe(() => this.update());
-      }
-    
-      private update(): void {
-        if(!localStorage.getItem("latestNotificationDateReceived")) {
-          // Perform a GET request and emit the received data
-          this.http.get<ReactionNotification>('/api/v1/notification/by/current/account').subscribe((data) => {
-            this.reactionNotification = data;
-            this.updateSubject.next(data);
-          });
-        }
-      }
-    
-      get onUpdate(): Observable<any> {
-        return this.updateSubject.asObservable();
-      }
-      
-      public getNotifications() : ReactionNotification {
-        return this.reactionNotification;
-      }
+  constructor() {
+    this.startSignlaRConnection();
+  }
+
+  stopConnection = () => {
+    if (this.hubConnection) {
+      this.hubConnection.stop();
+    }
+  };
+
+  startSignlaRConnection(): void {
+    // this.hubConnection = new signalR.HubConnectionBuilder()
+    //   .withUrl('http://localhost:5031/sync/notification', {
+    //     skipNegotiation: true,
+    //     transport: signalR.HttpTransportType.WebSockets
+    //   })
+    //   .build();
+    // this.hubConnection
+    //   .start()
+    //   .then(() => console.log('Connection started'))
+    //   .catch(err => console.log('Error while starting connection: ' + err));
+
+      // this.hubConnection.on('Sync', x => x(data))
+  }
 }
 
 export interface ReactionNotification {

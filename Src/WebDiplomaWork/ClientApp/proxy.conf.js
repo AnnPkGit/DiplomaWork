@@ -41,7 +41,9 @@ const PROXY_CONFIG = [
       "/api/v1/follow/follows",
       "/api/v1/account/search",
       "/api/v1/BaseToast/from/follows",
-      "/api/v1/MediaItem/banner"
+      "/api/v1/MediaItem/banner",
+      "/sync/notification",
+      '/api/v1/sync/notification'
    ],
     target: target,
     secure: false,

@@ -7,11 +7,25 @@ import { LocalRouter } from '../shared/localRouter/local-router.service';
   templateUrl: './settings-page.html',
 })
 export class SettingsPageComponent {
+  passwordTab: boolean = true;
+  emailTab: boolean = false;
+
   password: string = '';
   newPassword: string = '';
 
   constructor(private localRouter: LocalRouter, private http: HttpClient) {
   }
+
+  choseEmail() {
+    this.passwordTab = false;
+    this.emailTab = true;
+  }
+
+  chosePassword() {
+    this.passwordTab = true;
+    this.emailTab = false;
+  }
+
 
   updatePassword() {
     const body = {

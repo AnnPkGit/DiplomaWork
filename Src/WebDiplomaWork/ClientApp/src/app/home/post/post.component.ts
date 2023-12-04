@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ToastItem, ToastResponse } from 'src/app/profile-page/profile.component';
+import { ToastItem } from 'src/app/profile-page/profile.component';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { ImageItem } from 'src/app/toast-modal/toast-modal';
 
@@ -10,6 +10,19 @@ import { ImageItem } from 'src/app/toast-modal/toast-modal';
   templateUrl: './post.component.html',
 })
 export class PostComponent implements OnInit {
+
+  @Output() onReToast: EventEmitter<ToastItem> = new EventEmitter();
+
+  @Output() onDelete: EventEmitter<number> = new EventEmitter();
+
+  @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
+
+  @Output() onReToastRemoved: EventEmitter<number> = new EventEmitter();
+
+  @Output() toastWasRemovedByOrig: EventEmitter<number> = new EventEmitter();
+
+  @Input() reToastNumberNeedToBeReduced: EventEmitter<number> | undefined;
+
   closeImg: boolean = true;
   currentImg: string = '';
   currentUrl: string;
@@ -25,18 +38,6 @@ export class PostComponent implements OnInit {
     const lastSegment = urlSegments[urlSegments.length - 1].path;
     this.currentUserId = lastSegment;
   }
-
-  @Output() onToastCreation: EventEmitter<ToastItem> = new EventEmitter();
-
-  @Output() onReToast: EventEmitter<ToastItem> = new EventEmitter();
-
-  @Output() onDelete: EventEmitter<number> = new EventEmitter();
-
-  @Output() onReToastRemoved: EventEmitter<number> = new EventEmitter();
-
-  @Output() toastWasRemovedByOrig: EventEmitter<number> = new EventEmitter();
-
-  @Input() reToastNumberNeedToBeReduced: EventEmitter<number> | undefined;
 
   @Input()
   postBelongsToMe: boolean = false;

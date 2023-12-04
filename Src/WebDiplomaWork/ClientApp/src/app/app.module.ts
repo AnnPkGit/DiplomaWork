@@ -33,6 +33,7 @@ import { ExploreComponent } from './Explore/explore-component';
 import { FollowExplorerComponent } from './follow-explorer/follow-explorer';
 import { ExploreProfComponent } from './explore-prof-component/explore-prof-component';
 import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
+import { NotificationService } from './service/notifications.service';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
   ],
   providers: [
       AuthGuard, 
+      NotificationService,
       {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

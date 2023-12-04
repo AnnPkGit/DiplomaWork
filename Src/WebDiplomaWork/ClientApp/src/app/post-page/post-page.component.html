@@ -53,7 +53,7 @@
         [toastPage]="true"></app-post> 
       </div>
 
-      <div *ngIf="(!toast && !this.notFound) || !replies?.items" style="margin-top: 90px;">
+      <div *ngIf="(!toast && !this.notFound) || !this.notFound && !replies?.items" style="margin-top: 90px;">
         <div class="d-flex justify-content-center">
           <div class="spinner-border" role="status" style="color: #A1B3BD;">
             <span class="sr-only"></span>
