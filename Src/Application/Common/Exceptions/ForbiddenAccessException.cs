@@ -1,6 +1,6 @@
 namespace Application.Common.Exceptions;
 
-public class ForbiddenAccessException : Exception
+public class ForbiddenAccessException : Exception, ICustomException
 {
     public ForbiddenAccessException()
         : base()

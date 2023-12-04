@@ -26,13 +26,13 @@ public class FollowController : ApiV1ControllerBase
     }
     
     [HttpGet("followers")]
-    public async Task<PaginatedList<AccountBriefDto>> GetFollowersByAccount([FromQuery] GetFollowersByAccountQuery command)
+    public async Task<PaginatedList<AccountSearchDto>> GetFollowersByAccount([FromQuery] GetFollowersByAccountQuery command)
     {
         return await Mediator.Send(command);
     }
     
     [HttpGet("follows")]
-    public async Task<PaginatedList<AccountBriefDto>> GetFollowsByAccount([FromQuery] GetFollowsByAccountQuery command)
+    public async Task<PaginatedList<AccountSearchDto>> GetFollowsByAccount([FromQuery] GetFollowsByAccountQuery command)
     {
         return await Mediator.Send(command);
     }

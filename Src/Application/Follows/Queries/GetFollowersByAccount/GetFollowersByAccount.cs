@@ -4,21 +4,20 @@ using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Follows.Queries.GetFollowersByAccount;
 
-public class GetFollowersByAccountQuery : IRequest<PaginatedList<AccountBriefDto>>
+public class GetFollowersByAccountQuery : IRequest<PaginatedList<AccountSearchDto>>
 {
     public int AccountId { get; set; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetFollowersByAccountQueryHandler : IRequestHandler<GetFollowersByAccountQuery, PaginatedList<AccountBriefDto>>
+public class GetFollowersByAccountQueryHandler : IRequestHandler<GetFollowersByAccountQuery, PaginatedList<AccountSearchDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -29,7 +28,7 @@ public class GetFollowersByAccountQueryHandler : IRequestHandler<GetFollowersByA
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<AccountBriefDto>> Handle(GetFollowersByAccountQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<AccountSearchDto>> Handle(GetFollowersByAccountQuery request, CancellationToken cancellationToken)
     {
         var accountId = request.AccountId;
 
@@ -37,13 +36,18 @@ public class GetFollowersByAccountQueryHandler : IRequestHandler<GetFollowersByA
         {
             throw new NotFoundException(nameof(Account), accountId);
         }
-        
-        return await _context.Follows
+
+        var items = await _context.Follows
+            .IgnoreAutoIncludes()
             .Where(f => f.FollowToId == accountId)
             .OrderByDescending(f => f.DateOfFollow)
-            .Include(f => f.FollowFrom)
-            .Select(f => f.FollowFrom)
-            .ProjectTo<AccountBriefDto>(_mapper.ConfigurationProvider)
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+            .Include(f => f.FollowFrom).ThenInclude(a => a.Avatar)
+            .Include(f => f.FollowFrom).ThenInclude(a => a.Followers)
+            .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
+            .Select(f => _mapper.Map<AccountSearchDto>(f.FollowFrom))
+            .AsSingleQuery()
+            .ToArrayAsync(cancellationToken);
+        
+        return new PaginatedList<AccountSearchDto>(items, totalCount, request.PageNumber, request.PageSize);
     }
 }
