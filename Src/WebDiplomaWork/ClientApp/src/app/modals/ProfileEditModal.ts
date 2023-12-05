@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { LocalRouter } from "../shared/localRouter/local-router.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UserResponse } from "../identification/signIn/signIn.component";
@@ -21,19 +21,46 @@ export class ProfileEditModal {
         //this.close();
         this.booleanEmitter.emit(false);
     }
-
     StopPropagation(event: Event) {
       event.stopPropagation();
     }
 
+    avatarInFocus: boolean = false;
+
+    FocusAvatar() {
+      console.log('focus')
+      this.avatarInFocus = true;
+    }
+
+    UnFocusAvatar() {
+      console.log('no focus')
+      this.avatarInFocus = false;
+    }
+
+    bannerInFocus: boolean = false;
+
+    FocusBanner() {
+      console.log('focus')
+      this.bannerInFocus = true;
+    }
+
+    UnFocusBanner() {
+      console.log('no focus')
+      this.bannerInFocus = false;
+    }
+
     myForm: FormGroup;
+
     public userCurrent: UserResponse = {} as UserResponse;
 
     constructor(private fb: FormBuilder, private localRouter: LocalRouter, private http: HttpClient) {
       this.myForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(10)]],
         bio: ['', [Validators.maxLength(50)]],
-      });
+        month: '',
+        day: '',
+        year: ''
+      }, { validator: this.dateFieldsValidator });
 
       let date = new Date().getFullYear();
       for (var i = date; i > date - 106; i--) {
@@ -43,37 +70,96 @@ export class ProfileEditModal {
 
       this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
 
+      var dateObject = new Date(this.userCurrent?.account?.birthDate ?? '');
+      var finalDate;
+      if(dateObject.toString() == 'Invalid Date') {
+        finalDate = null;
+      }
+      else {
+        finalDate = dateObject;
+      }
+
       this.myForm.patchValue({
         name: this.userCurrent?.account.name,
-        bio: this.userCurrent?.account.bio
+        bio: this.userCurrent?.account.bio,
+        month: finalDate?.getMonth() ?? '',
+        day: finalDate?.getDay() ?? '',
+        year: finalDate?.getFullYear() ?? ''
       });
     }
+
+    selectedDate: Date | null | undefined;
+
+    dateFieldsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+      const month = control.get('month')?.value;
+      const day = control.get('day')?.value;
+      const year = control.get('year')?.value;
+    
+      if ((month !== '' || day !== '' || year !== '') && (month === '' || day === '' || year === '')) {
+        return { dateFieldsIncomplete: true };
+      }
+  
+      // If all fields are not empty, create a Date object
+      if (month !== '' && day !== '' && year !== '') {
+        this.selectedDate = new Date(`${year}-${month}-${day}`);
+      } else {
+        this.selectedDate = null;
+      }
+  
+      return null;
+    };
   
     onSubmit() {
       const formValues = this.myForm.value;
     
-      const body = {
-        Name: formValues.name,
-        Bio: formValues.bio
-      };
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json' 
-      });
-    
       // Combine the observables using concat
-      const combinedObservable = concat(
-        this.updateUserBanner(),
-        this.http.patch("/api/v1/account", body, { headers })
-      );
+      var combinedObservable;
+      var observables: Observable<any>[] = [];
+
+      if(this.bannerItem) {
+        combinedObservable = concat(
+          this.updateUserBanner(), []);
+      }
+
+      if(this.avatarItem) {
+        combinedObservable = concat(
+          this.updateAccountAvatar(), combinedObservable ?? []);
+      }
+
+      if(formValues.name != this.userCurrent.account.name || this.userCurrent.account.bio != formValues.bio || this.selectedDate){
+
+        const body = {
+          Name: formValues.name,
+          Bio: formValues.bio,
+          BirthDate: this.selectedDate ?? null,
+        };
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json' 
+        });
+
+        combinedObservable = concat(
+          this.http.patch("/api/v1/account", body, { headers }), combinedObservable ?? []
+        );
+      }
     
       // Subscribe to the combined observable
-      combinedObservable.subscribe(
+      combinedObservable?.subscribe(
         () => {
           // Code to execute after both HTTP requests complete
           this.booleanEmitter.emit(false);
     
           this.userCurrent.account.bio = formValues.bio ?? this.userCurrent.account.bio;
           this.userCurrent.account.name = formValues.name ?? this.userCurrent.account.name;
+          
+          if(this.bannerItem) {
+            this.userCurrent.account.banner = this.bannerItem;
+          }
+          if(this.avatarItem) {
+            this.userCurrent.account.avatar = this.avatarItem;
+          }
+          if(this.selectedDate) {
+            this.userCurrent.account.birthDate = this.selectedDate;
+          }
     
           localStorage.setItem("userInfo", JSON.stringify(this.userCurrent));
         },
@@ -90,6 +176,8 @@ export class ProfileEditModal {
     bannerItem: ImageItem | any;
 
     onFileChange(event: any): void {
+      console.log('dsdsadsa')
+      event.stopPropagation();
       console.log("avatarUpload")
       this.selectedFile = FileList = event.target.files[0];
       this.uploadFile();
@@ -103,22 +191,24 @@ export class ProfileEditModal {
       this.http.post<ImageItem>('/api/v1/MediaItem/avatar', formData).subscribe(
         (response) => {
           console.log('File uploaded successfully:', response);
-          this.bannerItem = response;
-
-          const body = {
-            AvatarId: this.bannerItem?.id
-          };
-
-          const headers = new HttpHeaders({
-            'Content-Type': 'application/json' 
-          });
-
-          this.http.patch('/api/v1/account', body, {headers}).subscribe();
+          this.avatarItem = response;
         },
         (error) => {
           console.error('Error uploading file:', error);
         }
       );
+    }
+
+    updateAccountAvatar(): Observable<any> {
+      const body = {
+        AvatarId: this.avatarItem?.id
+      };
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json' 
+      });
+
+      return this.http.patch('/api/v1/account', body, {headers});
     }
 
     onFileChangeBanner(event: any): void {

@@ -72,7 +72,7 @@ import { NotificationService } from './service/notifications.service';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: AuthComponent, pathMatch: 'full' },
-      { path: 'home', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+      { path: 'home', component: HomeComponent, pathMatch: 'full'},
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'sign-in', component: SignInComponent },
@@ -83,7 +83,6 @@ import { NotificationService } from './service/notifications.service';
       { path: 'profile/:id', component: ProfilePageComponent },
       { path: 'notifications', component: NotifactionsPageComponent },
       { path: 'settings', component: SettingsPageComponent },
-      // { path: 'follow/:follow-type',component:  FollowExplorerComponent },
     ])
   ],
   providers: [

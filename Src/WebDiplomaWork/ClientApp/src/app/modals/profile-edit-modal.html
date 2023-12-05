@@ -1,7 +1,8 @@
 <div class="modal-bg" (click)="Close($event)">
     <form class="modal-content" (ngSubmit)="onSubmit()" (click)="StopPropagation($event)" [formGroup]="myForm">
         <div>
-          <button type="button" class="colorBtn-mini" type="submit">Save</button>
+          <button *ngIf="avatarLoading || bannerLoading" type="button" class="colorBtn-mini" style="background-color: #d4d6d8">Cannot save now</button>
+          <button *ngIf="!avatarLoading && !bannerLoading" type="button" class="colorBtn-mini" type="submit">Save</button>
           <img style="float: right;" (click)="Close($event)"
             src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMTcgMTMuODNMMTMuODMgOC4xN00xMy44MyAxMy44M0w4LjE3IDguMTdNMTEgMjFDMTYuNSAyMSAyMSAxNi41IDIxIDExQzIxIDUuNSAxNi41IDEgMTEgMUM1LjUgMSAxIDUuNSAxIDExQzEgMTYuNSA1LjUgMjEgMTEgMjFaIiBzdHJva2U9IiM1QzY3NzgiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==' />
         </div>
@@ -17,11 +18,13 @@
     
         <div class="scroll-content">
         <div style="position: relative; min-height: 117.088px;">
-          <div class="pic-relative-container">
+          <div style="z-index: 100;" class="pic-relative-container">
             <div class="profile-picture-container">
-              <div *ngIf="!avatarLoading"  class="profile-picture-container-cropper" style="background-color: #5C6778;">
-                <img *ngIf="!userCurrent?.account?.avatar" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
-                <img *ngIf="userCurrent?.account?.avatar" [src]="userCurrent?.account?.avatar?.url">
+              <div *ngIf="!avatarLoading" class="profile-picture-container-cropper" style="background-color: #5C6778;">
+                <input type="file" (mouseenter)="FocusAvatar()" (mouseleave)="UnFocusAvatar()" (change)="onFileChange($event)" style="position: absolute; width: 95px; height: 100%; z-index: 101; cursor: pointer; opacity: 0;"/>
+                <img [ngStyle]="{'opacity': avatarInFocus ? '0.5' : '1'}" *ngIf="!userCurrent?.account?.avatar" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
+                <img [ngStyle]="{'opacity': avatarInFocus ? '0.5' : '1'}" *ngIf="userCurrent?.account?.avatar && !avatarItem" [src]="userCurrent?.account?.avatar?.url">
+                <img [ngStyle]="{'opacity': avatarInFocus ? '0.5' : '1'}" *ngIf="avatarItem" [src]="avatarItem.url">
               </div>
               <div *ngIf="avatarLoading" class="profile-picture-container-cropper" style="background-color: #5C6778; display: flex; align-items: center; justify-content: center;">
                 <div style="width: 100px; height: auto;">
@@ -34,9 +37,10 @@
               </div>
             </div>
           </div>
-          <div *ngIf="!bannerLoading" class="banner" style="border-radius: 10px; max-height: 150px; min-height: 150px;">
-            <input type="file" (change)="onFileChangeBanner($event)" style="position: absolute; width: 100%; height: 100%; z-index: 99; cursor: pointer; opacity: 0;" />
-              <img [src]="userCurrent?.account?.banner?.url">
+          <div *ngIf="!bannerLoading" class="banner" style="border-radius: 10px; max-height: 150px; min-height: 150px; background-color: #5C6778;">
+            <input  (mouseenter)="FocusBanner()" (mouseleave)="UnFocusBanner()" type="file" (change)="onFileChangeBanner($event)" style="position: absolute; width: 100%; height: 100%; z-index: 70; cursor: pointer; opacity: 0;" />
+              <img [ngStyle]="{'opacity': bannerInFocus ? '0.5' : '1'}" *ngIf="!bannerItem" [src]="userCurrent?.account?.banner?.url">
+              <img [ngStyle]="{'opacity': bannerInFocus ? '0.5' : '1'}" *ngIf="bannerItem" [src]="bannerItem?.url">
           </div>
 
           <div *ngIf="bannerLoading" class="banner" style="border-radius: 10px; max-height: 150px; min-height: 150px; display: flex; justify-content: center; align-items: center;">
@@ -52,17 +56,17 @@
     
         <div>
           <label for="name">Name</label>
-          <input class="bio-textarea" maxlength="20" name="name" formControlName="name" id="name">
+          <input class="bio-textarea" maxlength="10" name="name" formControlName="name" id="name">
           <label style="color: #e77f7f;"  *ngIf="myForm.get('name')?.invalid && (myForm.get('name')?.dirty || myForm.get('name')?.touched)" class="error-message">
-            Name is required and must be less than 20 characters.
+            Name is required and must be less than 10 characters.
           </label>
         </div>
     
         <div>
           <label for="bio">Bio</label>
-          <input class="bio-textarea" maxlength="100" name="bio" formControlName="bio" id="bio"/>
+          <input class="bio-textarea" maxlength="50" name="bio" formControlName="bio" id="bio"/>
           <label style="color: #e77f7f;" *ngIf="myForm.get('bio')?.invalid && (myForm.get('bio')?.dirty || myForm.get('bio')?.touched)" class="error-message">
-            aaaS
+            Bio is required and must be less than 50 characters.
           </label>
         </div> 
         
@@ -70,21 +74,24 @@
         <div>
           <label>Bithrdate</label>
           <div style="display: flex; justify-content: center; align-items: center;">
-            <select class="dropDown" style="width: 120px" #mounth (change)="onSelectedMounth(mounth.value)">
+            <select class="dropDown" style="width: 120px" #mounth (change)="onSelectedMounth(mounth.value)" formControlName="month">
               <option value="" disabled selected>Mounth</option>
               <option *ngFor="let mounth of GetMounths()" value="{{mounth}}">{{mounth}}</option>
             </select>
 
-            <select class="dropDown" style="width: 95px" #day (change)="onSelectedDay(day.value)">
+            <select class="dropDown" style="width: 95px" #day (change)="onSelectedDay(day.value)" formControlName="day">
               <option value="" disabled selected>Day</option>
               <option *ngFor="let day of GetDays()" value="{{day}}">{{day}}</option>
             </select>
 
-            <select class="dropDown" style="width: 95px" #year (change)="onSelectedYear(year.value)">
+            <select class="dropDown" style="width: 95px" #year (change)="onSelectedYear(year.value)" formControlName="year">
               <option value="" disabled selected>Year</option>
               <option *ngFor="let year of GetYears()" value="{{year}}">{{year}}</option>
             </select>
           </div>
+          <label style="color: #e77f7f;" *ngIf="myForm.hasError('dateFieldsIncomplete')" class="error-message">
+            Please fill all month, day and year
+          </label>
         </div>
 
         <div>
