@@ -1,3 +1,4 @@
+using Application.Common.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +19,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         {
             return await next();
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not ICustomException)
         {
             var requestName = typeof(TRequest).Name;
 

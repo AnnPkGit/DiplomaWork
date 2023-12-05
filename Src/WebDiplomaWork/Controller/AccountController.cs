@@ -31,7 +31,7 @@ public class AccountController : ApiV1ControllerBase
     }
     
     [HttpGet("search")]
-    public async Task<IEnumerable<AccountBriefDto>> GetAccountsByLoginOrName([FromQuery] GetAccountsByLoginOrNameQuery command)
+    public async Task<IEnumerable<AccountSearchDto>> GetAccountsByLoginOrName([FromQuery] GetAccountsByLoginOrNameQuery command)
     {
         return await Mediator.Send(command);
     }

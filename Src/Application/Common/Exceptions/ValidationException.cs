@@ -2,7 +2,7 @@ using FluentValidation.Results;
 
 namespace Application.Common.Exceptions;
 
-public class ValidationException : Exception
+public class ValidationException : Exception, ICustomException
 {
     public ValidationException(string message)
         : base(message)

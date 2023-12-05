@@ -3,6 +3,7 @@ using Application.Common.Models;
 using Application.Follows.Commands.FollowAccount;
 using Application.Follows.Commands.UnfollowAccount;
 using Application.Follows.Queries.GetFollowersByAccount;
+using Application.Follows.Queries.GetFollowRecommendations;
 using Application.Follows.Queries.GetFollowsByAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +27,19 @@ public class FollowController : ApiV1ControllerBase
     }
     
     [HttpGet("followers")]
-    public async Task<PaginatedList<AccountBriefDto>> GetFollowersByAccount([FromQuery] GetFollowersByAccountQuery command)
+    public async Task<PaginatedList<AccountSearchDto>> GetFollowersByAccount([FromQuery] GetFollowersByAccountQuery command)
     {
         return await Mediator.Send(command);
     }
     
     [HttpGet("follows")]
-    public async Task<PaginatedList<AccountBriefDto>> GetFollowsByAccount([FromQuery] GetFollowsByAccountQuery command)
+    public async Task<PaginatedList<AccountSearchDto>> GetFollowsByAccount([FromQuery] GetFollowsByAccountQuery command)
+    {
+        return await Mediator.Send(command);
+    }
+    
+    [HttpGet("recommendations")]
+    public async Task<IEnumerable<AccountSearchDto>> GetFollowRecommendations([FromQuery] GetFollowRecommendationsQuery command)
     {
         return await Mediator.Send(command);
     }
