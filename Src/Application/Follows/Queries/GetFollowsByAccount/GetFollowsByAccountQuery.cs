@@ -30,14 +30,14 @@ public class GetFollowsByAccountQueryHandler : IRequestHandler<GetFollowsByAccou
     
     public async Task<PaginatedList<AccountSearchDto>> Handle(GetFollowsByAccountQuery request, CancellationToken cancellationToken)
     {
-        var accountId = request.AccountId;
+        int accountId = request.AccountId;
 
         if (!await _context.Accounts.AnyAsync(a => a.Id == accountId,cancellationToken))
         {
             throw new NotFoundException(nameof(Account), accountId);
         }
 
-        var items = await _context.Follows
+        AccountSearchDto[] accountSearchDtos = await _context.Follows
             .IgnoreAutoIncludes()
             .Where(f => f.FollowFromId == accountId)
             .OrderByDescending(f => f.DateOfFollow)
@@ -48,6 +48,6 @@ public class GetFollowsByAccountQueryHandler : IRequestHandler<GetFollowsByAccou
             .AsSingleQuery()
             .ToArrayAsync(cancellationToken);
         
-        return new PaginatedList<AccountSearchDto>(items, totalCount, request.PageNumber, request.PageSize);
+        return new PaginatedList<AccountSearchDto>(accountSearchDtos, totalCount, request.PageNumber, request.PageSize);
     }
 }
