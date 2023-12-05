@@ -119,7 +119,13 @@
 
       <div style="height: 10%">
         <div class="separationDiv">
-          <button class="colorBtn" (click)="Register()">Register</button>
+          <button *ngIf="!registationInProccess" class="colorBtn" (click)="Register()">Register</button>
+          <button *ngIf="registationInProccess" class="colorBtn">
+            <div>
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span class="sr-only" style="margin-left: 5px;">Registration...</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>

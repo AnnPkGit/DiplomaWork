@@ -29,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handle401Response(): void {
-    console.log('Unauthorized request. Redirecting to login...');
     this.localRouter.goToSignIn();
   }
 }

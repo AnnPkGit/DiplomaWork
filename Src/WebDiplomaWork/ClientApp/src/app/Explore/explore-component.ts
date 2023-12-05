@@ -25,4 +25,11 @@ export class ExploreComponent implements OnInit {
         this.accounts = response;
       });
     }
+
+    NothingWasFound() {
+      if(!this.accounts) {
+        return false;
+      }
+      return this.accounts.length < 1;
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AccountModel } from '../shared/models/accountModel';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 import { UserResponse } from '../identification/signIn/signIn.component';
 import { ImageItem } from '../toast-modal/toast-modal';
 import { LocalRouter } from '../shared/localRouter/local-router.service';
@@ -26,35 +26,55 @@ export class ProfilePageComponent implements OnInit{
   openFollowExplorer: boolean = false;
   openFollowExplorerType: string = '';
 
-  followsOrFollowers: UserFollowResponse | any;
+  followsOrFollowers: UserFollowResponse = {} as UserFollowResponse;
 
   @Output() reToastWasRemoved = new EventEmitter<number>();
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router, private localRouter: LocalRouter) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
+
+        const fragment = this.router.parseUrl(this.router.url).fragment;
+
+        if (fragment === 'follows') {
+          this.fetchUsersFollows();
+          this.openFollowExplorerType = 'FOLLOWS'
+        } 
+        if (fragment === 'followers') {
+          this.fetchUsersFollowers();
+          this.openFollowExplorerType = 'FOLLOWERS'
+        }
+
+        this.user = undefined;
+        this.toastResponse = {} as ToastResponse;
+        this.openFollowExplorer = false;
         this.ngOnInit();
       }
     });
   }
 
   goBack() {
+    const urlWithoutFragment = this.router.url.split('#')[0];
+    this.router.navigateByUrl(urlWithoutFragment);
+
     this.openFollowExplorer = false;
     this.openFollowExplorerType = '';
   }
 
   ReToastRemoved(id: number) {
-    console.log("ReToastRemoved")
     this.reToastWasRemoved.emit(id);
   }
 
+  followLoading: boolean = true;
   goToFollowExplorer(type: string) {
-    this.followsOrFollowers = null; 
+    this.followsOrFollowers = {} as UserFollowResponse; 
     if(type == 'Following') {
+      this.router.navigate([], { fragment: 'follows' });
       this.fetchUsersFollows();
       this.openFollowExplorerType = 'FOLLOWS'
     }
     if(type == 'Followers') {
+      this.router.navigate([], { fragment: 'followers' });
       this.fetchUsersFollowers();
       this.openFollowExplorerType = 'FOLLOWERS'
     }
@@ -82,6 +102,13 @@ export class ProfilePageComponent implements OnInit{
     } else {
       // If the year is different from the current year
       return date.toLocaleDateString('en-US', options);
+    }
+  }
+
+  onFollowUnfollowed(id: number) {
+    if( this.openFollowExplorerType != 'FOLLOWERS')
+    {
+      this.followsOrFollowers.items = this.followsOrFollowers.items.filter(item => item.id !== id);
     }
   }
 
@@ -114,6 +141,18 @@ export class ProfilePageComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    const fragment = this.router.parseUrl(this.router.url).fragment;
+
+    if (fragment === 'follows') {
+      this.fetchUsersFollows();
+      this.openFollowExplorerType = 'FOLLOWS'
+      this.openFollowExplorer = true;
+    } else if (fragment === 'followers') {
+      this.fetchUsersFollowers();
+      this.openFollowExplorerType = 'FOLLOWERS'
+      this.openFollowExplorer = true;
+    }
+
     window.addEventListener('scroll', this.checkScroll.bind(this));
     const urlSegments = this.route.snapshot.url;
     const lastSegment = urlSegments[urlSegments.length - 1].path;
@@ -134,14 +173,12 @@ export class ProfilePageComponent implements OnInit{
 
     if (totalHeight - scrollPosition <= windowHeight + 10 && !this.pageEndWasReached) {
         this.pageEndWasReached = true;
-        console.log("Reached the end of the page!");
 
         this.fetchNewToasts();
     }
   }
 
   Follow(id: string) {
-    console.log(id)
     const body = {
       AccountId: id
     };
@@ -160,7 +197,6 @@ export class ProfilePageComponent implements OnInit{
   }
 
   UnFollow(id: string) {
-    console.log(id)
     const body = {
       FollowingId: id
     };
@@ -301,13 +337,17 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchUsersFollows() {
+    this.followLoading = true;
     this.httpClient.get<UserFollowResponse>("api/v1/follow/follows?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.followLoading = false;
       this.followsOrFollowers = response;
     });
   }
 
   fetchUsersFollowers() {
+    this.followLoading = true;
     this.httpClient.get<UserFollowResponse>("api/v1/follow/followers?AccountId=" +  this.currentUserId).subscribe((response) => {
+      this.followLoading = false;
       this.followsOrFollowers = response;
     });
   }

@@ -10,6 +10,5 @@ export class ProfileBarComponent implements OnInit{
   public user: UserResponse | undefined;
   ngOnInit(): void { 
     this.user = JSON.parse(localStorage.getItem("userInfo") ?? "");
-    console.log(this.user)
   }
 }

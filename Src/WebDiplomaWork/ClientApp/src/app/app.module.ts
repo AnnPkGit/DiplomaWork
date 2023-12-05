@@ -78,7 +78,7 @@ import { NotificationService } from './service/notifications.service';
       { path: 'sign-in', component: SignInComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'auth', component: AuthComponent },
-      { path: 'messages', component: ExploreComponent },
+      { path: 'explore', component: ExploreComponent },
       { path: 'toast/:id', component: PostPAgeComponent },
       { path: 'profile/:id', component: ProfilePageComponent },
       { path: 'notifications', component: NotifactionsPageComponent },

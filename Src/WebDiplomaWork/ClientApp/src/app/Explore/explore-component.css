@@ -67,3 +67,11 @@
     color: white;
     font-weight: 900px;
 }
+
+.nothingFound {
+    color: #5B66CA;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -28,24 +28,20 @@ export class ProfileEditModal {
     avatarInFocus: boolean = false;
 
     FocusAvatar() {
-      console.log('focus')
       this.avatarInFocus = true;
     }
 
     UnFocusAvatar() {
-      console.log('no focus')
       this.avatarInFocus = false;
     }
 
     bannerInFocus: boolean = false;
 
     FocusBanner() {
-      console.log('focus')
       this.bannerInFocus = true;
     }
 
     UnFocusBanner() {
-      console.log('no focus')
       this.bannerInFocus = false;
     }
 
@@ -176,9 +172,7 @@ export class ProfileEditModal {
     bannerItem: ImageItem | any;
 
     onFileChange(event: any): void {
-      console.log('dsdsadsa')
       event.stopPropagation();
-      console.log("avatarUpload")
       this.selectedFile = FileList = event.target.files[0];
       this.uploadFile();
     }
@@ -190,7 +184,6 @@ export class ProfileEditModal {
   
       this.http.post<ImageItem>('/api/v1/MediaItem/avatar', formData).subscribe(
         (response) => {
-          console.log('File uploaded successfully:', response);
           this.avatarItem = response;
         },
         (error) => {
@@ -223,7 +216,6 @@ export class ProfileEditModal {
   
       this.http.post<ImageItem>('/api/v1/MediaItem/banner', formData).subscribe(
         (response) => {
-          console.log('File uploaded successfully:', response);
           this.bannerItem = response;
           this.bannerLoading = false
         },

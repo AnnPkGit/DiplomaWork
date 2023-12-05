@@ -33,7 +33,7 @@ import { AppConfig } from '../config';
     }
 
     goToProfilePage(id: string) {
-        this.router?.navigate([AppConfig.profileEndpoint + id]).then( () => {window.location.reload()});
+        this.router?.navigate([AppConfig.profileEndpoint + id]);
     }
 
     goToNotifications() {

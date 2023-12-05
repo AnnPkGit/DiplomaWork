@@ -116,7 +116,10 @@ export class RegisterComponent {
     this.getNextStep();
   }
 
+  registationInProccess: boolean = false;
+
   public Register() {
+    this.registationInProccess = true;
     // const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
 
     var user = new User(this.emailInput,  this.passwordInput);
@@ -133,9 +136,11 @@ export class RegisterComponent {
 
     this.http.post('api/v1/user/registration', createAccountBody, { headers }).subscribe(
       () => {
+        this.registationInProccess = false;
         this.router.goToSignIn();
       },
       (error) => {
+        this.registationInProccess = false;
       }
     );
   }

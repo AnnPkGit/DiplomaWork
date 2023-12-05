@@ -31,6 +31,9 @@
             </div>
         </div>
         <div class="rec-prof-container">
+          <div *ngIf="NothingWasFound()" class="nothingFound">
+            No such account exists...
+          </div>
           <explore-prof-component *ngFor="let acc of accounts" [user]="acc"></explore-prof-component>
         </div>
     </div>
@@ -40,7 +43,7 @@
       </div>
     
       <div class="offsetDivLeft">
-        <div class="recommendationsBar">
+        <!-- <div class="recommendationsBar">
           <div class="recommendationsContainer">
             <div class="recommendedTopic">
               <div class="recommendationSmallText">Popular in Ukraine</div>
@@ -53,7 +56,7 @@
               <div class="recommendationSmallText">Popular in Ukraine</div>
             </div>
           </div>
-        </div>
+        </div> -->
     
         <div class="recommndationsProfileBar">
           <app-rec-profile></app-rec-profile>

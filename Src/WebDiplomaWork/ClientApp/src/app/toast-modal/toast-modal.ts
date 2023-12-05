@@ -69,7 +69,6 @@ export class ToastModalComponent implements OnInit {
 
     this.http.post<ImageItem>('/api/v1/MediaItem/toast', formData).subscribe(
       (response) => {
-        console.log('File uploaded successfully:', response);
         this.ImageItems.push(response);
       },
       (error) => {
