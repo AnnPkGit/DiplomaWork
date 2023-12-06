@@ -86,6 +86,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
         if (toastIds.Any())
         {
             var toasts = await _context.Toasts
+                .IgnoreAutoIncludes()
                 .Where(toast => toastIds.Contains(toast.Id))
                 .Include(toast => toast.Author).ThenInclude(author => author.Avatar)
                 .Include(toast => toast.MediaItems)
@@ -102,6 +103,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
         if (replyIds.Any())
         {
             var replies = await _context.Replies
+                .IgnoreAutoIncludes()
                 .Where(reply => replyIds.Contains(reply.Id))
                 .Include(reply => reply.Author).ThenInclude(author => author.Avatar)
                 .Include(reply => reply.MediaItems)
@@ -126,6 +128,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
         if (quoteIds.Any())
         {
             var quotes = await _context.Quotes
+                .IgnoreAutoIncludes()
                 .Where(quote => quoteIds.Contains(quote.Id))
                 .Include(quote => quote.Author).ThenInclude(author => author.Avatar)
                 .Include(quote => quote.MediaItems)
@@ -136,10 +139,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
                 .Include(quote => quote.QuotedToast)
                     .ThenInclude(toast => toast!.Author)
                     .ThenInclude(author => author.Avatar)
-                .Include(quote => quote.QuotedToast)
-                    .ThenInclude(toast => toast!.Author)
-                .Include(quote => quote.QuotedToast)
-                    .ThenInclude(toast => toast!.MediaItems)
+                .Include(quote => quote.QuotedToast).ThenInclude(toast => toast!.MediaItems)
                 .Select(quote => _mapper.Map<QuoteDto>(quote))
                 .AsSingleQuery()
                 .ToArrayAsync(cancellationToken);
@@ -149,6 +149,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
         if (reToastIds.Any())
         {
             var reToasts = await _context.ReToasts
+                .IgnoreAutoIncludes()
                 .Where(reToast => reToastIds.Contains(reToast.Id))
                 .Include(reToast => reToast.ToastWithContent)
                     .ThenInclude(toast => toast!.Author)

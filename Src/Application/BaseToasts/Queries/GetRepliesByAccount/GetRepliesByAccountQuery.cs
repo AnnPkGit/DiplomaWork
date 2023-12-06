@@ -55,34 +55,49 @@ public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccou
         var objects = new List<BaseToast>(accountBaseToasts.Length);
         if (accountQuoteIds.Any())
         {
-            var toasts = _context.Quotes
+            var quotes = await _context.Quotes
                 .Where(q => accountQuoteIds.Contains(q.Id))
                 .IgnoreAutoIncludes()
-                .Include(t => t.Replies)
-                .Include(t => t.Reactions)
-                .Include(t => t.ReToasts)
-                .Include(t => t.Quotes);
-            objects.AddRange(toasts);
+                .Include(q => q.Author).ThenInclude(a => a.Avatar)
+                .Include(q => q.MediaItems)
+                .Include(q => q.Replies)
+                .Include(q => q.Reactions)
+                .Include(q => q.ReToasts)
+                .Include(q => q.Quotes)
+                .AsSingleQuery()
+                .ToArrayAsync(cancellationToken);
+            objects.AddRange(quotes);
         }
         if (accountReToastIds.Any())
         {
-            var toasts = _context.ReToasts
+            var reToasts = await _context.ReToasts
                 .Where(rt => accountReToastIds.Contains(rt.Id))
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Replies)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Reactions)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.ReToasts)
-                .Include(rt => rt.ToastWithContent).ThenInclude(t => t.Quotes);
-            objects.AddRange(toasts);
+                .IgnoreAutoIncludes()
+                .Include(rt => rt.ToastWithContent)
+                    .ThenInclude(t => t!.Author)
+                    .ThenInclude(a => a.Avatar)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.MediaItems)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Replies)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Reactions)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.ReToasts)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Quotes)
+                .AsSingleQuery()
+                .ToArrayAsync(cancellationToken);
+            objects.AddRange(reToasts);
         }
         if (accountRepliesIds.Any())
         {
-            var toasts = _context.Replies
+            var replies = await _context.Replies
                 .Where(r => accountRepliesIds.Contains(r.Id))
-                .Include(r => r.ReplyToToast).ThenInclude(t => t.Replies)
-                .Include(r => r.ReplyToToast).ThenInclude(t => t.Reactions)
-                .Include(r => r.ReplyToToast).ThenInclude(t => t.ReToasts)
-                .Include(r => r.ReplyToToast).ThenInclude(t => t.Quotes);
-            objects.AddRange(toasts);
+                .IgnoreAutoIncludes()
+                .Include(r => r.ReplyToToast).ThenInclude(t => t!.MediaItems)
+                .Include(r => r.ReplyToToast).ThenInclude(t => t!.Replies)
+                .Include(r => r.ReplyToToast).ThenInclude(t => t!.Reactions)
+                .Include(r => r.ReplyToToast).ThenInclude(t => t!.ReToasts)
+                .Include(r => r.ReplyToToast).ThenInclude(t => t!.Quotes)
+                .AsSingleQuery()
+                .ToArrayAsync(cancellationToken);
+            objects.AddRange(replies);
         }
         
         var selectedBaseToasts = objects
