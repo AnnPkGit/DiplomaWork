@@ -1,7 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.Replies.Commands.CreateReply;
 using Application.Replies.Queries.GetRepliesByToast;
-using Application.Replies.Queries.GetReplyById;
 using Application.Replies.Queries.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +19,6 @@ public class ReplyController : ApiV1ControllerBase
     [HttpGet("by/toast")]
     public async Task<PaginatedList<ReplyBriefDto>> GetRepliesByToast
         ([FromQuery] GetRepliesByToastQuery command)
-    {
-        return await Mediator.Send(command);
-    }
-    
-    [HttpGet("by/id")]
-    public async Task<ReplyDto> GetReplyById
-        ([FromQuery] GetReplyByIdQuery command)
     {
         return await Mediator.Send(command);
     }

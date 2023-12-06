@@ -29,7 +29,9 @@ public class GetAccountsByLoginOrNameQueryHandler : IRequestHandler<GetAccountsB
         const int pageSize = 10;
         
         var accounts = await _context.Accounts
+            .IgnoreAutoIncludes()
             .OrderBy(account => account.Login)
+            .Include(account => account.Avatar)
             .Include(account => account.Followers)
             .Where(account =>
                 account.Login.Contains(request.Text) ||

@@ -13,14 +13,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.BaseToasts.Queries.GetAccountBaseToasts;
 
-public class GetAccountBaseToastsQuery : IRequest<PaginatedList<object>>
+public class GetAccountBaseToastsQuery : IRequest<PaginatedList<BaseToastDto>>
 {
     public int AccountId { get; set; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseToastsQuery, PaginatedList<object>>
+public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseToastsQuery, PaginatedList<BaseToastDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<object>> Handle(GetAccountBaseToastsQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<BaseToastDto>> Handle(GetAccountBaseToastsQuery request, CancellationToken cancellationToken)
     {
         var accountId = request.AccountId;
         if (!await _context.Accounts.AnyAsync(a => a.Id == accountId, cancellationToken))
@@ -59,7 +59,10 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         if (accountToastIds.Any())
         {
             var toasts = _context.Toasts
+                .IgnoreAutoIncludes()
                 .Where(t => accountToastIds.Contains(t.Id))
+                .Include(t => t.Author).ThenInclude(a => a.Avatar)
+                .Include(t => t.MediaItems)
                 .Include(t => t.Replies)
                 .Include(t => t.Reactions)
                 .Include(t => t.ReToasts)
@@ -71,12 +74,18 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         if (accountQuoteIds.Any())
         {
             var quotes = _context.Quotes
+                .IgnoreAutoIncludes()
                 .Where(q => accountQuoteIds.Contains(q.Id))
+                .Include(q => q.Author).ThenInclude(a => a.Avatar)
+                .Include(q => q.MediaItems)
                 .Include(q => q.Replies)
                 .Include(q => q.Reactions)
                 .Include(q => q.ReToasts)
                 .Include(q => q.Quotes)
                 .Include(q => q.QuotedToast)
+                    .ThenInclude(t => t!.Author)
+                    .ThenInclude(a => a.Avatar)
+                .Include(q => q.QuotedToast).ThenInclude(t => t!.MediaItems)
                 .AsSingleQuery();
             var quotesDto = quotes.Select(t => _mapper.Map<QuoteDto>(t));
             objectsDto.AddRange(quotesDto);
@@ -84,7 +93,13 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
         if (accountReToastIds.Any())
         {
             var reToasts = _context.ReToasts
+                .IgnoreAutoIncludes()
                 .Where(rt => accountReToastIds.Contains(rt.Id))
+                .Include(rt => rt.Author).ThenInclude(a => a.Avatar)
+                .Include(rt => rt.ToastWithContent)
+                    .ThenInclude(t => t!.Author)
+                    .ThenInclude(a => a.Avatar)
+                .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.MediaItems)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Replies)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Reactions)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.ReToasts)
@@ -94,6 +109,6 @@ public class GetAccountBaseToastsQueryHandler : IRequestHandler<GetAccountBaseTo
             objectsDto.AddRange(reToastsDto);
         }
         
-        return new PaginatedList<object>(objectsDto.OrderByDescending(bt => bt.Created).ToArray(), totalCount, request.PageNumber, request.PageSize);
+        return new PaginatedList<BaseToastDto>(objectsDto.OrderByDescending(bt => bt.Created).ToArray(), totalCount, request.PageNumber, request.PageSize);
     }
 }

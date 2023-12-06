@@ -39,12 +39,15 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
     public async Task<ReToastDto> Handle(CreateReToastCommand request, CancellationToken cancellationToken)
     {
         var toastWithContentId = request.ToastWithContentId;
-        var toastWithContent = await _context
-            .BaseToastsWithContent
+        var toastWithContent = await _context.BaseToastsWithContent
+            .IgnoreAutoIncludes()
+            .Include(toast => toast.Author).ThenInclude(author => author.Avatar)
+            .Include(toast => toast.MediaItems)
             .Include(toast => toast.Reactions)
             .Include(toast => toast.ReToasts)
             .Include(toast => toast.Replies)
             .Include(toast => toast.Quotes)
+            .AsSingleQuery()
             .SingleOrDefaultAsync( toast => toast.Id == toastWithContentId , cancellationToken);
 
         if (toastWithContent == null)

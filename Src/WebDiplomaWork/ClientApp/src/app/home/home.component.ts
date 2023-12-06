@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit{
 
   fetchNewToasts() {
     if(this.posts.hasNextPage) {
-      this.httpClient.get<ToastResponse>("api/v1/BaseToast/from/follows" + '&pageNumber=' + (this.posts.pageNumber += 1).toString())
+      this.httpClient.get<ToastResponse>("api/v1/BaseToast/from/follows" + '?&pageNumber=' + (this.posts.pageNumber += 1).toString())
       .subscribe((response) => {
         var newToastResponse = response;
         newToastResponse.items = this.posts.items.concat(newToastResponse.items);

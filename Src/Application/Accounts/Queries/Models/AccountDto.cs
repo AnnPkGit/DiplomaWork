@@ -18,6 +18,7 @@ public class AccountDto : IMapFrom<Account>
     public int FollowersCount { get; set; }
     public int FollowsCount { get; set; }
     public bool YouFollow { get; set; }
+    public DateTime Created { get; set; }
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Account, AccountDto>()
