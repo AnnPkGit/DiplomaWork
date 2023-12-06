@@ -9,6 +9,7 @@ namespace WebApp.Controller;
 
 public class NotificationController : ApiV1ControllerBase
 {
+    // Endpoint for tests
     [HttpGet("by/current/account"), Authorize]
     public async Task<PaginatedList<BaseNotificationDto>> GetCurrentAccountNotifications(
         [FromQuery] GetCurrentAccountNotificationsQuery command)
