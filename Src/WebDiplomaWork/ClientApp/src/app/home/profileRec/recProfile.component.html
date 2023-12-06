@@ -1,16 +1,20 @@
-<div class="recommendedProfile">
-  <div>
-    <img class="postAvatar" src="https://i.pinimg.com/564x/86/82/84/86828411400537a803f26013641c4770.jpg" />
-  </div>
-
-  <div class="loginNameContainer">
-    <div class="postLoginSmaller">
-      Zhongli - God of contracts
+<div class="recommndationsProfileBar" *ngIf="AnyItems()">
+  <div class="recommendedProfile" *ngFor="let rec of recommendations"  (click)="goToProfilePage(rec.id)">
+    <div  class="postAvatar">
+      <img *ngIf="rec?.avatar?.url" class="postImg" style="margin-left: auto;" style="margin-left: auto;" [src]='rec?.avatar?.url' />
+      <img *ngIf="!rec?.avatar?.url" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
     </div>
-    <div class="postNameSmaller">
-      @ZhongliGodofcontracts
-    </div>
-  </div>
 
-  <img style="margin-left: auto;" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDBDNC40OSAwIDAgNC40OSAwIDEwQzAgMTUuNTEgNC40OSAyMCAxMCAyMEMxNS41MSAyMCAyMCAxNS41MSAyMCAxMEMyMCA0LjQ5IDE1LjUxIDAgMTAgMFpNMTQgMTAuNzVIMTAuNzVWMTRDMTAuNzUgMTQuNDEgMTAuNDEgMTQuNzUgMTAgMTQuNzVDOS41OSAxNC43NSA5LjI1IDE0LjQxIDkuMjUgMTRWMTAuNzVINkM1LjU5IDEwLjc1IDUuMjUgMTAuNDEgNS4yNSAxMEM1LjI1IDkuNTkgNS41OSA5LjI1IDYgOS4yNUg5LjI1VjZDOS4yNSA1LjU5IDkuNTkgNS4yNSAxMCA1LjI1QzEwLjQxIDUuMjUgMTAuNzUgNS41OSAxMC43NSA2VjkuMjVIMTRDMTQuNDEgOS4yNSAxNC43NSA5LjU5IDE0Ljc1IDEwQzE0Ljc1IDEwLjQxIDE0LjQxIDEwLjc1IDE0IDEwLjc1WiIgZmlsbD0iIzVCNjZDQSIvPgo8L3N2Zz4K' />
+    <div class="loginNameContainer">
+      <div class="postLoginSmaller">
+        {{rec?.name}}
+      </div>
+      <div class="postNameSmaller">
+        {{rec?.login}}
+      </div>
+    </div>
+
+    <img (click)="UnFollow(rec.id, $event)"  style="margin-left: auto;" *ngIf="rec.youFollow" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMTBDMCA0LjQ5IDQuNDkgMCAxMCAwQzE1LjUxIDAgMjAgNC40OSAyMCAxMEMyMCAxNS41MSAxNS41MSAyMCAxMCAyMEM0LjQ5IDIwIDAgMTUuNTEgMCAxMFoiIGZpbGw9IiM1QzY3NzgiLz4KPHBhdGggZD0iTTE0IDdMOSAxMy41TDYgOS41IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo='/>
+    <img (click)="Follow(rec.id, $event)" style="margin-left: auto;"*ngIf="!rec.youFollow" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDBDNC40OSAwIDAgNC40OSAwIDEwQzAgMTUuNTEgNC40OSAyMCAxMCAyMEMxNS41MSAyMCAyMCAxNS41MSAyMCAxMEMyMCA0LjQ5IDE1LjUxIDAgMTAgMFpNMTQgMTAuNzVIMTAuNzVWMTRDMTAuNzUgMTQuNDEgMTAuNDEgMTQuNzUgMTAgMTQuNzVDOS41OSAxNC43NSA5LjI1IDE0LjQxIDkuMjUgMTRWMTAuNzVINkM1LjU5IDEwLjc1IDUuMjUgMTAuNDEgNS4yNSAxMEM1LjI1IDkuNTkgNS41OSA5LjI1IDYgOS4yNUg5LjI1VjZDOS4yNSA1LjU5IDkuNTkgNS4yNSAxMCA1LjI1QzEwLjQxIDUuMjUgMTAuNzUgNS41OSAxMC43NSA2VjkuMjVIMTRDMTQuNDEgOS4yNSAxNC43NSA5LjU5IDE0Ljc1IDEwQzE0Ljc1IDEwLjQxIDE0LjQxIDEwLjc1IDE0IDEwLjc1WiIgZmlsbD0iIzVCNjZDQSIvPgo8L3N2Zz4K' />
+  </div>
 </div>

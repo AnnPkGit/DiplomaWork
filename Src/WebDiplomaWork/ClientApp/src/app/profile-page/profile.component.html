@@ -119,7 +119,7 @@
         </div>
       </div>
       <explore-prof-component *ngFor="let user of followsOrFollowers?.items" [user]="user" (onUnFollowed)="onFollowUnfollowed($event)"></explore-prof-component>
-      <div *ngIf="!followsOrFollowers?.items && !followLoading" class="messageStyle">you have no {{openFollowExplorerType}} yet...</div>
+      <div *ngIf="!anyFollow() && !followLoading" class="messageStyle">you have no {{openFollowExplorerType}} yet...</div>
     </div>
     
     <div class="div3">
@@ -129,9 +129,7 @@
       </div>
     
       <div class="offsetDivLeft"> 
-        <div class="recommndationsProfileBar">
           <app-rec-profile></app-rec-profile>
-        </div>
     
       </div>
     </div>

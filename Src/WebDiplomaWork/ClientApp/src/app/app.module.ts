@@ -34,6 +34,8 @@ import { FollowExplorerComponent } from './follow-explorer/follow-explorer';
 import { ExploreProfComponent } from './explore-prof-component/explore-prof-component';
 import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
 import { NotificationService } from './service/notifications.service';
+import { FollowRecommendationsService } from './FollowRecommendationsService/FollowRecommendationsService';
+import { FullProfRecComponent } from './full-prof-rec/full-rec-prof.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import { NotificationService } from './service/notifications.service';
     ExploreComponent,
     ToastBtn,
     FollowExplorerComponent,
-    ExploreProfComponent
+    ExploreProfComponent,
+    FullProfRecComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -88,6 +91,7 @@ import { NotificationService } from './service/notifications.service';
   providers: [
       AuthGuard, 
       NotificationService,
+      FollowRecommendationsService,
       {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

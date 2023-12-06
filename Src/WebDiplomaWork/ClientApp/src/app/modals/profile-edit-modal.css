@@ -19,7 +19,7 @@
 }
 
 .modal-content {
-    width: 40%;
+    width: 35%;
     min-width: 500px;
 
     padding-right: 1%;
@@ -28,7 +28,7 @@
 
     border-radius: 20px;
     border: none;
-    height: 90%;
+    height: 85%;
 
     background-color: #F6F8F9;
 }

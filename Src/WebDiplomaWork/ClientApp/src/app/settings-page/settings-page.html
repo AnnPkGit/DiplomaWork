@@ -54,7 +54,7 @@
                           <img class="setting-option-icon"  src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3IDIwLjVIN0M0IDIwLjUgMiAxOSAyIDE1LjVWOC41QzIgNSA0IDMuNSA3IDMuNUgxN0MyMCAzLjUgMjIgNSAyMiA4LjVWMTUuNUMyMiAxOSAyMCAyMC41IDE3IDIwLjVaIiBzdHJva2U9IiNBQkI5QzkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTcgOUwxMy44NyAxMS41QzEyLjg0IDEyLjMyIDExLjE1IDEyLjMyIDEwLjEyIDExLjVMNyA5IiBzdHJva2U9IiNBQkI5QzkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'/>
                         </div>
                         <div class="setting-title">
-                          Email verification
+                          Contact verification
                         </div>
                       </div>
                   </div>
@@ -75,30 +75,50 @@
                       <div class="option-center-content" *ngIf="passwordTab">
                         <div>
                           <label class="note-setting">Current Password</label>
-                          <input class="bio-textarea" [(ngModel)]="password">
+                          <input class="bio-textarea" [(ngModel)]="password" type="password">
                         </div>
 
                         <div>
                           <div>
                             <label class="note-setting">New Password</label>
-                            <input class="bio-textarea" [(ngModel)]="newPassword">
+                            <input class="bio-textarea" [(ngModel)]="newPassword" type="password">
                           </div>
                           <div>
                             <label class="note-setting">Repeat Password</label>
-                            <input class="bio-textarea">
+                            <input class="bio-textarea" type="password">
                           </div>
                         </div> 
 
-                        <div>
-                          <button type="button" class="colorBtn-not-mini" (click)="updatePassword()">
+                        <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+                          <button type="button" class="colorBtn-not-mini" (click)="updatePassword()" style="width: 70%; height: 40px;">
                             Update Password</button>
                         </div> 
                       </div>
 
                       <div class="option-center-content" *ngIf="emailTab">
                         <div>
-                          <label class="note-setting">Current Email</label>
-                          <input class="bio-textarea" [(ngModel)]="password">
+                          <label class="note-setting">Current Email</label> <label *ngIf="!userCurrent.emailVerified" class="error-message-setting" style="color: #c79e9e;">[Not verified]</label>
+                          <div style="display: flex;">
+                            <input class="bio-textarea" [(ngModel)]="email" type="email" style="width: 80%;" max="50"> 
+                            
+                            <button *ngIf="!emailSending" type="button" class="colorBtn-not-mini" (click)="updateEmail()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              Update Email</button>
+                              
+                              <button *ngIf="emailSending" type="button" class="colorBtn-not-mini" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                  <span class="sr-only" style="margin-left: 5px;">Sending Email...</span>
+                              </button>
+                          </div>
+                          <label *ngIf="emailSent" class="note-setting" style="color: slateblue;">Please check your email</label>
+                        </div>
+
+                        <div>
+                          <label class="note-setting">Current Phone</label> <label *ngIf="!userCurrent.phoneVerified" class="error-message-setting" style="color: #c79e9e;">[Not verified]</label>
+                          <div style="display: flex;">
+                            <input class="bio-textarea" [(ngModel)]="phone" placeholder="no phone was added" type="tel" max="50">
+                            <button type="button" class="colorBtn-not-mini" (click)="updatePhone()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              Update Phone</button>
+                          </div>
                         </div>
                       </div>
 

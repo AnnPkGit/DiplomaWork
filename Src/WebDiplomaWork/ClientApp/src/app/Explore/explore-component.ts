@@ -11,6 +11,7 @@ export class ExploreComponent implements OnInit {
 
     input: string = '';
     accounts: UserFollower[] | undefined;
+    searchInProgress: boolean = false;
 
     ngOnInit(): void {
         // throw new Error('Method not implemented.');
@@ -21,9 +22,20 @@ export class ExploreComponent implements OnInit {
     }
 
     search() {
+      if(this.searchInProgress) {
+        return;
+      }
+      
+      this.searchInProgress = true;
+
       this.httpClient.get<UserFollower[]>("api/v1/account/search?Text=" + this.input.trim()).subscribe((response) => {
         this.accounts = response;
-      });
+        this.searchInProgress = false;
+      },
+      (error) => {
+          this.searchInProgress = false;
+        }
+      );
     }
 
     NothingWasFound() {

@@ -336,20 +336,37 @@ export class ProfilePageComponent implements OnInit{
     this.toastResponse?.items.unshift($event);
   }
 
+  anyFollow(): boolean {
+    if(this.followsOrFollowers?.items) {
+      return this.followsOrFollowers?.items?.length > 0;
+    }
+    return false;
+  }
+
   fetchUsersFollows() {
+    if(this.currentUserId == '') return;
+
     this.followLoading = true;
     this.httpClient.get<UserFollowResponse>("api/v1/follow/follows?AccountId=" +  this.currentUserId).subscribe((response) => {
       this.followLoading = false;
       this.followsOrFollowers = response;
-    });
+    },
+    (error) => {
+    }
+    );
   }
 
   fetchUsersFollowers() {
+    if(this.currentUserId == '') return;
+
     this.followLoading = true;
     this.httpClient.get<UserFollowResponse>("api/v1/follow/followers?AccountId=" +  this.currentUserId).subscribe((response) => {
       this.followLoading = false;
       this.followsOrFollowers = response;
-    });
+    },
+    (error) => {
+    }
+    );
   }
 }
 
@@ -424,4 +441,5 @@ export interface UserFollower {
   name: string;
   avatar: ImageItem;
   bio: string | null;
+  youFollow?: boolean;
 }

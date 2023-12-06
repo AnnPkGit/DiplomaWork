@@ -219,3 +219,7 @@
   display: flex;
   padding: 4%;
 }
+
+.recommendedProfile:hover {
+  cursor: pointer;
+}

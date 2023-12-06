@@ -28,3 +28,8 @@
   font-weight: 100;
   font-size: 14px;
 }
+
+.error-message-setting {
+  font-size: 12px;
+  margin-left: 4px;
+}
