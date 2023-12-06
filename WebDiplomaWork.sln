@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Src\Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Src\Infrastructure\Infrastructure.csproj", "{9B95A8B4-7E5E-4DA5-9B91-F45D85E2CC8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiplomaWork", "Src\WebDiplomaWork\WebDiplomaWork.csproj", "{EDB3C722-B9F8-4FB2-924D-2D1DF0C12767}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "Src\WebApp\WebApp.csproj", "{EDB3C722-B9F8-4FB2-924D-2D1DF0C12767}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{3480B6A4-E7C9-4A68-B6E6-C42AE08D662F}"
 	ProjectSection(SolutionItems) = preProject
