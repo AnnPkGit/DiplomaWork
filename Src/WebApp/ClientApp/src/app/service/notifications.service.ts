@@ -18,7 +18,7 @@ export class NotificationService {
   domainUrl: string = '';
 
   constructor() {
-    this.domainUrl = window.location.origin;
+    this.domainUrl = 'https://toaster-api.azurewebsites.net';
     this.startSignlaRConnection();
   }
 
