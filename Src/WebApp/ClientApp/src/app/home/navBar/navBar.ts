@@ -25,7 +25,6 @@ export class NavBarComponent {
     this.newNotification = this.notService.getCurrentNotStatus();
 
     this.reactionNotificationSubscription = this.notService.getNotsStatus().subscribe((data) => {
-      console.log(data);
       this.newNotification = data;
     });
   }

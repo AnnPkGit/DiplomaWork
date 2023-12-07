@@ -27,13 +27,11 @@ export class RecProfileComponent implements OnInit {
   }
 
   Follow(id: number, event: Event) {
-    console.log(id)
     event.stopPropagation();
     this.followRecommendationsService.Follow(id);
   }
 
   UnFollow(id: number, event: Event) {
-    console.log(id)
     event.stopPropagation();
     this.followRecommendationsService.UnFollow(id);
   }

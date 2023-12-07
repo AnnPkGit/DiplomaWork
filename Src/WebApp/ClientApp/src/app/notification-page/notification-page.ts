@@ -76,7 +76,10 @@ export class NotifactionsPageComponent implements OnInit {
   }
 
   getUrlFoItem(item: ToastItem) : string {
-    return item?.quotedToast?.mediaItems[0]?.url ?? '';
+    if(item?.quotedToast?.mediaItems) {
+      return item?.quotedToast?.mediaItems[0]?.url ?? '';
+    }
+    return '';
   }
 
   getStyle(rec: ReactionNotification) {

@@ -57,7 +57,7 @@
 
                 <div class="notify-message" *ngIf="not.reply">
                   <label class="not-login-info" (click)="goToProfilePage(not.reply.author?.id ?? 0)">{{not.reply.author?.name}}</label> replied to   
-                  <label (click)="GoToToast(not.reply.replyToToast.id ?? 0)"class="not-login-info">your toast</label>: <b>"{{truncateTextMini(not.reply.content)}}"</b>
+                  <label (click)="GoToToast(not.reply.replyToToast?.id ?? 0)"class="not-login-info">your toast</label>: <b>"{{truncateTextMini(not.reply.content)}}"</b>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@
                   </div>
                 </div>
                 <div class="postText" style="margin-top: 12px;">
-                  {{truncateText(not.reaction?.toastWithContent?.content ?? not.reaction.toastWithContent.mediaItems[0]?.url ?? '')}}
+                  {{truncateText(not.reaction?.toastWithContent?.content ?? getUrlFoItem(not.reaction.toastWithContent) ?? '')}}
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@
                   </div>
                 </div>
                 <div class="postText" style="margin-top: 12px;">
-                  {{truncateText(not.quote.quotedToast?.content ?? getUrlFoItem(not.quote) ?? '')}}
+                  {{truncateText(not.quote?.quotedToast?.content ?? getUrlFoItem(not.quote) ?? '')}}
                 </div>
               </div>
             </div>        

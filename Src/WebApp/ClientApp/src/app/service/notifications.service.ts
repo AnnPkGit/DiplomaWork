@@ -41,7 +41,7 @@ export class NotificationService {
       .build();
     this.hubConnection
       .start()
-      .then(() => console.log('Connection started'))
+      .then(() => {})
       .catch(err => console.log('Error while starting connection: ' + err));
 
       this.hubConnection.on('Receive', (data: ReactionNotification[]) => {
@@ -60,7 +60,6 @@ export class NotificationService {
         }
 
         this.data = [...noDoubles, ...this.data];
-        console.log(this.data);
         this.reactionNotificationSubject.next(this.data);
         
         if(this.data.some(item => item.viewed == null)) {
@@ -88,13 +87,9 @@ export class NotificationService {
           this.mostRecentDate = date?.toString();
         }
 
-        console.log(this.mostRecentDate);
-
         const query: GetCurrentAccountNotificationsByTimeQuery = {
           time: this.mostRecentDate
         };
-
-        console.log(query)
 
         this.hubConnection?.invoke('Sync', query)
           .catch((error) => console.error('Error while invoking hub method:', error));
