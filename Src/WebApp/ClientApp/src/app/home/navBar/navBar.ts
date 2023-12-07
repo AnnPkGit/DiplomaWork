@@ -19,15 +19,15 @@ export class NavBarComponent {
     this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
   }
 
-  reactionNotification: ReactionNotification | undefined;
   private reactionNotificationSubscription: Subscription | undefined;
 
   ngOnInit(): void {
-    // UNDO COMMENT TO START HUB CONNECTION
+    this.newNotification = this.notService.getCurrentNotStatus();
 
-    // this.reactionNotificationSubscription = this.notService.reactionNotification$.subscribe((data) => {
-    //   this.reactionNotification = data;
-    // });
+    this.reactionNotificationSubscription = this.notService.getNotsStatus().subscribe((data) => {
+      console.log(data);
+      this.newNotification = data;
+    });
   }
 
   goToMessages() {

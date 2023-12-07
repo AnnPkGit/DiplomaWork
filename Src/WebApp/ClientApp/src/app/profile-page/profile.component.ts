@@ -332,6 +332,10 @@ export class ProfilePageComponent implements OnInit{
   }
 
   addToast($event : ToastItem): void {
+    if(this.currentUserId != this.userCurrent?.account.id.toString()) {
+      return;
+    }
+
     $event.author = this.userCurrent?.account as UserFollower ?? null;
     this.toastResponse?.items.unshift($event);
   }
@@ -411,9 +415,10 @@ export interface ToastItem {
   content: string;
   type: string;
   reply: string | null;
-  quotedToast: ToastResponse | null;
+  quotedToast: ToastItem | null;
   youReToasted: boolean;
   youReacted: boolean;
+  replyToToast: ToastItem;
   reactionCount: number;
   reToastCount: number;
   replyCount: number;

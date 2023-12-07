@@ -108,6 +108,10 @@
         </div>
       </div>
 
+      <div *ngIf="toastResponse.pageNumber && toastResponse.items.length < 1" class="nothingFound">
+        Nothing here yet...
+      </div>
+
     </div>
 
     <div class="div2" style="padding: 20px;" *ngIf="openFollowExplorer">

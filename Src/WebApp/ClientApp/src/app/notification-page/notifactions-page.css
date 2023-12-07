@@ -1,8 +1,22 @@
 .notification {
-    height: 88px;
+    min-height: 88px;
     background: #ffffff;
-    display: flex;
-    margin-bottom: 1px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding: 2%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
+}
+
+.notification-un-seen {
+    min-height: 88px;
+    background: #ffffff;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding: 2%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 4px rgba(238, 243, 246, 0.4), 0px 0px 4px rgba(217, 226, 235, 0.1), 0px 0px 15px rgba(217, 226, 235, 0.5);
+    border: 1.5px solid #a0aaff;
 }
 
 .notification:hover{
@@ -14,14 +28,32 @@
     height: 50%;
     display: flex;
     align-items: end;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 14px;
     color: #5C6778;
+    width: 100%;
 }
 
 .notify-message {
     height: 50%;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
     color: #5C6778;
+}
+
+.time-not-label {
+    font-size: 12px; 
+    margin-left: auto;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    color: #bcc6d4;
+}
+
+.not-login-info {
+    color: #5B66CA;
+    font-weight: bold;
+}
+
+.not-login-info:hover {
+    text-decoration: underline;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, interval, merge } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { UserFollower } from '../profile-page/profile.component';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { UserFollower } from '../profile-page/profile.component';
 })
 export class FollowRecommendationsService {
   private recommendationsSubject = new Subject<UserFollower[]>();
-  private refreshIntervalMillis = 3 * 60 * 1000; // 3 minutes in milliseconds
+  private refreshIntervalMillis = 3 * 60 * 1000;
   private currentData: UserFollower[] = [];
 
   constructor(private http: HttpClient) {

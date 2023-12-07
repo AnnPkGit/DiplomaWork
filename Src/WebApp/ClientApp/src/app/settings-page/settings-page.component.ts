@@ -27,9 +27,14 @@ export class SettingsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
-    this.email = this.userCurrent.email ?? ''; 
-    this.phone = this.userCurrent.phone ?? '';
+    this.http.get<UserResponse>("api/v1/user").subscribe((response) => {
+      this.userCurrent = response;
+      this.email = this.userCurrent.email ?? ''; 
+      this.phone = this.userCurrent.phone ?? '';
+    },
+    (error) => {
+      }
+    );
   }
 
   choseEmail() {
