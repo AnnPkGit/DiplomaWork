@@ -1,7 +1,4 @@
 using Application.Common.Interfaces;
-using Infrastructure.Configurations;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebApp.OptionsSetup;
 using WebApp.Services;
 
@@ -16,6 +13,7 @@ public static class ConfigureServices
         services.ConfigureOptions<EmailOptionsSetup>();
         services.ConfigureOptions<SmsVerifyOptionsSetup>();
         services.ConfigureOptions<AzureStorageConfigSetup>();
+        services.ConfigureOptions<EmailConfirmationSenderOptionsSetup>();
         
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         

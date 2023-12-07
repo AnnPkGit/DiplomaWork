@@ -6,16 +6,11 @@ namespace Infrastructure.Services
 
     public class FourDigitCodeGeneratorService : IFourDigitCodeGenerator
     {
-        private Random random;
-
-        public FourDigitCodeGeneratorService()
-        {
-            random = new Random();
-        }
+        private readonly Random _random = new();
 
         public string GenerateCode()
         {
-            int code = random.Next(1000, 10000);
+            var code = _random.Next(1000, 10000);
             return code.ToString();
         }
     }

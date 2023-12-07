@@ -10,7 +10,7 @@ public class MediaStorage : IMediaStorage
 {
     private readonly AzureStorageConfig _storageConfig;
 
-    public MediaStorage(IOptions<AzureStorageConfig> options)
+    public MediaStorage(IOptionsSnapshot<AzureStorageConfig> options)
     {
         _storageConfig = options.Value;
     }
