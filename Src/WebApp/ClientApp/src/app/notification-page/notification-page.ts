@@ -86,6 +86,13 @@ export class NotifactionsPageComponent implements OnInit {
     return 'notification-un-seen'
   }
 
+  view(not: ReactionNotification) {
+    if(not.viewed == null) {
+      not.viewed = 'yes';
+      this.notService.viewNot(not.id);
+    }
+  }
+
   getNotImg(rec: ReactionNotification) {
     if(rec.follower) {
       if(rec.follower.avatar) {

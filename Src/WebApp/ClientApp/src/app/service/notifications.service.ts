@@ -15,8 +15,10 @@ export class NotificationService {
   private data: ReactionNotification[] = [];
   intervalTime = 15000; 
   mostRecentDate: string | null | undefined;
+  domainUrl: string = '';
 
   constructor() {
+    this.domainUrl = window.location.origin;
     this.startSignlaRConnection();
   }
 
@@ -27,8 +29,12 @@ export class NotificationService {
   };
 
   startSignlaRConnection(): void {
+    if(this.domainUrl.includes('localhost')) {
+      this.domainUrl = 'http://localhost:5031';
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5031/sync/notification', {
+      .withUrl(this.domainUrl + '/sync/notification', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })
@@ -40,7 +46,10 @@ export class NotificationService {
 
       this.hubConnection.on('Receive', (data: ReactionNotification[]) => {
 
-        ////need to del
+        if(data.toString() == 'OK') {
+          return;
+        }
+        
         var noDoubles: ReactionNotification[] = [];
         if (this.mostRecentDate) {
           noDoubles = data
@@ -49,7 +58,6 @@ export class NotificationService {
         } else {
           noDoubles = data;
         }
-        ////
 
         this.data = [...noDoubles, ...this.data];
         console.log(this.data);
@@ -108,6 +116,30 @@ export class NotificationService {
   getCurrentNotStatus() : boolean {
     return this.anyNotViewedNotsBool;
   }
+
+  viewNot(id: number) {
+    const command: ViewNotificationsCommand = {
+      BaseNotificationIds: [id]
+    };
+
+    var updatedData = this.data.filter((element) => element.id !== id);
+    
+    if(updatedData .some(item => item.viewed == null)) {
+      this.anyNotViewedNotsBool = true;
+      this.anyNotViewedNots.next(this.anyNotViewedNotsBool);
+    }
+    else {
+      this.anyNotViewedNotsBool = false;
+      this.anyNotViewedNots.next(this.anyNotViewedNotsBool);
+    }
+
+    this.hubConnection?.invoke('ViewNotifications', command)
+          .catch((error) => console.error('Error while invoking hub method:', error));
+  }
+}
+
+class ViewNotificationsCommand {
+  BaseNotificationIds: number[] = [];
 }
 
 class  GetCurrentAccountNotificationsByTimeQuery {

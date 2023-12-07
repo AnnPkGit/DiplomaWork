@@ -19,9 +19,13 @@
     border: 1.5px solid #a0aaff;
 }
 
-.notification:hover{
+.notification-un-seen:hover{
     cursor: pointer;
     background: #eaedee;
+}
+
+.notification:hover{
+    cursor: pointer;
 }
 
 .notify-title {
