@@ -1,4 +1,7 @@
 using System.Reflection;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Newtonsoft.Json;
 using WebApp.Hubs;
 
@@ -30,10 +33,17 @@ builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     builder.Configuration.AddEnvironmentVariables()
         .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+}
+if (app.Environment.IsProduction())
+{
+    var keyVaultName = builder.Configuration["KeyVaultName"];
+    var kvUri = $"https://{keyVaultName}.vault.azure.net";
+    var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
 }
 
 app.UseStaticFiles();

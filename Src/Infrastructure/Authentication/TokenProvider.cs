@@ -14,7 +14,7 @@ public sealed class TokenProvider : ITokenProvider
     private readonly AccessTokenOptions _accessOptions;
     private readonly EmailVerifyTokenOptions _emailVerifyOptions;
 
-    public TokenProvider(IOptionsSnapshot<JwtOptions> options)
+    public TokenProvider(IOptions<JwtOptions> options)
     {
         var jwtOptions = options.Value;
         _accessOptions = jwtOptions.AccessToken;
