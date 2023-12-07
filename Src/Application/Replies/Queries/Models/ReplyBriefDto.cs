@@ -8,7 +8,7 @@ namespace Application.Replies.Queries.Models;
 
 public class ReplyBriefDto : BaseToastWithContentBriefDto, IMapFrom<Reply>
 {
-    public ReplyToastDto ReplyToToast { get; set; } = null!;
+    public ReplyToToastDto ReplyToToast { get; set; } = null!;
     
     public override void Mapping(Profile profile)
     {
@@ -17,6 +17,6 @@ public class ReplyBriefDto : BaseToastWithContentBriefDto, IMapFrom<Reply>
     }
 }
 
-public class ReplyToastDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
+public class ReplyToToastDto : BaseToastBriefDto, IMapFrom<BaseToastWithContentDto>
 {
 }
