@@ -11,7 +11,7 @@ public class EmailService : IEmailService
 {
     private readonly EmailOptions _emailOptions;
 
-    public EmailService(IOptionsSnapshot<EmailOptions> options)
+    public EmailService(IOptions<EmailOptions> options)
     {
         _emailOptions = options.Value;
     }
