@@ -20,7 +20,7 @@ namespace Infrastructure.Services
         private readonly ApplicationDbContext _dbContext; 
  
 
-        public SmsVerify(IFourDigitCodeGenerator codeGenerator, ICurrentUserService currentUserService, ApplicationDbContext dbContext,  IOptionsSnapshot<SmsVerifyOptions> options
+        public SmsVerify(IFourDigitCodeGenerator codeGenerator, ICurrentUserService currentUserService, ApplicationDbContext dbContext,  IOptions<SmsVerifyOptions> options
         )
         {
             _codeGenerator = codeGenerator;
