@@ -9,7 +9,7 @@ public static class CommonUserValidationRules
     public const int MinimumPasswordLenght = 8;
     public const int MaximumPasswordLenght = 100;
     
-    public const int PhoneLenght = 10;
+    public const int PhoneLenght = 12;
     
     [StringSyntax("Regex")]
     public const string EmailRegex = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
