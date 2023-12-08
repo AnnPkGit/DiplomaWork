@@ -36,6 +36,7 @@
               <div style="width: 100%;">
                 <div class="notify-title">
                   {{GetReactionType(not)}}
+                  <img style="margin-left: 4px;" *ngIf="GetReactionType(not) == 'REACTION'" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjYyIDIwLjgwOTZDMTIuMjggMjAuOTI5NiAxMS43MiAyMC45Mjk2IDExLjM4IDIwLjgwOTZDOC40OCAxOS44MTk2IDIgMTUuNjg5NiAyIDguNjg5NjFDMiA1LjU5OTYxIDQuNDkgMy4wOTk2MSA3LjU2IDMuMDk5NjFDOS4zOCAzLjA5OTYxIDEwLjk5IDMuOTc5NjEgMTIgNS4zMzk2MUMxMi41MTM4IDQuNjQ1NDggMTMuMTgzIDQuMDgxMzQgMTMuOTU0IDMuNjkyMzVDMTQuNzI1IDMuMzAzMzcgMTUuNTc2NCAzLjEwMDM3IDE2LjQ0IDMuMDk5NjFDMTkuNTEgMy4wOTk2MSAyMiA1LjU5OTYxIDIyIDguNjg5NjFDMjIgMTUuNjg5NiAxNS41MiAxOS44MTk2IDEyLjYyIDIwLjgwOTZaIiBmaWxsPSIjNUI2NkNBIiBzdHJva2U9IiM1QjY2Q0EiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=='/>
                   <label class="time-not-label">{{beautifyDate(not.created)}}</label>
                 </div>
 
@@ -44,11 +45,11 @@
                 </div>
 
                 <div class="notify-message" *ngIf="not.reaction?.toastWithContent">
-                  <label class="not-login-info" (click)="goToProfilePage(not.reaction.author.id)">{{not.reaction.author.name}}</label> reactet to your toast
+                  <label class="not-login-info" (click)="goToProfilePage(not.reaction.author.id)">{{not.reaction.author.name}}</label> reactet to <label (click)="GoToToast(not.reaction.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
                 </div>
 
                 <div class="notify-message" *ngIf="not.reToast?.toastWithContent">
-                  <label class="not-login-info" (click)="goToProfilePage(not.reToast.author?.id ?? 0)">{{not.reToast.author?.name}}</label> retoasted to your toast
+                  <label class="not-login-info" (click)="goToProfilePage(not.reToast.author?.id ?? 0)">{{not.reToast.author?.name}}</label> retoasted to <label (click)="GoToToast(not.reToast.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
                 </div>
 
                 <div class="notify-message" *ngIf="not.quote">
@@ -62,40 +63,6 @@
               </div>
             </div>
 
-            <div  *ngIf="not.reaction?.toastWithContent" style="margin: 5px; width: 90%; margin-left: auto;" (click)="GoToToast(not.reaction.toastWithContent.id)">
-              <div class="quote-post" style="padding: 7px; display: flex;">
-                <div>
-                  <div class="postLogin">
-                    <label style="cursor: pointer;">{{not.reaction?.toastWithContent?.author?.login}}</label>
-                  </div>
-                  <div class="postAvatar" style="max-height: 50px; max-width: 50px;">
-                    <img *ngIf="not.reaction?.toastWithContent?.author?.avatar" class="postImg" [src]="not.reaction?.toastWithContent?.author?.avatar?.url"/>
-                    <img *ngIf="!not.reaction?.toastWithContent?.author?.avatar" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjQTNBRkJEIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF81MzJfNykiPgo8cGF0aCBkPSJNMjEuNzI2NyAxNy45MDY3VjE0LjcyNjdDMjEuNzI0OSAxMy4yMDg0IDIxLjEyMSAxMS43NTI4IDIwLjA0NzQgMTAuNjc5M0MxOC45NzM4IDkuNjA1NjcgMTcuNTE4MyA5LjAwMTc2IDE2IDlDMTQuNDgxNyA5LjAwMTc2IDEzLjAyNjIgOS42MDU2NyAxMS45NTI2IDEwLjY3OTNDMTAuODc5IDExLjc1MjggMTAuMjc1MSAxMy4yMDg0IDEwLjI3MzMgMTQuNzI2N1YxNy45MDY3TDkgMTkuMThWMjAuNDUzM0gyM1YxOS4xOEwyMS43MjY3IDE3LjkwNjdaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+CjxwYXRoIGQ9Ik0xNy43OTM2IDIwLjQ1MzFDMTcuODc1NyAyMC42NjU1IDE3LjkxNDIgMjAuODkyMiAxNy45MDcgMjEuMTE5OEMxNy45MDcgMjEuNjI1NSAxNy43MDYxIDIyLjExMDQgMTcuMzQ4NSAyMi40NjhDMTYuOTkwOSAyMi44MjU2IDE2LjUwNiAyMy4wMjY1IDE2LjAwMDMgMjMuMDI2NUMxNS40OTQ2IDIzLjAyNjUgMTUuMDA5NyAyMi44MjU2IDE0LjY1MjEgMjIuNDY4QzE0LjI5NDUgMjIuMTEwNCAxNC4wOTM2IDIxLjYyNTUgMTQuMDkzNiAyMS4xMTk4QzE0LjA4NjQgMjAuODkyMiAxNC4xMjQ5IDIwLjY2NTUgMTQuMjA3IDIwLjQ1MzEiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81MzJfNyI+CjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDggOCkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K'/>
-                  </div>
-                </div>
-                <div class="postText" style="margin-top: 12px;">
-                  {{truncateText(not.reaction?.toastWithContent?.content ?? getUrlFoItem(not.reaction.toastWithContent) ?? '')}}
-                </div>
-              </div>
-            </div>
-
-            <div  *ngIf="not.reToast" style="margin: 5px; width: 90%; margin-left: auto;" (click)="GoToToast(not.reToast.id)">
-              <div class="quote-post" style="padding: 7px; display: flex;">
-                <div>
-                  <div class="postLogin">
-                    <label style="cursor: pointer;">{{not.reToast?.toastWithContent?.author?.login}}</label>
-                  </div>
-                  <div class="postAvatar" style="max-height: 50px; max-width: 50px;">
-                    <img *ngIf="not.reToast?.toastWithContent?.author?.avatar" class="postImg" [src]="not.reToast?.toastWithContent?.author?.avatar?.url"/>
-                    <img *ngIf="!not.reToast?.toastWithContent?.author?.avatar" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjQTNBRkJEIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF81MzJfNykiPgo8cGF0aCBkPSJNMjEuNzI2NyAxNy45MDY3VjE0LjcyNjdDMjEuNzI0OSAxMy4yMDg0IDIxLjEyMSAxMS43NTI4IDIwLjA0NzQgMTAuNjc5M0MxOC45NzM4IDkuNjA1NjcgMTcuNTE4MyA5LjAwMTc2IDE2IDlDMTQuNDgxNyA5LjAwMTc2IDEzLjAyNjIgOS42MDU2NyAxMS45NTI2IDEwLjY3OTNDMTAuODc5IDExLjc1MjggMTAuMjc1MSAxMy4yMDg0IDEwLjI3MzMgMTQuNzI2N1YxNy45MDY3TDkgMTkuMThWMjAuNDUzM0gyM1YxOS4xOEwyMS43MjY3IDE3LjkwNjdaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+CjxwYXRoIGQ9Ik0xNy43OTM2IDIwLjQ1MzFDMTcuODc1NyAyMC42NjU1IDE3LjkxNDIgMjAuODkyMiAxNy45MDcgMjEuMTE5OEMxNy45MDcgMjEuNjI1NSAxNy43MDYxIDIyLjExMDQgMTcuMzQ4NSAyMi40NjhDMTYuOTkwOSAyMi44MjU2IDE2LjUwNiAyMy4wMjY1IDE2LjAwMDMgMjMuMDI2NUMxNS40OTQ2IDIzLjAyNjUgMTUuMDA5NyAyMi44MjU2IDE0LjY1MjEgMjIuNDY4QzE0LjI5NDUgMjIuMTEwNCAxNC4wOTM2IDIxLjYyNTUgMTQuMDkzNiAyMS4xMTk4QzE0LjA4NjQgMjAuODkyMiAxNC4xMjQ5IDIwLjY2NTUgMTQuMjA3IDIwLjQ1MzEiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81MzJfNyI+CjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDggOCkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K'/>
-                  </div>
-                </div>
-                <div class="postText" style="margin-top: 12px;">
-                  {{truncateText(not.reToast?.toastWithContent?.content ?? not.reToast.toastWithContent.mediaItems[0]?.url ?? '')}}
-                </div>
-              </div>
-            </div>
-
             <div  *ngIf="not.quote" style="margin: 5px; width: 90%; margin-left: auto;" (click)="GoToToast(not.quote.id)">
               <div class="quote-post" style="padding: 7px; display: flex;">
                 <div>
@@ -104,7 +71,7 @@
                   </div>
                   <div class="postAvatar" style="max-height: 50px; max-width: 50px;">
                     <img *ngIf="not.quote.quotedToast?.author?.avatar" class="postImg" [src]="not.quote.quotedToast?.author?.avatar?.url"/>
-                    <img *ngIf="!not.quote.quotedToast?.author?.avatar" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjQTNBRkJEIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF81MzJfNykiPgo8cGF0aCBkPSJNMjEuNzI2NyAxNy45MDY3VjE0LjcyNjdDMjEuNzI0OSAxMy4yMDg0IDIxLjEyMSAxMS43NTI4IDIwLjA0NzQgMTAuNjc5M0MxOC45NzM4IDkuNjA1NjcgMTcuNTE4MyA5LjAwMTc2IDE2IDlDMTQuNDgxNyA5LjAwMTc2IDEzLjAyNjIgOS42MDU2NyAxMS45NTI2IDEwLjY3OTNDMTAuODc5IDExLjc1MjggMTAuMjc1MSAxMy4yMDg0IDEwLjI3MzMgMTQuNzI2N1YxNy45MDY3TDkgMTkuMThWMjAuNDUzM0gyM1YxOS4xOEwyMS43MjY3IDE3LjkwNjdaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+CjxwYXRoIGQ9Ik0xNy43OTM2IDIwLjQ1MzFDMTcuODc1NyAyMC42NjU1IDE3LjkxNDIgMjAuODkyMiAxNy45MDcgMjEuMTE5OEMxNy45MDcgMjEuNjI1NSAxNy43MDYxIDIyLjExMDQgMTcuMzQ4NSAyMi40NjhDMTYuOTkwOSAyMi44MjU2IDE2LjUwNiAyMy4wMjY1IDE2LjAwMDMgMjMuMDI2NUMxNS40OTQ2IDIzLjAyNjUgMTUuMDA5NyAyMi44MjU2IDE0LjY1MjEgMjIuNDY4QzE0LjI5NDUgMjIuMTEwNCAxNC4wOTM2IDIxLjYyNTUgMTQuMDkzNiAyMS4xMTk4QzE0LjA4NjQgMjAuODkyMiAxNC4xMjQ5IDIwLjY2NTUgMTQuMjA3IDIwLjQ1MzEiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81MzJfNyI+CjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDggOCkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K'/>
+                    <img *ngIf="!not.quote.quotedToast?.author?.avatar" class="postImg" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCA1NiA1NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUzNl8zKSI+CjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgZmlsbD0iI0FCQjlDOSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iI0Y3RjlGQSIvPgo8Y2lyY2xlIGN4PSIyOCIgY3k9IjIxIiByPSIxMSIgZmlsbD0iI0Y3RjlGQSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzUzNl8zIj4KPHJlY3Qgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo='/>
                   </div>
                 </div>
                 <div class="postText" style="margin-top: 12px;">

@@ -14,7 +14,7 @@ export class NotificationService {
   private hubConnection: signalR.HubConnection | undefined;
   private reactionNotificationSubject: Subject<ReactionNotification[]> = new Subject<ReactionNotification[]>();
   private data: ReactionNotification[] = [];
-  intervalTime = 15000; 
+  intervalTime = 4000; 
   mostRecentDate: string | null | undefined;
   private ws: WebSocket | undefined;
 
@@ -45,16 +45,7 @@ export class NotificationService {
           return;
         }
         
-        var noDoubles: ReactionNotification[] = [];
-        if (this.mostRecentDate) {
-          noDoubles = data
-            .filter(item => item.created && new Date(item.created) > (this.mostRecentDate ?? new Date()))
-            .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-        } else {
-          noDoubles = data;
-        }
-
-        this.data = [...noDoubles, ...this.data];
+        this.data = [...data, ...this.data];
         this.reactionNotificationSubject.next(this.data);
         
         if(this.data.some(item => item.viewed == null)) {
