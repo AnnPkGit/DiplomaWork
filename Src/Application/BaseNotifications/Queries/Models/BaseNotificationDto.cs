@@ -60,6 +60,13 @@ public class BaseNotificationDto : IMapFrom<BaseNotification>
                 .Include(rn => rn.Quote).ThenInclude(q => q.Replies)
                 .Include(rn => rn.Quote).ThenInclude(q => q.Quotes)
                 .Include(rn => rn.Quote).ThenInclude(q => q.ReToasts)
+                .Include(rn => rn.Quote)
+                    .ThenInclude(q => q.QuotedToast)
+                        .ThenInclude(t => t!.Author)
+                        .ThenInclude(a => a.Avatar)
+                .Include(rn => rn.Quote)
+                    .ThenInclude(q => q.QuotedToast)
+                        .ThenInclude(t => t!.MediaItems)
                 .Where(rn => quoteNotifyIds.Contains(rn.Id))
                 .AsSingleQuery()
                 .ToArray();
