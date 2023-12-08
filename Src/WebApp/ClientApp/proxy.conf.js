@@ -8,10 +8,12 @@ const PROXY_CONFIG = [
     context: [
       "/user/",
       "/Images/",
-      "/api/v1/"
+      "/api/v1/",
+      "/sync/notification"
     ],
     target: target,
     secure: false,
+    ws: true,
     headers: {
       Connection: 'Keep-Alive'
     }

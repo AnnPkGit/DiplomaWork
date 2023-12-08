@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable, Subject, interval } from 'rxjs';
 import { ToastItem, UserFollower } from '../profile-page/profile.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,8 @@ export class NotificationService {
   private data: ReactionNotification[] = [];
   intervalTime = 15000; 
   mostRecentDate: string | null | undefined;
-  domainUrl: string = '';
 
   constructor() {
-    this.domainUrl = 'https://toaster-api.azurewebsites.net';
     this.startSignlaRConnection();
   }
 
@@ -29,14 +28,9 @@ export class NotificationService {
   };
 
   startSignlaRConnection(): void {
-    if(this.domainUrl.includes('localhost')) {
-      this.domainUrl = 'http://localhost:5031';
-    }
-
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.domainUrl + '/sync/notification', {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets
+      .withUrl( `/sync/notification`, {
+        transport: signalR.HttpTransportType.ServerSentEvents
       })
       .build();
     this.hubConnection
