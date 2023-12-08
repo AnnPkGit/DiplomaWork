@@ -56,7 +56,7 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         }
         
         var fromAccountId = _userService.Id;
-        var toAccountId = toastWithContent.AuthorId;
+        var toAccountId = toastWithContent.Author == null ? null : toastWithContent.AuthorId;
         
         if (await _context.ReToasts.AnyAsync(r =>
                 r.ToastWithContentId == toastWithContentId &&

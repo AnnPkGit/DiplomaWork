@@ -11,8 +11,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
 {
     private readonly ICurrentUserService _currentUserService;
 
-    public AuthorizationBehaviour(
-        ICurrentUserService currentUserService)
+    public AuthorizationBehaviour(ICurrentUserService currentUserService)
     {
         _currentUserService = currentUserService;
     }

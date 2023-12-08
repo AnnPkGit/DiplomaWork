@@ -50,7 +50,7 @@ public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, Rep
         }
         
         var fromAccountId = _userService.Id;
-        var toAccountId = replyToToast.AuthorId;
+        var toAccountId = replyToToast.Author == null ? null : replyToToast.AuthorId;
         
         var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
         
