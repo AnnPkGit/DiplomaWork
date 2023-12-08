@@ -51,12 +51,7 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
         }
         
         var fromAccountId = _userService.Id;
-        var toAccountId = quotedToast.AuthorId;
-        
-        if (await _context.Quotes.AnyAsync(q => q.QuotedToastId == quotedToastId && q.AuthorId == fromAccountId, cancellationToken))
-        {
-            throw new ForbiddenAccessException();
-        }
+        var toAccountId = quotedToast.Author == null ? null : quotedToast.AuthorId;
         
         var mediaItems = _mediaService.GetToastMediaItemsAsync(cancellationToken, request.ToastMediaItemIds);
 
@@ -68,7 +63,7 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
         if (res != 0 && toAccountId != fromAccountId &&
             await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newQuoteNotification = new QuoteNotification(toAccountId, newQuote.Id, createDate);
+            var newQuoteNotification = new QuoteNotification(toAccountId!.Value, newQuote.Id, createDate);
             await _context.BaseNotifications.AddAsync(newQuoteNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

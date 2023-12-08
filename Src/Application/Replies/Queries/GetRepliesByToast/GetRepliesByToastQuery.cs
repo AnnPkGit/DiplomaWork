@@ -42,7 +42,7 @@ public class GetRepliesByToastQueryHandler : IRequestHandler<GetRepliesByToastQu
         var toastReplies = await _context.Replies
             .Where(r => r.ReplyToToastId == request.ToastWithContentId)
             .IgnoreAutoIncludes()
-            .Include(r => r.Author).ThenInclude(a => a.Avatar)
+            .Include(r => r.Author).ThenInclude(a => a!.Avatar)
             .Include(r => r.Replies)
             .Include(r => r.Reactions)
             .Include(r => r.Quotes)

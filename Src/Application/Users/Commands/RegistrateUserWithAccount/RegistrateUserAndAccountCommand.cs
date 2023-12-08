@@ -8,8 +8,8 @@ namespace Application.Users.Commands.RegistrateUserWithAccount;
 
 public class RegistrateUserAndAccountCommand : IRequest
 {
-    public CreateUserModel User { get; set; }
-    public CreateAccountModel Account { get; set; }
+    public CreateUserModel User { get; set; } = null!;
+    public CreateAccountModel Account { get; set; } = null!;
 }
 
 public class RegistrateUserAndAccountCommandHandler : IRequestHandler<RegistrateUserAndAccountCommand>

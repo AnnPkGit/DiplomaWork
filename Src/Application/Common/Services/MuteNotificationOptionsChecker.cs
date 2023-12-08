@@ -16,10 +16,16 @@ public class MuteNotificationOptionsChecker : IMuteNotificationOptionsChecker
         _dateTime = dateTime;
     }
 
-    public async Task<bool> CheckMuteOptions(int fromAccountId, int toAccountId, CancellationToken cancellationToken = default)
+    public async Task<bool> CheckMuteOptions(int? fromAccountId, int? toAccountId, CancellationToken cancellationToken = default)
     {
-        var toUser = FindUser(toAccountId);
-        var fromUser = FindUser(fromAccountId);
+        if (fromAccountId == null || toAccountId == null)
+        {
+            return false;
+        }
+        var fromAccountIdValue = fromAccountId.Value;
+        var toAccountIdValue = toAccountId.Value;
+        var toUser = FindUser(toAccountIdValue);
+        var fromUser = FindUser(fromAccountIdValue);
 
         var toUserMuteOptions = await _context.Users.Entry(toUser)
             .Collection(user => user.MuteNotificationOptions)
@@ -29,28 +35,28 @@ public class MuteNotificationOptionsChecker : IMuteNotificationOptionsChecker
         {
             if (muteOption.Equals(YouDoNotFollow))
             {
-                if (CheckYouDoNotFollowOption(fromAccountId, toAccountId))
+                if (CheckYouDoNotFollowOption(fromAccountIdValue, toAccountIdValue))
                     continue;
 
                 return false;
             }
             if (muteOption.Equals(WhoDoNotFollowYou))
             {
-                if (CheckWhoDoNotFollowYouOption(fromAccountId, toAccountId))
+                if (CheckWhoDoNotFollowYouOption(fromAccountIdValue, toAccountIdValue))
                     continue;
 
                 return false;
             }
             if (muteOption.Equals(WithANewAccount))
             {
-                if (CheckWithANewAccountOption(fromAccountId))
+                if (CheckWithANewAccountOption(fromAccountIdValue))
                     continue;
 
                 return false;
             }
             if (muteOption.Equals(WhoHaveDefaultProfilePhoto))
             {
-                if (CheckWhoHaveDefaultProfilePhotoOption(fromAccountId))
+                if (CheckWhoHaveDefaultProfilePhotoOption(fromAccountIdValue))
                     continue;
 
                 return false;

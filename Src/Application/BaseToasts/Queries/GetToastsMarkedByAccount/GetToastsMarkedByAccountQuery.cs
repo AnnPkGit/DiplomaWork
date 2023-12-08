@@ -41,7 +41,7 @@ public class GetToastsMarkedByAccountQueryHandler : IRequestHandler<GetToastsMar
             .Where(r => r.AuthorId == request.AccountId)
             .OrderByDescending(r => r.Reacted)
             .IgnoreAutoIncludes()
-            .Include(r => r.ToastWithContent).ThenInclude(bt => bt.Author).ThenInclude(a => a.Avatar)
+            .Include(r => r.ToastWithContent).ThenInclude(bt => bt.Author).ThenInclude(a => a!.Avatar)
             .Include(r => r.ToastWithContent).ThenInclude(bt => bt.Replies)
             .Include(r => r.ToastWithContent).ThenInclude(bt => bt.Reactions)
             .Include(r => r.ToastWithContent).ThenInclude(bt => bt.ReToasts)

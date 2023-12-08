@@ -64,7 +64,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
         
         var baseFollowsToasts = await _context.BaseToasts
             .IgnoreAutoIncludes()
-            .Where(toast => accountFollowIds.Contains(toast.AuthorId))
+            .Where(toast => toast.AuthorId != null && accountFollowIds.Contains(toast.AuthorId.Value))
             .OrderByDescending(toast => toast.Created)
             .GetPaginatedSource(request.PageNumber, request.PageSize, out var totalCount)
             .ToArrayAsync(cancellationToken);
@@ -88,7 +88,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
             var toasts = await _context.Toasts
                 .IgnoreAutoIncludes()
                 .Where(toast => toastIds.Contains(toast.Id))
-                .Include(toast => toast.Author).ThenInclude(author => author.Avatar)
+                .Include(toast => toast.Author).ThenInclude(author => author!.Avatar)
                 .Include(toast => toast.MediaItems)
                 .Include(toast => toast.ReToasts)
                 .Include(toast => toast.Reactions)
@@ -105,7 +105,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
             var replies = await _context.Replies
                 .IgnoreAutoIncludes()
                 .Where(reply => replyIds.Contains(reply.Id))
-                .Include(reply => reply.Author).ThenInclude(author => author.Avatar)
+                .Include(reply => reply.Author).ThenInclude(author => author!.Avatar)
                 .Include(reply => reply.MediaItems)
                 .Include(reply => reply.ReToasts)
                 .Include(reply => reply.Reactions)
@@ -113,7 +113,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
                 .Include(reply => reply.Quotes)
                 .Include(reply => reply.ReplyToToast)
                     .ThenInclude(toast => toast!.Author)
-                    .ThenInclude(author => author.Avatar)
+                    .ThenInclude(author => author!.Avatar)
                 .Include(reply => reply.ReplyToToast).ThenInclude(toast => toast!.ReToasts)
                 .Include(reply => reply.ReplyToToast).ThenInclude(toast => toast!.Reactions)
                 .Include(reply => reply.ReplyToToast).ThenInclude(toast => toast!.Replies)
@@ -130,7 +130,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
             var quotes = await _context.Quotes
                 .IgnoreAutoIncludes()
                 .Where(quote => quoteIds.Contains(quote.Id))
-                .Include(quote => quote.Author).ThenInclude(author => author.Avatar)
+                .Include(quote => quote.Author).ThenInclude(author => author!.Avatar)
                 .Include(quote => quote.MediaItems)
                 .Include(quote => quote.ReToasts)
                 .Include(quote => quote.Reactions)
@@ -138,7 +138,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
                 .Include(quote => quote.Quotes)
                 .Include(quote => quote.QuotedToast)
                     .ThenInclude(toast => toast!.Author)
-                    .ThenInclude(author => author.Avatar)
+                    .ThenInclude(author => author!.Avatar)
                 .Include(quote => quote.QuotedToast).ThenInclude(toast => toast!.MediaItems)
                 .Select(quote => _mapper.Map<QuoteDto>(quote))
                 .AsSingleQuery()
@@ -153,7 +153,7 @@ public class GetToastsFromFollowsQueryHandler : IRequestHandler<GetToastsFromFol
                 .Where(reToast => reToastIds.Contains(reToast.Id))
                 .Include(reToast => reToast.ToastWithContent)
                     .ThenInclude(toast => toast!.Author)
-                    .ThenInclude(author => author.Avatar)
+                    .ThenInclude(author => author!.Avatar)
                 .Include(reToast => reToast.ToastWithContent).ThenInclude(toast => toast!.MediaItems)
                 .Include(reToast => reToast.ToastWithContent).ThenInclude(toast => toast!.ReToasts)
                 .Include(reToast => reToast.ToastWithContent).ThenInclude(toast => toast!.Reactions)

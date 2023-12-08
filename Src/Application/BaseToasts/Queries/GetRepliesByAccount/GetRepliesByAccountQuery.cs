@@ -58,7 +58,7 @@ public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccou
             var quotes = await _context.Quotes
                 .Where(q => accountQuoteIds.Contains(q.Id))
                 .IgnoreAutoIncludes()
-                .Include(q => q.Author).ThenInclude(a => a.Avatar)
+                .Include(q => q.Author).ThenInclude(a => a!.Avatar)
                 .Include(q => q.MediaItems)
                 .Include(q => q.Replies)
                 .Include(q => q.Reactions)
@@ -75,7 +75,7 @@ public class GetRepliesByAccountQueryHandler : IRequestHandler<GetRepliesByAccou
                 .IgnoreAutoIncludes()
                 .Include(rt => rt.ToastWithContent)
                     .ThenInclude(t => t!.Author)
-                    .ThenInclude(a => a.Avatar)
+                    .ThenInclude(a => a!.Avatar)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.MediaItems)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Replies)
                 .Include(rt => rt.ToastWithContent).ThenInclude(t => t!.Reactions)

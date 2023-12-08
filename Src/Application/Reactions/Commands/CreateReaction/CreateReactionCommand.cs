@@ -56,10 +56,10 @@ public class CreateReactionCommandHandler : IRequestHandler<CreateReactionComman
         
         await _context.Reactions.AddAsync(newReaction, cancellationToken);
         var res = await _context.SaveChangesAsync(cancellationToken);
-        if (res != 0 && toAccountId != fromAccountId &&
+        if (res != 0 &&  toAccountId != fromAccountId &&
             await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newReactNotification = new ReactionNotification(toAccountId, newReaction.Id, createDate);
+            var newReactNotification = new ReactionNotification(toAccountId!.Value, newReaction.Id, createDate);
             await _context.BaseNotifications.AddAsync(newReactNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

@@ -41,7 +41,7 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         var toastWithContentId = request.ToastWithContentId;
         var toastWithContent = await _context.BaseToastsWithContent
             .IgnoreAutoIncludes()
-            .Include(toast => toast.Author).ThenInclude(author => author.Avatar)
+            .Include(toast => toast.Author).ThenInclude(author => author!.Avatar)
             .Include(toast => toast.MediaItems)
             .Include(toast => toast.Reactions)
             .Include(toast => toast.ReToasts)
@@ -56,7 +56,7 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         }
         
         var fromAccountId = _userService.Id;
-        var toAccountId = toastWithContent.AuthorId;
+        var toAccountId = toastWithContent.Author == null ? null : toastWithContent.AuthorId;
         
         if (await _context.ReToasts.AnyAsync(r =>
                 r.ToastWithContentId == toastWithContentId &&
@@ -90,7 +90,7 @@ public class CreateReToastCommandHandler : IRequestHandler<CreateReToastCommand,
         if (res != 0 && toAccountId != fromAccountId &&
             await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newReToastNotification = new ReToastNotification(toAccountId, newReToast.Id, createDate);
+            var newReToastNotification = new ReToastNotification(toAccountId!.Value, newReToast.Id, createDate);
             await _context.BaseNotifications.AddAsync(newReToastNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

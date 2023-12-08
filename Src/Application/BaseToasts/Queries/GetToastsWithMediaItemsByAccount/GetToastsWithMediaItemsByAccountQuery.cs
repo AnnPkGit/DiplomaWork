@@ -63,7 +63,7 @@ public class GetToastsWithMediaItemsByAccountQueryHandler : IRequestHandler<GetT
             var toasts = await _context.Toasts
                 .Where(toast => toastIds.Contains(toast.Id))
                 .IgnoreAutoIncludes()
-                .Include(toast => toast.Author).ThenInclude(author => author.Avatar)
+                .Include(toast => toast.Author).ThenInclude(author => author!.Avatar)
                 .Include(toast => toast.MediaItems)
                 .Include(toast => toast.ReToasts)
                 .Include(toast => toast.Reactions)
@@ -80,7 +80,7 @@ public class GetToastsWithMediaItemsByAccountQueryHandler : IRequestHandler<GetT
             var replies = await _context.Replies
                 .Where(reply => replyIds.Contains(reply.Id))
                 .IgnoreAutoIncludes()
-                .Include(reply => reply.Author).ThenInclude(author => author.Avatar)
+                .Include(reply => reply.Author).ThenInclude(author => author!.Avatar)
                 .Include(reply => reply.MediaItems)
                 .Include(reply => reply.ReToasts)
                 .Include(reply => reply.Reactions)
@@ -98,7 +98,7 @@ public class GetToastsWithMediaItemsByAccountQueryHandler : IRequestHandler<GetT
             var quotes = await _context.Quotes
                 .Where(quote => quoteIds.Contains(quote.Id))
                 .IgnoreAutoIncludes()
-                .Include(quote => quote.Author).ThenInclude(author => author.Avatar)
+                .Include(quote => quote.Author).ThenInclude(author => author!.Avatar)
                 .Include(quote => quote.MediaItems)
                 .Include(quote => quote.ReToasts)
                 .Include(quote => quote.Reactions)
@@ -106,7 +106,7 @@ public class GetToastsWithMediaItemsByAccountQueryHandler : IRequestHandler<GetT
                 .Include(quote => quote.Quotes)
                 .Include(quote => quote.QuotedToast)
                     .ThenInclude(toast => toast!.Author)
-                    .ThenInclude(author => author.Avatar)
+                    .ThenInclude(author => author!.Avatar)
                 .Include(quote => quote.QuotedToast)
                     .ThenInclude(toast => toast!.MediaItems)
                 .Select(quote => _mapper.Map<QuoteDto>(quote))
