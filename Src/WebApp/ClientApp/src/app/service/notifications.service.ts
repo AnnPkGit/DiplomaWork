@@ -16,10 +16,9 @@ export class NotificationService {
   private data: ReactionNotification[] = [];
   intervalTime = 15000; 
   mostRecentDate: string | null | undefined;
-  domainUrl: string = '';
+  private ws: WebSocket | undefined;
 
   constructor() {
-    this.domainUrl = window.location.origin;
     this.startSignlaRConnection();
   }
 
@@ -30,17 +29,9 @@ export class NotificationService {
   };
 
   startSignlaRConnection(): void {
-    if(this.domainUrl.includes('localhost')) {
-      console.log('localhost')
-      // this.domainUrl = 'http://localhost:5031';
-    }
-    else {
-      // this.domainUrl = 'https://toaster-api.azurewebsites.net:443';
-    }
-
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.domainUrl + '/sync/notification', {
-        transport: signalR.HttpTransportType.LongPolling
+      .withUrl( `/sync/notification`, {
+        transport: signalR.HttpTransportType.ServerSentEvents
       })
       .build();
     this.hubConnection
@@ -54,7 +45,6 @@ export class NotificationService {
           return;
         }
         
-        console.log(data);
         var noDoubles: ReactionNotification[] = [];
         if (this.mostRecentDate) {
           noDoubles = data
