@@ -60,10 +60,10 @@ public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommand, Rep
         await _context.Replies.AddAsync(newReply, cancellationToken);
         var res = await _context.SaveChangesAsync(cancellationToken);
         
-        if (res != 0 && toAccountId != fromAccountId &&
+        if (res != 0 &&toAccountId != fromAccountId &&
             await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newReplyNotification = new ReplyNotification(toAccountId, newReply.Id, createDate);
+            var newReplyNotification = new ReplyNotification(toAccountId!.Value, newReply.Id, createDate);
             await _context.BaseNotifications.AddAsync(newReplyNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }

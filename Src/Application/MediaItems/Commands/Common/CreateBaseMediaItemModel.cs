@@ -10,7 +10,7 @@ public abstract class CreateBaseMediaItemModel
         Type = type;
     }
 
-    public Stream File { get; init; }
-    public string Name { get; init; }
-    public string Type { get; init; }
+    public Stream File { get; init; } = null!;
+    public string Name { get; init; } = null!;
+    public string Type { get; init; } = null!;
 }

@@ -12,7 +12,7 @@ public class BaseToast : BaseAuditableEntity
         Type = childType.Name;
     }
 
-    public int AuthorId { get; set; }
-    public Account Author { get; set; } = null!;
+    public int? AuthorId { get; set; }
+    public Account? Author { get; set; }
     public string Type { get; set; } = string.Empty;
 }

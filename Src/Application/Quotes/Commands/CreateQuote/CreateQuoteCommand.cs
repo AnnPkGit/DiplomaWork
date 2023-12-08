@@ -68,7 +68,7 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, Quo
         if (res != 0 && toAccountId != fromAccountId &&
             await _optionsChecker.CheckMuteOptions(fromAccountId, toAccountId, cancellationToken))
         {
-            var newQuoteNotification = new QuoteNotification(toAccountId, newQuote.Id, createDate);
+            var newQuoteNotification = new QuoteNotification(toAccountId!.Value, newQuote.Id, createDate);
             await _context.BaseNotifications.AddAsync(newQuoteNotification, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
