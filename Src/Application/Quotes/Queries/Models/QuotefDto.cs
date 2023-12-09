@@ -1,5 +1,4 @@
 ﻿using Application.BaseToasts.Queries.Models;
-using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.MediaItems.Queries.Models;
 using AutoMapper;
@@ -10,11 +9,15 @@ namespace Application.Quotes.Queries.Models;
 
 public class QuoteDto : BaseToastWithContentDto, IMapFrom<Quote>
 {
-    public QuotedToastDto QuotedToast { get; set; } = null!;
+    public BaseToastDto QuotedToast { get; set; } = null!;
     
     public override void Mapping(Profile profile)
     {
-        profile.CreateMap<Quote, QuoteDto>();
+        profile.CreateMap<Quote, QuoteDto>()
+            .ForMember(dto => dto.QuotedToast, expression => expression
+                .MapFrom((quote, _, _, context) => quote.QuotedToast == null
+                    ? new DeletedBaseToastDto()
+                    : (BaseToastDto)context.Mapper.Map<QuotedToastDto>(quote.QuotedToast)));
         base.Mapping(profile);
     }
 }

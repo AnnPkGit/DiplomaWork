@@ -9,6 +9,6 @@ public class BaseToastDto : IMapFrom<BaseToast>
     public int Id { get; set; }
     public DateTime LastModified { get; set; }
     public DateTime Created { get; set; }
-    public AccountBriefDto Author { get; set; } = null!;
+    public AccountBriefDto? Author { get; set; }
     public string Type { get; set; } = string.Empty;
 }

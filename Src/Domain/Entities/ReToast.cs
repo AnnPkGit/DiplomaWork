@@ -11,6 +11,6 @@ public class ReToast : BaseToast
         ToastWithContentId = toastWithContentId;
     }
 
-    public int? ToastWithContentId { get; set; }
-    public BaseToastWithContent? ToastWithContent { get; set; } = null!;
+    public int ToastWithContentId { get; set; }
+    public BaseToastWithContent ToastWithContent { get; set; } = null!;
 }
