@@ -28,6 +28,11 @@ export class NotificationService {
   };
 
   public startSignlaRConnection(): void {
+    if(this.hubConnection?.state == signalR.HubConnectionState.Connected || this.hubConnection?.state == signalR.HubConnectionState.Connecting) {
+      return;
+    }
+
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl( `/sync/notification`, {
         transport: signalR.HttpTransportType.ServerSentEvents
