@@ -38,15 +38,15 @@ export class PostPAgeComponent implements OnInit {
 
     this.httpClient.get<ToastItem>("api/v1/BaseToast/withContent/by/id?ToastWithContentId=" +  lastSegment).subscribe((response) => {
       this.toast = response;
+
+      this.httpClient.get<ToastResponse>("/api/v1/reply/by/toast?ToastWithContentId=" +  lastSegment).subscribe((response) => {
+        this.replies = response;
+      });
     }      ,
     (error) => {
       this.notFound = true;
       this.toast = null;
       return;
-    });
-    
-    this.httpClient.get<ToastResponse>("/api/v1/reply/by/toast?ToastWithContentId=" +  lastSegment).subscribe((response) => {
-      this.replies = response;
     });
   }
 

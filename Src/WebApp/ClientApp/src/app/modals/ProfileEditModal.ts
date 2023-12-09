@@ -185,6 +185,7 @@ export class ProfileEditModal {
       this.http.post<ImageItem>('/api/v1/MediaItem/avatar', formData).subscribe(
         (response) => {
           this.avatarItem = response;
+          console.log(this.avatarItem)
         },
         (error) => {
           console.error('Error uploading file:', error);

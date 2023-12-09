@@ -52,7 +52,8 @@
                     </div>
                 </div>
                 <div class="banner">
-                  <img [src]="user?.banner?.url">
+                  <img *ngIf="userCurrent.id != currentUserId" [src]="user?.banner?.url">
+                  <img *ngIf="userCurrent.id == currentUserId" [src]="userCurrent?.banner?.url">
                 </div>
                 <div class="profile-page-bar" style="height: 100%;">
                     <div class="profileNameHolderMain">
