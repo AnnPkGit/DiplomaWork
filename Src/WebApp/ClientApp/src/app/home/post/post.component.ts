@@ -56,6 +56,43 @@ export class PostComponent implements OnInit {
 
   isReply = false;
 
+  beautifyDate(date: Date | string | undefined): string {
+    if (!date) {
+        return '';
+    }
+
+    const inputDate = typeof date === 'string' ? new Date(date) : date;
+
+    if (isNaN(inputDate.getTime())) {
+        return '';
+    }
+
+    const today = new Date();
+
+    if (inputDate.toDateString() === today.toDateString()) {
+        const timeOptions: Intl.DateTimeFormatOptions = {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        };
+
+        return new Intl.DateTimeFormat(undefined, timeOptions).format(inputDate);
+        // Use undefined for the locale to use the user's default locale
+    } else {
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        };
+
+        return new Intl.DateTimeFormat(undefined, options).format(inputDate);
+        // Use undefined for the locale to use the user's default locale
+    }
+}
+
   getAvatar() : string {
     if(this.toast.toastWithContent) {
       return this.toast.toastWithContent?.author?.avatar?.url;
@@ -73,6 +110,9 @@ export class PostComponent implements OnInit {
   }
 
   onToastCreationAction($event: ToastItem) {
+    if($event.quotedToast) {
+      return;
+    }
     this.onToastCreation.emit($event);
   }
 
@@ -193,6 +233,11 @@ export class PostComponent implements OnInit {
   goToProfilePage(event: Event) : void {
     event.stopPropagation();
     this.localRouter.goToProfilePage(this.toast.toastWithContent?.author?.id ?? this.toast.author?.id);
+  }
+
+  goToProfilePageById(event: Event, id: string) : void {
+    event.stopPropagation();
+    this.localRouter.goToProfilePage(id);
   }
 
   youReacted() {

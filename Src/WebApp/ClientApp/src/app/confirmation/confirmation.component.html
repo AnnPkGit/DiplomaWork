@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="centered-div">
+        <div *ngIf="loading && !smthWrong">
+          <div class="spinner-grow text-primary" role="status">
+          </div>
+          <div class="spinner-grow text-secondary" role="status">
+          </div>
+          <div class="spinner-grow text-success" role="status">
+          </div>
+          <div class="spinner-grow text-danger" role="status">
+          </div>
+          <div class="spinner-grow text-warning" role="status">
+          </div>
+          <div class="spinner-grow text-info" role="status">
+          </div>
+          <div class="spinner-grow text-dark" role="status">
+          </div>
+        </div>
+        <div *ngIf="!loading && !smthWrong" class="textConfirm">
+            Email confirmed!
+        </div>
+        <div *ngIf="smthWrong" class="textConfirm">
+            Something went wrong...
+        </div>
+    </div>
+  </div>

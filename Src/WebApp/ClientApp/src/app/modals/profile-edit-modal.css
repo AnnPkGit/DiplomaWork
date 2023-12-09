@@ -115,3 +115,26 @@
     color: white;
 }
 
+
+.colorBtn-not-mini-2, .colorBtn-not-mini-3{
+    min-width: 100px;
+    margin-top: 10%;
+    height: 60px;
+    padding: 1vh;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    color: white;
+}
+
+.colorBtn-not-mini-2 {
+    background: #5B66CA;
+    border: solid #5B66CA 2px;
+}
+
+.colorBtn-not-mini-3 {
+    background: #758dcf;
+    border: solid #758dcf 2px;
+}

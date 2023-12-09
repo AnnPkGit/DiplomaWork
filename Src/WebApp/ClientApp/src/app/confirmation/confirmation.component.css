@@ -1,0 +1,19 @@
+/* Apply styles to the container element */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; 
+  }
+  
+  /* Apply styles to the centered div */
+  .centered-div {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .textConfirm {
+    font-size: 30px;
+    color: #5B66CA;
+    text-transform: capitalize;
+  }

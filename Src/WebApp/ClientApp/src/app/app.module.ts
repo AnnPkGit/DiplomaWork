@@ -36,6 +36,7 @@ import { AuthInterceptor } from './HttpInterceptor/auth-interceptor.service';
 import { NotificationService } from './service/notifications.service';
 import { FollowRecommendationsService } from './FollowRecommendationsService/FollowRecommendationsService';
 import { FullProfRecComponent } from './full-prof-rec/full-rec-prof.component';
+import { ConfirmationComponent } from './confirmation/ConfirmationComponent';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { FullProfRecComponent } from './full-prof-rec/full-rec-prof.component';
     ToastBtn,
     FollowExplorerComponent,
     ExploreProfComponent,
-    FullProfRecComponent
+    FullProfRecComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -86,6 +88,7 @@ import { FullProfRecComponent } from './full-prof-rec/full-rec-prof.component';
       { path: 'profile/:id', component: ProfilePageComponent },
       { path: 'notifications', component: NotifactionsPageComponent },
       { path: 'settings', component: SettingsPageComponent },
+      { path: 'confirmemail', component: ConfirmationComponent},
     ])
   ],
   providers: [

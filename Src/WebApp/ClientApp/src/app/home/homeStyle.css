@@ -122,6 +122,10 @@
   display: flex;
 }
 
+.profileBar:hover {
+  cursor: pointer;
+}
+
 .toastButton {
   float: right;
   margin-left: auto;

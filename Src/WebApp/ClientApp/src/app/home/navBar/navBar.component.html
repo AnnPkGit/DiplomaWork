@@ -46,14 +46,18 @@
         </div>
       </div>
 
-      <div class="option">
+      <div class="option" (click)="MoreOpen($event)">
         <div class="option-icon">
           <div>
             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTkgMjJIMTVDMjAgMjIgMjIgMjAgMjIgMTVWOUMyMiA0IDIwIDIgMTUgMkg5QzQgMiAyIDQgMiA5VjE1QzIgMjAgNCAyMiA5IDIyWiIgc3Ryb2tlPSIjQUJCOUM5IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNS45OTYxIDEySDE2LjAwNjFNMTEuOTk1MSAxMkgxMi4wMDUxTTcuOTk1MTIgMTJIOC4wMDMxMiIgc3Ryb2tlPSIjQUJCOUM5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K' />
           </div>
         </div>
-        <div class="option-extended">
+        <div class="option-extended" style="position: relative">
           More
+          <div  *ngIf="moreOpen" class="re-toast-modal" style="font-size: 15px; min-width: 200px;">
+            <div class="retoastoption1" style="display: flex; justify-content: center;" (click)="goToSettings()">Settings</div>
+            <div class="retoastoption2" style="display: flex; justify-content: center; color: rgb(179, 106, 106);" (click)="logOut()">Logout</div>
+          </div>
         </div>
       </div>
 

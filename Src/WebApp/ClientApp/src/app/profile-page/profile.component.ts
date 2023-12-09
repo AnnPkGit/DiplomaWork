@@ -25,6 +25,7 @@ export class ProfilePageComponent implements OnInit{
   youFollow: boolean = false;
   openFollowExplorer: boolean = false;
   openFollowExplorerType: string = '';
+  accountExists: boolean = true;
 
   followsOrFollowers: UserFollowResponse = {} as UserFollowResponse;
 
@@ -96,6 +97,29 @@ export class ProfilePageComponent implements OnInit{
       year: 'numeric',
     };
   
+    if (currentDate.getFullYear() === date.getFullYear()) {
+      // If the year is the same as the current year
+      return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    } else {
+      // If the year is different from the current year
+      return date.toLocaleDateString('en-US', options);
+    }
+  }
+
+  formatDateBirth(): string  {
+    if(!this.user?.birthDate) {
+      return '';
+    }
+
+    const currentDate = new Date();
+    const date = new Date(this.user?.birthDate ?? new Date());
+
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    };
+
     if (currentDate.getFullYear() === date.getFullYear()) {
       // If the year is the same as the current year
       return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -294,14 +318,21 @@ export class ProfilePageComponent implements OnInit{
     this.httpClient.get<UserObject>("api/v1/account/by/id?id=" +  this.currentUserId).subscribe((response) => {
       this.user = response;
       this.youFollow = this?.user?.youFollow ?? false;
-    });
+    },
+    (error) => {
+      this.accountExists = false;
+    }
+    );
   }
 
   fetchUsersMedia() {
     this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/BaseToast/withMediaItems/by/account?AccountId=" +  this.currentUserId).subscribe((response) => {
       this.toastResponse = response;
-    });
+    },
+    (error) => {
+    }
+    );
     this.selectMedia();     
   }
 
@@ -319,7 +350,10 @@ export class ProfilePageComponent implements OnInit{
     this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/BaseToast/replies/by/account?AccountId=" +  this.user?.id).subscribe((response) => {
       this.toastResponse = response;
-    });
+    },
+    (error) => {
+    }
+    );
     this.selectReplies();
   }
 
@@ -327,7 +361,10 @@ export class ProfilePageComponent implements OnInit{
     this.toastResponse = {} as ToastResponse;
     this.httpClient.get<ToastResponse>("api/v1/BaseToast/marked/by/account?AccountId=" +  this.user?.id).subscribe((response) => {
       this.toastResponse = response;
-    });
+    },
+    (error) => {
+    }
+    );
     this.selectLikes();
   }
 

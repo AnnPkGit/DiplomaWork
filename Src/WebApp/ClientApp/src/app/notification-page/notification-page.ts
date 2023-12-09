@@ -23,36 +23,38 @@ export class NotifactionsPageComponent implements OnInit {
 
   beautifyDate(date: Date | string | undefined): string {
     if (!date) {
-      return ''; 
+        return '';
     }
 
     const inputDate = typeof date === 'string' ? new Date(date) : date;
 
     if (isNaN(inputDate.getTime())) {
-      return ''; 
+        return '';
     }
 
     const today = new Date();
 
     if (inputDate.toDateString() === today.toDateString()) {
-      const timeOptions: Intl.DateTimeFormatOptions = {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false,
-      };
+        const timeOptions: Intl.DateTimeFormatOptions = {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        };
 
-      return new Intl.DateTimeFormat('en-US', timeOptions).format(inputDate);
+        return new Intl.DateTimeFormat(undefined, timeOptions).format(inputDate);
+        // Use undefined for the locale to use the user's default locale
     } else {
-      const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false,
-      };
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        };
 
-      return new Intl.DateTimeFormat('en-US', options).format(inputDate);
+        return new Intl.DateTimeFormat(undefined, options).format(inputDate);
+        // Use undefined for the locale to use the user's default locale
     }
   }
 

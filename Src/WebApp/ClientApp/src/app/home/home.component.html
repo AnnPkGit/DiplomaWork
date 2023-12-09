@@ -37,6 +37,10 @@
       </div>
     </div>
   </div>
+
+  <div class="nothingFound" *ngIf="posts?.items && posts?.items.length < 1">
+    No content! Consider following someone!
+  </div>
 </div>
 
 <div class="div3">

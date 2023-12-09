@@ -7,20 +7,7 @@
   
         <div class="sizingDiv">
           <div class="offsetDivRight">
-            <div class="profileBar">
-              <div>
-                <img class="postAvatar" src="https://i.pinimg.com/564x/86/82/84/86828411400537a803f26013641c4770.jpg" />
-              </div>
-  
-              <div class="loginNameContainerOptional">
-                <div class="postLoginSmaller">
-                  Zhongli - God of contracts
-                </div>
-                <div class="postNameSmaller">
-                  @ZhongliGodofcontracts
-                </div>
-              </div>
-            </div>
+            <profile-bar></profile-bar>
   
             <app-navBar></app-navBar>
   
@@ -81,13 +68,17 @@
                         <div>
                           <div>
                             <label class="note-setting">New Password</label>
-                            <input class="bio-textarea" [(ngModel)]="newPassword" type="password">
+                            <input class="bio-textarea" [(ngModel)]="newPassword" type="password" (change)="comparePasswords()">
                           </div>
                           <div>
                             <label class="note-setting">Repeat Password</label>
-                            <input class="bio-textarea" type="password">
+                            <input class="bio-textarea" [(ngModel)]="rePassword" type="password" (change)="comparePasswords()">
                           </div>
                         </div> 
+
+                        <div style="width: 100%; display: flex; align-items: center; justify-content: center; color: rgb(199, 141, 141);">
+                          {{this.passwordError}}
+                        </div>
 
                         <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
                           <button type="button" class="colorBtn-not-mini" (click)="updatePassword()" style="width: 70%; height: 40px;">
@@ -99,14 +90,20 @@
                         <div>
                           <label class="note-setting">Current Email</label> <label *ngIf="!userCurrent.emailVerified" class="error-message-setting" style="color: #c79e9e;">[Not verified]</label>
                           <div style="display: flex;">
-                            <input class="bio-textarea" [(ngModel)]="email" type="email" style="width: 80%;" max="50"> 
+                            <input class="bio-textarea" [(ngModel)]="email" type="email" style="width: 80%;" max="50" [disabled]="!this.emailRedactorMode"> 
                             
-                            <button *ngIf="!emailSending" type="button" class="colorBtn-not-mini" (click)="updateEmail()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
-                              Update Email</button>
+                            <button *ngIf="!emailSending" type="button" class="colorBtn-not-mini-2" (click)="updateEmail()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              {{this.emailRedactorMode ?  'Update' : 'Change'}}</button>
+                            
+                              <button *ngIf="canVerifyEmail() && !emailVerifying" type="button" class="colorBtn-not-mini-2" (click)="verifyEmail()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              Verify</button>
+
+                              <button *ngIf="emailVerifying" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              </button>
                               
-                              <button *ngIf="emailSending" type="button" class="colorBtn-not-mini" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              <button *ngIf="emailSending" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
                                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                  <span class="sr-only" style="margin-left: 5px;">Sending Email...</span>
                               </button>
                           </div>
                           <label *ngIf="emailSent" class="note-setting" style="color: slateblue;">Please check your email</label>
@@ -115,11 +112,35 @@
                         <div>
                           <label class="note-setting">Current Phone</label> <label *ngIf="!userCurrent.phoneVerified" class="error-message-setting" style="color: #c79e9e;">[Not verified]</label>
                           <div style="display: flex;">
-                            <input class="bio-textarea" [(ngModel)]="phone" placeholder="no phone was added" type="tel" max="50">
-                            <button type="button" class="colorBtn-not-mini" (click)="updatePhone()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
-                              Update Phone</button>
+                            <input class="bio-textarea" [(ngModel)]="phone" placeholder="no phone was added" type="tel" maxlength="12" [disabled]="!this.phoneRedactorMode">
+                            <button type="button" *ngIf="!phoneSending" class="colorBtn-not-mini-2" (click)="updatePhone()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              {{this.phoneRedactorMode ?  'Update' : 'Change'}}</button>
+                            
+                            <button *ngIf="phoneSending" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+
+                              <button type="button" *ngIf="canVerifyPhone() && !phoneVerifying" class="colorBtn-not-mini-2" (click)="verifyPhone()" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              Verify</button>
+
+                              <button *ngIf="phoneVerifying" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              </button>
+                          </div>
+
+                          <div *ngIf="phoneCodeSent && !userCurrent.phoneVerified" style="display: flex; justify-content: center; align-content: center;">
+                            <input class="bio-textarea" type="tel" maxlength="4" style="width: 100px; text-align: center; justify-content: center;" [(ngModel)]="code">
+
+                            <button *ngIf="codeSending" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+
+                            <button *ngIf="!codeSending" (click)="sendCode()" type="button" class="colorBtn-not-mini-2" style="width: 10%; height: 40px; margin-top: 0; margin-left: 10px;">
+                              SEND
+                            </button>
                           </div>
                         </div>
+
                       </div>
 
                      </div>

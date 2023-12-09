@@ -149,4 +149,14 @@
 .errorLabel {
   color: rgb(235, 142, 142);
   font-weight: 600;
+  font-size: 14px;
+}
+
+.error-div {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  display: flex;
+  justify-content: center;
 }

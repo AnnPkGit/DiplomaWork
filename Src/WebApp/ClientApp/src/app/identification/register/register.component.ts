@@ -15,6 +15,10 @@ export class RegisterComponent {
   loginInput: string = '';
   emailInput: string = '';
   nameInput: string = '';
+  loginHintMessage : string | undefined;
+  passwordHintMessage: string | undefined;
+  rePasswordHintMessage: string | undefined;
+  finalError: string | undefined;
 
   public selectedMounth: number = 0;
   public selectedDay: number = 0;
@@ -35,12 +39,40 @@ export class RegisterComponent {
     this.UpdateDaysByMounth(28);
   }
 
+  onLoginChange() {
+    if (!this.loginValid()) {
+      this.loginHintMessage = "Login must start with a letter and can only contain letters, digits, dots, underscores, or hyphens."; 
+    } else {
+      this.loginHintMessage = undefined; 
+    }
+  }
+
+  loginValid(): boolean {
+    const loginRegex = /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d._-]{0,}$/;
+    return loginRegex.test(this.loginInput);
+  }
+
+  onPasswordChange() {
+    if (!this.passwordInvalid()) {
+      this.passwordHintMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+    } else {
+      this.passwordHintMessage = undefined; 
+    }
+  }
+
+  passwordInvalid(): boolean {
+    const passwordRegex = /^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d)(?=.*[^\p{L}\p{N}]).{0,}$/u;
+    return passwordRegex.test(this.passwordInput);
+  }
+
+
   public onChangeEmailInput(newValue: string) {
     this.emailInput = newValue
   }
 
   public onChangeLoginInput(newValue: string) {
     this.loginInput = newValue;
+    this.onLoginChange();
   }
 
   onChangeNameInput(newValue: string) {
@@ -49,10 +81,18 @@ export class RegisterComponent {
 
   onChangeConfirmPasswordInput(newValue: string) {
     this.confirmPasswordInput = newValue;
+
+    if(this.confirmPasswordInput != this.passwordInput) {
+      this.rePasswordHintMessage = `Passwords do not match`
+    }
+    else {
+      this.rePasswordHintMessage = undefined;
+    }
   }
 
   onChangePasswordInput(newValue: string) {
     this.passwordInput = newValue;
+    this.onPasswordChange();
   }
 
   public GetMounths() : number[] {
@@ -119,11 +159,19 @@ export class RegisterComponent {
   registationInProccess: boolean = false;
 
   public Register() {
+    if(this.passwordHintMessage || this.loginHintMessage || this.rePasswordHintMessage) {
+      return;
+    }
+
+    if(this.emailInput.trim() == '' || this.nameInput.trim() == '') {
+      return;
+    }
+
     this.registationInProccess = true;
     // const birthdate = new Date(this.selectedYear, this.selectedMounth - 1, this.selectedDay);
 
-    var user = new User(this.emailInput,  this.passwordInput);
-    var account = new Account(this.loginInput, this.nameInput);
+    var user = new User(this.emailInput.trim(),  this.passwordInput.trim());
+    var account = new Account(this.loginInput.trim(), this.nameInput.trim());
 
     const createAccountBody = {
       User: user,
@@ -141,6 +189,7 @@ export class RegisterComponent {
       },
       (error) => {
         this.registationInProccess = false;
+        this.finalError = 'Something went wrong'
       }
     );
   }
