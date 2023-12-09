@@ -7,6 +7,6 @@ namespace Application.BaseToasts.Queries.Models;
 public class BaseToastBriefDto : IMapFrom<BaseToast>
 {
     public int Id { get; set; }
-    public AccountBriefDto Author { get; set; } = null!;
+    public AccountBriefDto? Author { get; set; }
     public string Type { get; set; } = string.Empty;
 }

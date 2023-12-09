@@ -1,5 +1,4 @@
 ﻿using Application.BaseToasts.Queries.Models;
-using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
@@ -12,7 +11,11 @@ public class ReplyBriefDto : BaseToastWithContentBriefDto, IMapFrom<Reply>
     
     public override void Mapping(Profile profile)
     {
-        profile.CreateMap<Reply, ReplyBriefDto>();
+        profile.CreateMap<Reply, ReplyBriefDto>()
+            .ForMember(dto => dto.ReplyToToast, expression => expression
+                .MapFrom((reply, _, _, context) => reply.ReplyToToast == null
+                    ? new DeletedBaseToastBriefDto()
+                    : (BaseToastBriefDto)context.Mapper.Map<ReplyToToastDto>(reply.ReplyToToast)));
         base.Mapping(profile);
     }
 }
