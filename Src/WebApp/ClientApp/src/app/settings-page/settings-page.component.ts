@@ -31,6 +31,8 @@ export class SettingsPageComponent implements OnInit {
   emailRedactorMode: boolean = false;
   emailVerifying: boolean = false;
 
+  delAccChoosen: boolean = false;
+
   constructor(private localRouter: LocalRouter, private http: HttpClient) {
 
   }
@@ -60,17 +62,28 @@ export class SettingsPageComponent implements OnInit {
     }
   }
 
+  chooseDelAcc() {
+    this.passwordTab = false;
+    this.emailTab = false;
+    this.password = '';
+    this.newPassword = '';
+    this.passwordError = undefined;
+    this.delAccChoosen = true;
+  }
+
   choseEmail() {
     this.passwordTab = false;
     this.emailTab = true;
     this.password = '';
     this.newPassword = '';
     this.passwordError = undefined;
+    this.delAccChoosen = false;
   }
 
   chosePassword() {
     this.passwordTab = true;
     this.emailTab = false;
+    this.delAccChoosen = false;
   }
 
   sendCode() {
@@ -126,6 +139,13 @@ export class SettingsPageComponent implements OnInit {
           }
         }
       );
+  }
+
+  Delete() {
+    this.http.delete("/api/v1/user").subscribe(
+      () => {
+        this.localRouter.goToSignIn();
+      });
   }
 
   updateEmail() {

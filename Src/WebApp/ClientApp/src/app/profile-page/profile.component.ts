@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angula
 import { UserResponse } from '../identification/signIn/signIn.component';
 import { ImageItem } from '../toast-modal/toast-modal';
 import { LocalRouter } from '../shared/localRouter/local-router.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +27,7 @@ export class ProfilePageComponent implements OnInit{
   openFollowExplorer: boolean = false;
   openFollowExplorerType: string = '';
   accountExists: boolean = true;
+  accountNotFound: boolean = false;
 
   followsOrFollowers: UserFollowResponse = {} as UserFollowResponse;
 
@@ -184,7 +186,6 @@ export class ProfilePageComponent implements OnInit{
 
     this.userCurrent = JSON.parse(localStorage.getItem("userInfo") ?? "");
     
-    this.fetchUSersToasts(); 
     this.fetchAccountInfo(); 
   }
 
@@ -239,6 +240,10 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchNewToasts() {
+    if(!this.user) {
+      return;
+    }
+
     if(this.toastResponse.hasNextPage && this.toastsSelected) {
       this.httpClient.get<ToastResponse>("api/v1/basetoast/by/account?AccountId=" +  this.currentUserId + '&pageNumber=' + (this.toastResponse.pageNumber += 1).toString())
       .subscribe((response) => {
@@ -315,12 +320,18 @@ export class ProfilePageComponent implements OnInit{
   }
 
   fetchAccountInfo() {
+    if(this.accountNotFound) {
+      return;
+    }
+
     this.httpClient.get<UserObject>("api/v1/account/by/id?id=" +  this.currentUserId).subscribe((response) => {
       this.user = response;
       this.youFollow = this?.user?.youFollow ?? false;
+      this.fetchUSersToasts();
     },
     (error) => {
       this.accountExists = false;
+      this.accountNotFound = true;
     }
     );
   }
@@ -331,7 +342,7 @@ export class ProfilePageComponent implements OnInit{
       this.toastResponse = response;
     },
     (error) => {
-    }
+      }
     );
     this.selectMedia();     
   }
