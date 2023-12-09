@@ -41,23 +41,23 @@
                 </div>
 
                 <div class="notify-message" *ngIf="not.follower">
-                  <label class="not-login-info" (click)="goToProfilePage(not.follower.id)">{{not.follower.name}}</label> is now following you
+                  <label class="not-login-info" (click)="goToProfilePage(not.follower.id)">{{not.follower?.name ?? 'DeletedAccount'}}</label> is now following you
                 </div>
 
                 <div class="notify-message" *ngIf="not.reaction?.toastWithContent">
-                  <label class="not-login-info" (click)="goToProfilePage(not.reaction.author.id)">{{not.reaction.author.name}}</label> reactet to <label (click)="GoToToast(not.reaction.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
+                  <label class="not-login-info" (click)="goToProfilePage(not.reaction.author.id)">{{not.reaction.author?.name ?? 'DeletedAccount'}}</label> reactet to <label (click)="GoToToast(not.reaction.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
                 </div>
 
                 <div class="notify-message" *ngIf="not.reToast?.toastWithContent">
-                  <label class="not-login-info" (click)="goToProfilePage(not.reToast.author?.id ?? 0)">{{not.reToast.author?.name}}</label> retoasted to <label (click)="GoToToast(not.reToast.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
+                  <label class="not-login-info" (click)="goToProfilePage(not.reToast.author?.id ?? 0)">{{not.reToast.author?.name ?? 'DeletedAccount'}}</label> retoasted to <label (click)="GoToToast(not.reToast.toastWithContent?.id ?? 0)"class="not-login-info">your toast</label>
                 </div>
 
                 <div class="notify-message" *ngIf="not.quote">
-                  <label class="not-login-info" (click)="goToProfilePage(not.quote.author?.id ?? 0)">{{not.quote.author?.name}}</label> quoted to your toast
+                  <label class="not-login-info" (click)="goToProfilePage(not.quote.author?.id ?? 0)">{{not.quote.author?.name ?? 'DeletedAccount'}}</label> quoted to your toast
                 </div>
 
                 <div class="notify-message" *ngIf="not.reply">
-                  <label class="not-login-info" (click)="goToProfilePage(not.reply.author?.id ?? 0)">{{not.reply.author?.name}}</label> replied to   
+                  <label class="not-login-info" (click)="goToProfilePage(not.reply.author?.id ?? 0)">{{not.reply.author?.name ?? 'DeletedAccount'}}</label> replied to   
                   <label (click)="GoToToast(not.reply.replyToToast?.id ?? 0)"class="not-login-info">your toast</label>: <b>"{{truncateTextMini(not.reply.content)}}"</b>
                 </div>
               </div>

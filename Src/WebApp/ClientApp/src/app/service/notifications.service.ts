@@ -18,16 +18,18 @@ export class NotificationService {
   mostRecentDate: string | null | undefined;
 
   constructor() {
-    this.startSignlaRConnection();
+    // this.startSignlaRConnection();
   }
 
   stopConnection = () => {
+    console.log('hub disconnected');
     if (this.hubConnection) {
       this.hubConnection.stop();
     }
   };
 
-  startSignlaRConnection(): void {
+  public startSignlaRConnection(): void {
+    console.log('hub connecting');
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl( `/sync/notification`, {
         transport: signalR.HttpTransportType.ServerSentEvents
@@ -76,6 +78,10 @@ export class NotificationService {
           time: this.mostRecentDate
         };
 
+        if(this.hubConnection?.state != signalR.HubConnectionState.Connected) {
+          return;
+        }
+
         this.hubConnection?.invoke('Sync', query)
           .catch((error) => console.error('Error while invoking hub method:', error));
       });
@@ -113,6 +119,10 @@ export class NotificationService {
       this.anyNotViewedNots.next(this.anyNotViewedNotsBool);
     }
 
+    if(this.hubConnection?.state != signalR.HubConnectionState.Connected) {
+      return;
+    }
+    
     this.hubConnection?.invoke('ViewNotifications', command)
           .catch((error) => console.error('Error while invoking hub method:', error));
   }

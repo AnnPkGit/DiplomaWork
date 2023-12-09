@@ -47,6 +47,7 @@ export class NavBarComponent {
   logOut() {
     this.httpCLient.get('api/v1/auth/logout').subscribe((response) => {
         this.router.goToSignIn();
+        this.notService.stopConnection();
       },
       (error) => {
 

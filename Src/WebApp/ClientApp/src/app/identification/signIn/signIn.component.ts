@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from 'src/app/service/notifications.service';
 import { ServerEndpoint } from 'src/app/shared/config';
 import { LocalRouter } from 'src/app/shared/localRouter/local-router.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -21,7 +22,7 @@ export class SignInComponent implements OnInit {
 
   requestInProcess: boolean = false;
 
-  constructor(private router: LocalRouter, private auth: AuthService, private http: HttpClient) { }
+  constructor(private router: LocalRouter, private auth: AuthService, private http: HttpClient,private notService: NotificationService ) { }
 
   ngOnInit(): void {
     this.loginError = localStorage.getItem(errorKey);
@@ -74,6 +75,7 @@ export class SignInComponent implements OnInit {
         localStorage.setItem(errorKey, '');
         localStorage.setItem("userInfo", JSON.stringify(user));
         this.requestInProcess = false;
+        this.notService.startSignlaRConnection();
         this.router.goToHome();
       },
       (error) => {

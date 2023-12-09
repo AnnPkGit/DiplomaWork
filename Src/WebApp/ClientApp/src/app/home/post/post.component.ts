@@ -173,16 +173,16 @@ export class PostComponent implements OnInit {
     );
   }
 
-  getReplyToAuthorName(): string {
+  getReplyToAuthorName(): string{
     if(this.toast.replyToToast) {
-      if(this.toast.replyToToast.quotedToast) {
-        return this.toast.replyToToast.quotedToast.author.name;
+      if(this.toast.replyToToast.quotedToast?.quotedToast?.author?.name) {
+        return this.toast.replyToToast?.quotedToast?.author?.name;
       }
-      if(this.toast.replyToToast.author) {
-        return this.toast.replyToToast.author.name;
+      if(this.toast.replyToToast?.author?.name) {
+        return this.toast.replyToToast?.author?.name;
       }
     }
-    return '';
+    return 'DeletedAccount';
   }
 
   mediaAny(): boolean {
