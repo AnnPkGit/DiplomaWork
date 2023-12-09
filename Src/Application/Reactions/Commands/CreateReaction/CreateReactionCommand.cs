@@ -42,7 +42,7 @@ public class CreateReactionCommandHandler : IRequestHandler<CreateReactionComman
         }
         
         var fromAccountId = _userService.Id;
-        var toAccountId = toastWithContent.AuthorId;
+        var toAccountId = toastWithContent.Author == null ? null : toastWithContent.AuthorId;
         
         if (await _context.Reactions.AnyAsync(r => 
                 r.ToastWithContentId == toastWithContentId &&
