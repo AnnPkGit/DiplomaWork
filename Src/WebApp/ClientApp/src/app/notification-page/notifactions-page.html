@@ -24,6 +24,11 @@
     
     <div class="div2">
       <div style="margin-top: 86px">
+
+          <div *ngIf="notifications.length < 1" class="nothingFound">
+            No notifications yet...
+          </div>
+
           <div [class]="getStyle(not)" *ngFor="let not of notifications" (click)="view(not)">
             <div style="display: flex;">
               <div style="margin-right: 14px;">

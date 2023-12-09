@@ -383,6 +383,9 @@ export class ProfilePageComponent implements OnInit{
     if(this.currentUserId != this.userCurrent?.account.id.toString()) {
       return;
     }
+    if($event.type != 'Toast') {
+      return;
+    }
 
     $event.author = this.userCurrent?.account as UserFollower ?? null;
     this.toastResponse?.items.unshift($event);
