@@ -6,5 +6,5 @@ namespace Application.ReToasts.Queries.Models;
 
 public class ReToastDto : BaseToastDto, IMapFrom<ReToast>
 {
-    public BaseToastWithContentBriefDto ToastWithContent { get; set; } = null!;
+    public BaseToastWithContentDto ToastWithContent { get; set; } = null!;
 }
